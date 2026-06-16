@@ -1,6 +1,30 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { hashPassword } from '@/lib/security';
+
+// SECURITY: This endpoint can only be called from inside the container
+// (localhost) — i.e. by start.sh during startup. External requests are
+// rejected with 403. This prevents strangers from triggering a re-seed
+// or reading the admin credentials in the response.
+function isLocalRequest(req: NextRequest): boolean {
+  // Accept only requests originating from the container itself
+  const host = req.headers.get('host') || '';
+  const xForwardedFor = req.headers.get('x-forwarded-for') || '';
+  const xRealIp = req.headers.get('x-real-ip') || '';
+  // On HF Spaces, internal calls come from localhost:7860 (or no forwarded IP)
+  // External calls always have x-forwarded-for set to a public IP
+  if (xForwardedFor && !['127.0.0.1', '::1', ''].includes(xForwardedFor.split(',')[0].trim())) {
+    return false;
+  }
+  if (xRealIp && !['127.0.0.1', '::1', ''].includes(xRealIp)) {
+    return false;
+  }
+  // Host must be localhost:7860 or empty (internal curl)
+  if (host && !host.startsWith('localhost') && !host.startsWith('127.0.0.1') && !host.startsWith('0.0.0.0')) {
+    return false;
+  }
+  return true;
+}
 
 // Ensures the super_admin account always exists (admin/admin123).
 // Idempotent — safe to call on every startup.
@@ -104,8 +128,18 @@ async function ensurePlansAndOffers() {
   return { basicPlan, proPlan, premiumPlan };
 }
 
-export async function POST() {
+export async function POST(request: NextRequest) {
   try {
+    // SECURITY GATE: Only allow internal (localhost) calls.
+    // start.sh calls this from inside the container; external callers
+    // get a 403 and no information leak.
+    if (!isLocalRequest(request)) {
+      return NextResponse.json(
+        { error: 'هذا الإجراء متاح فقط للنظام الداخلي' },
+        { status: 403 }
+      );
+    }
+
     // STEP 1: Always ensure super_admin exists (admin/admin123)
     await ensureSuperAdmin();
 
@@ -116,7 +150,7 @@ export async function POST() {
     const userCount = await db.user.count();
     if (userCount > 1) {
       return NextResponse.json({
-        message: 'تم ضمان وجود حساب المالك (admin/admin123) وخطط الاشتراكات',
+        message: 'تم ضمان وجود حساب المالك وخطط الاشتراكات',
         adminCreated: true,
         plansCreated: plans !== null,
       });
@@ -426,8 +460,7 @@ export async function POST() {
     return NextResponse.json({
       message: 'تم تهيئة قاعدة البيانات بنجاح مع إعدادات الأمان',
       clinicId: clinic.id,
-      adminUsername: 'admin',
-      adminPassword: 'admin123',
+      adminCreated: true,
       securityNote: 'تم تفعيل حماية bcrypt لكلمات المرور، وتسجيل الأمان، والتحكم في الجلسات',
     });
   } catch (error) {
