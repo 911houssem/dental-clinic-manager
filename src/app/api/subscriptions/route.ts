@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { getAuthUser } from '@/lib/auth-helper';
 
-// GET /api/subscriptions - List all subscription plans
-export async function GET() {
+// GET /api/subscriptions - List subscription plans
+// PUBLIC: only active plans (used by landing page pricing section)
+// AUTHENTICATED super_admin with ?all=true: includes inactive plans too
+export async function GET(request: NextRequest) {
   try {
-    const authResult = await getAuthUser();
-    if (!authResult) return NextResponse.json({ error: 'غير مصرح' }, { status: 401 });
+    const url = new URL(request.url);
+    const includeAll = url.searchParams.get('all') === 'true';
+
+    let where = { isActive: true };
+    if (includeAll) {
+      // Only super_admin can see inactive plans
+      const authResult = await getAuthUser();
+      if (authResult && authResult.user.role === 'super_admin') {
+        where = {} as any;
+      }
+    }
 
     const plans = await db.subscriptionPlan.findMany({
+      where,
       orderBy: { sortOrder: 'asc' },
       include: { _count: { select: { subscriptions: true, offers: true } } },
     });

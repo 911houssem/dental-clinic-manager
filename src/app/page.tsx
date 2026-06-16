@@ -3028,7 +3028,7 @@ function SubscriptionsView() {
     setLoading(true);
     try {
       const [plansRes, subsRes, clinicsRes] = await Promise.all([
-        fetch('/api/subscriptions'),
+        fetch('/api/subscriptions?all=true'),
         fetch('/api/clinic-subscriptions'),
         fetch('/api/clinics'),
       ]);
@@ -3313,7 +3313,7 @@ function OffersView() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [offersRes, plansRes] = await Promise.all([fetch('/api/offers'), fetch('/api/subscriptions')]);
+      const [offersRes, plansRes] = await Promise.all([fetch('/api/offers'), fetch('/api/subscriptions?all=true')]);
       if (offersRes.ok) setOffers(await offersRes.json());
       if (plansRes.ok) setPlans(await plansRes.json());
     } catch { /* ignore */ }
