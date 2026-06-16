@@ -3176,6 +3176,7 @@ function SubscriptionsView() {
   const [editingPlan, setEditingPlan] = useState<SubscriptionPlan | null>(null);
   const [planForm, setPlanForm] = useState({ name: '', nameEn: '', description: '', price: 0, yearlyPrice: 0, features: '[]', maxPatients: 100, maxDoctors: 5, maxClinics: 1, isPopular: false, sortOrder: 0 });
   const [grantForm, setGrantForm] = useState({ clinicId: '', planId: '', endDate: '', notes: '', billingCycle: 'monthly' as 'monthly' | 'yearly' });
+  const [viewCycle, setViewCycle] = useState<'monthly' | 'yearly'>('monthly');
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -3285,7 +3286,39 @@ function SubscriptionsView() {
 
       {/* Plans Section */}
       <div className="glass-card rounded-2xl p-6">
-        <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2"><Crown size={20} className="text-violet-500" /> خطط الاشتراك</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <h2 className="text-lg font-bold text-foreground flex items-center gap-2"><Crown size={20} className="text-violet-500" /> خطط الاشتراك</h2>
+          {/* Billing cycle toggle */}
+          <div className="inline-flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/40">
+            <button
+              type="button"
+              onClick={() => setViewCycle('monthly')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                viewCycle === 'monthly'
+                  ? 'bg-sky-600 text-white shadow-md shadow-sky-600/30'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              شهري
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewCycle('yearly')}
+              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                viewCycle === 'yearly'
+                  ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              سنوي
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                viewCycle === 'yearly' ? 'bg-white/20 text-white' : 'bg-emerald-500/15 text-emerald-400'
+              }`}>
+                وفّر حتى ١٧٪
+              </span>
+            </button>
+          </div>
+        </div>
         {plans.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             <Crown size={48} className="mx-auto mb-3 opacity-30" />
@@ -3296,6 +3329,11 @@ function SubscriptionsView() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {plans.map(plan => {
               const features = JSON.parse(plan.features || '[]');
+              const isYearly = viewCycle === 'yearly';
+              const displayedPrice = isYearly ? (plan.yearlyPrice || plan.price * 12) : plan.price;
+              const priceUnit = isYearly ? 'ر.س/سنة' : 'ر.س/شهر';
+              const monthlyEquivalent = isYearly && plan.yearlyPrice ? Math.round(plan.yearlyPrice / 12) : null;
+              const yearlySaving = isYearly && plan.yearlyPrice ? (plan.price * 12) - plan.yearlyPrice : 0;
               return (
                 <div key={plan.id} className={`relative glass-card-v2 rounded-xl p-5 ${plan.isPopular ? 'ring-2 ring-emerald-500/50' : ''}`}>
                   {plan.isPopular && (
@@ -3310,10 +3348,29 @@ function SubscriptionsView() {
                     </span>
                   </div>
                   {plan.description && <p className="text-muted-foreground text-sm mb-3">{plan.description}</p>}
-                  <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-3xl font-black text-foreground">{plan.price}</span>
-                    <span className="text-muted-foreground text-sm">ر.س/شهر</span>
-                    {plan.yearlyPrice && <span className="text-emerald-500 text-xs mr-2">{plan.yearlyPrice} ر.س/سنة</span>}
+                  <div className="mb-4">
+                    {/* Primary price — changes based on selected billing cycle */}
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="text-3xl font-black text-foreground">{displayedPrice.toLocaleString('ar-EG')}</span>
+                      <span className="text-muted-foreground text-sm">{priceUnit}</span>
+                    </div>
+                    {/* Secondary info under the price */}
+                    {isYearly ? (
+                      monthlyEquivalent ? (
+                        <p className="text-xs text-muted-foreground/70 mt-1">
+                          ≈ {monthlyEquivalent.toLocaleString('ar-EG')} ر.س/شهر
+                          {yearlySaving > 0 && (
+                            <span className="text-emerald-400 mr-2">— وفّر {yearlySaving.toLocaleString('ar-EG')} ر.س سنوياً</span>
+                          )}
+                        </p>
+                      ) : null
+                    ) : (
+                      plan.yearlyPrice ? (
+                        <p className="text-xs text-muted-foreground/70 mt-1">
+                          أو {plan.yearlyPrice.toLocaleString('ar-EG')} ر.س/سنة
+                        </p>
+                      ) : null
+                    )}
                   </div>
                   {features.length > 0 && (
                     <div className="space-y-1.5 mb-4">
