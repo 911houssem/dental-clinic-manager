@@ -1055,7 +1055,13 @@ function DashboardView() {
       .then(r => r.ok ? r.json() : [])
       .then((subs: ClinicSubscription[]) => {
         if (cancelled) return;
-        const clinicSub = subs.find((s: ClinicSubscription) => s.clinicId === currentClinicId && s.status === 'active');
+        // Active or trial (not yet expired) subscriptions both grant access
+        const now = new Date();
+        const clinicSub = subs.find((s: ClinicSubscription) =>
+          s.clinicId === currentClinicId &&
+          (s.status === 'active' || s.status === 'trial') &&
+          (!s.endDate || new Date(s.endDate) > now)
+        );
         // Super admin always has access
         if (user?.role === 'super_admin' || clinicSub) {
           setSubscriptionStatus('active');
@@ -3506,27 +3512,27 @@ function LandingOffers() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {offers.map(offer => (
-        <div key={offer.id} className="group relative bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-sm border border-white/[0.06] hover:border-emerald-500/30 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 glass-card-v2">
+        <div key={offer.id} className="group relative bg-white hover:bg-slate-50 backdrop-blur-sm border border-slate-200 hover:border-emerald-500/40 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-emerald-100/60">
           {offer.badge && (
             <div className="absolute -top-3 -right-3 px-4 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-sm font-bold rounded-full shadow-lg shadow-emerald-600/40">
               {offer.badge}
             </div>
           )}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-600/30 to-emerald-800/20 rounded-xl flex items-center justify-center">
-              {offer.discountType === 'percentage' ? <Percent size={22} className="text-emerald-400" /> : <Tag size={22} className="text-emerald-400" />}
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-emerald-700/15 rounded-xl flex items-center justify-center">
+              {offer.discountType === 'percentage' ? <Percent size={22} className="text-emerald-600" /> : <Tag size={22} className="text-emerald-600" />}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white/90">{offer.title}</h3>
-              {offer.plan && <span className="text-xs text-violet-400">خطة {offer.plan.name}</span>}
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">{offer.title}</h3>
+              {offer.plan && <span className="text-xs text-violet-600 font-medium">خطة {offer.plan.name}</span>}
             </div>
           </div>
-          {offer.description && <p className="text-white/90 text-sm mb-4 leading-relaxed group-hover:text-white/55 transition-colors">{offer.description}</p>}
+          {offer.description && <p className="text-slate-600 text-sm mb-4 leading-relaxed group-hover:text-slate-700 transition-colors">{offer.description}</p>}
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-black text-emerald-500">
+            <span className="text-4xl font-black text-emerald-600">
               {offer.discountType === 'percentage' ? `%${offer.discountValue}` : `${offer.discountValue}`}
             </span>
-            <span className="text-white/90 text-sm">{offer.discountType === 'percentage' ? 'خصم' : 'ر.س خصم'}</span>
+            <span className="text-slate-600 text-sm font-medium">{offer.discountType === 'percentage' ? 'خصم' : 'ر.س خصم'}</span>
           </div>
         </div>
       ))}
@@ -3714,10 +3720,6 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
             {/* Trust indicators */}
             <div className="flex items-center justify-center gap-6 mt-12 animate-slide-up" style={{ animationDelay: '400ms' }}>
-              <div className="flex items-center gap-2 text-white/60 text-sm">
-                <CheckCircle2 size={16} className="text-violet-400" />
-                <span>لا حاجة لبطاقة ائتمان</span>
-              </div>
               <div className="flex items-center gap-2 text-white/60 text-sm">
                 <CheckCircle2 size={16} className="text-violet-400" />
                 <span>إعداد في ٥ دقائق</span>
@@ -3997,7 +3999,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                 جاهز لبدء <span className="gradient-text">رحلة التميز؟</span>
               </h2>
               <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-                انضم لآلاف العيادات التي تثق بنظام عيادة. ابدأ مجاناً بدون بطاقة ائتمان.
+                انضم لآلاف العيادات التي تثق بنظام عيادة. ابدأ مجاناً الآن.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button onClick={onRegister}

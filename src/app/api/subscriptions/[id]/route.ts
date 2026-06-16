@@ -22,6 +22,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         price: data.price,
         yearlyPrice: data.yearlyPrice,
         features: data.features ? (typeof data.features === 'string' ? data.features : JSON.stringify(data.features)) : undefined,
+        modules: data.modules ? (typeof data.modules === 'string' ? data.modules : JSON.stringify(data.modules)) : undefined,
         maxPatients: data.maxPatients,
         maxDoctors: data.maxDoctors,
         maxClinics: data.maxClinics,

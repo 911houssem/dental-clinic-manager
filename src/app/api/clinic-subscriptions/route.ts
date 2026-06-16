@@ -53,6 +53,10 @@ export async function POST(request: NextRequest) {
 
     // If expired/cancelled, update it; otherwise create new
     let subscription;
+    const allowedModulesValue = data.allowedModules
+      ? (typeof data.allowedModules === 'string' ? data.allowedModules : JSON.stringify(data.allowedModules))
+      : null;
+
     if (existing) {
       subscription = await db.clinicSubscription.update({
         where: { id: existing.id },
@@ -62,6 +66,7 @@ export async function POST(request: NextRequest) {
           startDate: new Date(),
           endDate: data.endDate ? new Date(data.endDate) : null,
           trialEndDate: data.trialEndDate ? new Date(data.trialEndDate) : null,
+          allowedModules: allowedModulesValue,
           grantedBy: authResult.user.id,
           notes: data.notes,
           autoRenew: data.autoRenew ?? false,
@@ -77,6 +82,7 @@ export async function POST(request: NextRequest) {
           startDate: new Date(),
           endDate: data.endDate ? new Date(data.endDate) : null,
           trialEndDate: data.trialEndDate ? new Date(data.trialEndDate) : null,
+          allowedModules: allowedModulesValue,
           grantedBy: authResult.user.id,
           notes: data.notes,
           autoRenew: data.autoRenew ?? false,

@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
         price: data.price ?? 0,
         yearlyPrice: data.yearlyPrice,
         features: typeof data.features === 'string' ? data.features : JSON.stringify(data.features),
+        modules: data.modules ? (typeof data.modules === 'string' ? data.modules : JSON.stringify(data.modules)) : null,
         maxPatients: data.maxPatients,
         maxDoctors: data.maxDoctors,
         maxClinics: data.maxClinics,

@@ -124,6 +124,38 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // ============== FREE 1-HOUR TRIAL SUBSCRIPTION ==============
+    // Find the "Professional" plan (or first available plan) for the trial
+    const trialPlan = await db.subscriptionPlan.findFirst({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    });
+
+    if (trialPlan) {
+      const now = new Date();
+      const trialEnd = new Date(now.getTime() + 60 * 60 * 1000); // 1 hour from now
+
+      // Default to all modules in the plan, but allow upgrade later
+      const defaultModules = trialPlan.modules
+        ? trialPlan.modules
+        : JSON.stringify(['appointments', 'patients', 'invoices', 'inventory', 'reports', 'records']);
+
+      await db.clinicSubscription.create({
+        data: {
+          clinicId: clinic.id,
+          planId: trialPlan.id,
+          status: 'trial',
+          startDate: now,
+          endDate: trialEnd,
+          trialEndDate: trialEnd,
+          allowedModules: defaultModules,
+          grantedBy: null,
+          notes: 'اشتراك تجريبي مجاني لمدة ساعة - يُنشأ تلقائياً عند التسجيل',
+          autoRenew: false,
+        },
+      });
+    }
+
     return NextResponse.json({
       message: 'تم إنشاء الحساب والعيادة بنجاح',
       username: sanitizedUsername,
