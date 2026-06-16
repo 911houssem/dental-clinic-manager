@@ -1,8 +1,8 @@
 ---
 title: Dental Clinic Manager
 emoji: 🦷
-colorFrom: violet
-colorTo: emerald
+colorFrom: purple
+colorTo: green
 sdk: docker
 pinned: false
 ---
