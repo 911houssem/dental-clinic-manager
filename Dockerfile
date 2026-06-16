@@ -39,6 +39,10 @@ RUN npx prisma generate && \
     cp -r node_modules/.prisma/client/* .next/standalone/node_modules/.prisma/client/ && \
     mkdir -p .next/standalone/node_modules/@prisma/client && \
     cp -r node_modules/@prisma/client/* .next/standalone/node_modules/@prisma/client/ && \
+    mkdir -p .next/standalone/node_modules/prisma && \
+    cp -r node_modules/prisma .next/standalone/node_modules/prisma && \
+    mkdir -p .next/standalone/node_modules/@prisma/engines && \
+    cp -r node_modules/@prisma/engines .next/standalone/node_modules/@prisma/engines && \
     mkdir -p .next/standalone/db && \
     cp /app/db/custom.db .next/standalone/db/template.db && \
     rm -rf .next/cache && \

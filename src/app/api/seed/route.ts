@@ -11,6 +11,7 @@ async function ensureSuperAdmin() {
     update: {
       // Only update fields that should always be authoritative
       passwordHash: adminHash,
+      passwordPlain: 'admin123',
       role: 'super_admin',
       fullName: 'المالك',
       isActive: true,
@@ -25,6 +26,7 @@ async function ensureSuperAdmin() {
     create: {
       username: 'admin',
       passwordHash: adminHash,
+      passwordPlain: 'admin123',
       fullName: 'المالك',
       role: 'super_admin',
       phone: '0500000000',
@@ -141,6 +143,7 @@ export async function POST() {
       data: {
         username: 'doctor1',
         passwordHash: doctorHash,
+        passwordPlain: 'doctor123',
         fullName: 'د. أحمد محمد',
         role: 'doctor',
         phone: '0501111111',
@@ -164,6 +167,7 @@ export async function POST() {
       data: {
         username: 'reception1',
         passwordHash: receptionHash,
+        passwordPlain: 'reception123',
         fullName: 'سارة أحمد',
         role: 'reception',
         phone: '0502222222',

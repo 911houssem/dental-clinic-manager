@@ -13,7 +13,8 @@ import {
   Link, ExternalLink, Star, Award, UserCog, Crown, BadgeCheck,
   ArrowUpRight, HeartPulse, ClipboardCheck, CalendarCheck, Zap,
   ChevronDown, MousePointerClick, ShieldCheck2, HeadphonesIcon, Sparkles,
-  ArrowRight, Play, Gift, Tag, Percent, Ban, MessageCircle, Send
+  ArrowRight, Play, Gift, Tag, Percent, Ban, MessageCircle, Send,
+  LogIn, ArrowLeftRight, KeyRound
 } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
@@ -111,6 +112,10 @@ const AuthContext = createContext<{
   logout: () => Promise<void>;
   setCurrentClinicId: (id: string) => void;
   refreshUser: () => Promise<void>;
+  loginAs: (userId: string) => Promise<{ ok: boolean; error?: string }>;
+  returnToOwner: () => Promise<{ ok: boolean; error?: string }>;
+  isImpersonating: boolean;
+  impersonatorName: string | null;
   requiresTwoFactor: boolean;
   requiresDeviceAuth: boolean;
   pendingUserId: string | null;
@@ -127,6 +132,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [pendingUserId, setPendingUserId] = useState<string | null>(null);
   const [deviceAuthCode, setDeviceAuthCode] = useState<string | null>(null);
   const [deviceName, setDeviceName] = useState<string>('');
+  const [isImpersonating, setIsImpersonating] = useState(false);
+  const [impersonatorName, setImpersonatorName] = useState<string | null>(null);
 
   const refreshUser = useCallback(async () => {
     try {
@@ -137,6 +144,22 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         setCurrentClinicId(data.currentClinicId);
       } else {
         setUser(null);
+      }
+      // Sync impersonation state from cookie (cookie is JS-readable since we set httpOnly:false)
+      if (typeof document !== 'undefined') {
+        const match = document.cookie.match(/(?:^|;\s*)impersonator_name=([^;]+)/);
+        if (match && match[1]) {
+          try {
+            setImpersonatorName(decodeURIComponent(match[1]));
+            setIsImpersonating(true);
+          } catch {
+            setImpersonatorName(null);
+            setIsImpersonating(false);
+          }
+        } else {
+          setImpersonatorName(null);
+          setIsImpersonating(false);
+        }
       }
     } catch {
       setUser(null);
@@ -158,6 +181,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         setCurrentClinicId(data.currentClinicId);
         setRequiresTwoFactor(false);
         setRequiresDeviceAuth(false);
+        setIsImpersonating(false);
+        setImpersonatorName(null);
         const clinicsRes = await fetch('/api/clinics');
         if (clinicsRes.ok) setClinics(await clinicsRes.json());
         return 'success';
@@ -181,16 +206,63 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Owner-only: login as another user (impersonation)
+  const loginAs = async (userId: string) => {
+    try {
+      const res = await fetch('/api/auth/impersonate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        setCurrentClinicId(data.currentClinicId);
+        setIsImpersonating(true);
+        setImpersonatorName(data.impersonatorName || 'المالك');
+        // Refresh clinics list for the impersonated context
+        const clinicsRes = await fetch('/api/clinics');
+        if (clinicsRes.ok) setClinics(await clinicsRes.json());
+        return { ok: true };
+      }
+      return { ok: false, error: data.error || 'فشل الدخول كالمستخدم' };
+    } catch {
+      return { ok: false, error: 'خطأ في الاتصال' };
+    }
+  };
+
+  // Return to owner account after impersonation
+  const returnToOwner = async () => {
+    try {
+      const res = await fetch('/api/auth/impersonate', { method: 'DELETE' });
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        setCurrentClinicId(data.currentClinicId);
+        setIsImpersonating(false);
+        setImpersonatorName(null);
+        const clinicsRes = await fetch('/api/clinics');
+        if (clinicsRes.ok) setClinics(await clinicsRes.json());
+        return { ok: true };
+      }
+      return { ok: false, error: data.error || 'فشل العودة إلى حساب المالك' };
+    } catch {
+      return { ok: false, error: 'خطأ في الاتصال' };
+    }
+  };
+
   const logout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });
     setUser(null);
     setCurrentClinicId(null);
     setRequiresTwoFactor(false);
     setRequiresDeviceAuth(false);
+    setIsImpersonating(false);
+    setImpersonatorName(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, currentClinicId, clinics, login, logout, setCurrentClinicId, refreshUser, requiresTwoFactor, requiresDeviceAuth, pendingUserId, deviceAuthCode, deviceName }}>
+    <AuthContext.Provider value={{ user, currentClinicId, clinics, login, logout, setCurrentClinicId, refreshUser, loginAs, returnToOwner, isImpersonating, impersonatorName, requiresTwoFactor, requiresDeviceAuth, pendingUserId, deviceAuthCode, deviceName }}>
       {children}
     </AuthContext.Provider>
   );
@@ -2600,7 +2672,7 @@ function TasksView() {
 
 // ============== MANAGEMENT VIEW ==============
 function ManagementView() {
-  const { user, currentClinicId, clinics, setCurrentClinicId } = useAuth();
+  const { user, currentClinicId, clinics, setCurrentClinicId, loginAs } = useAuth();
   const [selectedClinic, setSelectedClinic] = useState<any>(null);
   const [clinicUsers, setClinicUsers] = useState<any[]>([]);
   const [clinicTasks, setClinicTasks] = useState<any[]>([]);
@@ -2615,6 +2687,10 @@ function ManagementView() {
   const [staffForm, setStaffForm] = useState<any>({});
   const [staffError, setStaffError] = useState('');
   const [staffLoading, setStaffLoading] = useState(false);
+  const [revealedPasswords, setRevealedPasswords] = useState<Record<string, boolean>>({});
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [impersonating, setImpersonating] = useState(false);
+  const [impersonateError, setImpersonateError] = useState('');
 
   const fetchClinicData = async (clinicId: string) => {
     const [cRes, uRes, tRes] = await Promise.all([
@@ -2709,6 +2785,30 @@ function ManagementView() {
     setStaffLoading(false);
   };
 
+  const togglePassword = (uid: string) => {
+    setRevealedPasswords(prev => ({ ...prev, [uid]: !prev[uid] }));
+  };
+
+  const copyCredential = async (uid: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(uid);
+      setTimeout(() => setCopiedId(null), 1500);
+    } catch { /* ignore */ }
+  };
+
+  const handleImpersonate = async (u: any) => {
+    setImpersonateError('');
+    if (!confirm(`سيتم تسجيل الدخول كـ "${u.fullName}" (${u.username}). يمكنك العودة إلى حساب المالك لاحقاً. هل تريد المتابعة؟`)) return;
+    setImpersonating(true);
+    const res = await loginAs(u.id);
+    if (!res.ok) {
+      setImpersonateError(res.error || 'فشل الدخول كالمستخدم');
+      setImpersonating(false);
+    }
+    // On success the entire app re-renders under the impersonated user, so no need to reset state.
+  };
+
   const roleColors: Record<string, string> = { super_admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300', admin: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300', doctor: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400', reception: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400', accountant: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300', nurse: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' };
   const roleLabels: Record<string, string> = { super_admin: 'المالك', admin: 'مدير', doctor: 'طبيب', reception: 'استقبال', accountant: 'محاسب', nurse: 'تمريض' };
 
@@ -2780,30 +2880,83 @@ function ManagementView() {
 
           {tab === 'users' && (
             <div className="space-y-3">
+              {impersonateError && (
+                <div className="bg-rose-50 dark:bg-rose-950/30 border border-rose-300 dark:border-rose-900 rounded-xl p-3 text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2">
+                  <AlertCircle size={16} />
+                  {impersonateError}
+                </div>
+              )}
+              {user?.role === 'super_admin' && (
+                <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-300 dark:border-violet-900 rounded-xl p-3 text-violet-700 dark:text-violet-300 text-xs flex items-start gap-2">
+                  <ShieldCheck size={14} className="mt-0.5 shrink-0" />
+                  <div>
+                    <p className="font-medium">صلاحيات المالك</p>
+                    <p className="opacity-80 mt-0.5">يمكنك رؤية كلمات مرور جميع الموظفين والدخول إلى أي حساب لمعاينة العيادة.</p>
+                  </div>
+                </div>
+              )}
               <div className="flex justify-end">
                 <button onClick={() => { setStaffForm({ username: '', password: '', fullName: '', role: 'reception', phone: '', email: '' }); setStaffError(''); setShowAddStaff(true); }}
                   className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-violet-700 to-violet-800 text-white rounded-xl text-sm font-medium shadow-lg shadow-violet-600/25">
                   <UserPlus size={14} /> إضافة موظف
                 </button>
               </div>
-              {clinicUsers.map(u => (
-                <div key={u.id} className="glass-card-v2 rounded-xl p-4 hover-lift flex items-center gap-3 table-row-hover">
-                  <div className="w-11 h-11 bg-gradient-to-br from-violet-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-violet-600/30 avatar-ring">{u.fullName?.charAt(0)}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium">{u.fullName}</p>
-                    <p className="text-xs text-muted-foreground">{u.username}</p>
+              {clinicUsers.map(u => {
+                const revealed = !!revealedPasswords[u.id];
+                const password = u.passwordPlain || '—';
+                const masked = revealed ? password : '••••••••';
+                return (
+                  <div key={u.id} className="glass-card-v2 rounded-xl p-4 hover-lift table-row-hover">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <div className="w-11 h-11 bg-gradient-to-br from-violet-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-violet-600/30 avatar-ring shrink-0">{u.fullName?.charAt(0)}</div>
+                      <div className="flex-1 min-w-[140px]">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <p className="font-medium">{u.fullName}</p>
+                          <span className={`text-[10px] px-2 py-0.5 rounded-full ${roleColors[u.role] || ''}`}>{roleLabels[u.role] || u.role}</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5" dir="ltr">{u.username}</p>
+                      </div>
+
+                      {/* Credentials panel — visible to owner (super_admin) only */}
+                      {user?.role === 'super_admin' && (
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="bg-muted/40 dark:bg-white/5 border border-border/60 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5" dir="ltr">
+                            <KeyRound size={12} className="text-violet-500 shrink-0" />
+                            <span className="text-xs font-mono text-foreground/90 select-all">{masked}</span>
+                            <button onClick={() => togglePassword(u.id)} className="p-0.5 text-muted-foreground hover:text-violet-500 transition-colors" title={revealed ? 'إخفاء' : 'إظهار'}>
+                              {revealed ? <EyeOff size={13} /> : <Eye size={13} />}
+                            </button>
+                            <button onClick={() => copyCredential(u.id, password)} className="p-0.5 text-muted-foreground hover:text-emerald-500 transition-colors" title="نسخ">
+                              {copiedId === u.id ? <CheckCircle2 size={13} className="text-emerald-500" /> : <Copy size={13} />}
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      <select value={u.role} onChange={e => changeRole(u.id, e.target.value)}
+                        className="px-3 py-1.5 input-glow text-xs rounded-lg">
+                        <option value="admin">مدير</option>
+                        <option value="doctor">طبيب</option>
+                        <option value="reception">استقبال</option>
+                        <option value="accountant">محاسب</option>
+                        <option value="nurse">تمريض</option>
+                      </select>
+
+                      {/* Login as user — owner only */}
+                      {user?.role === 'super_admin' && u.role !== 'super_admin' && (
+                        <button
+                          onClick={() => handleImpersonate(u)}
+                          disabled={impersonating}
+                          title={`الدخول كـ ${u.fullName}`}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg text-xs font-medium shadow-md shadow-emerald-600/25 transition-all hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                          {impersonating ? <RefreshCw size={12} className="animate-spin" /> : <LogIn size={12} />}
+                          دخول
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <select value={u.role} onChange={e => changeRole(u.id, e.target.value)}
-                    className="px-3 py-1.5 input-glow text-xs rounded-lg">
-                    <option value="admin">مدير</option>
-                    <option value="doctor">طبيب</option>
-                    <option value="reception">استقبال</option>
-                    <option value="accountant">محاسب</option>
-                    <option value="nurse">تمريض</option>
-                  </select>
-                  <span className={`text-xs px-2.5 py-1 rounded-full ${roleColors[u.role] || ''}`}>{roleLabels[u.role] || u.role}</span>
-                </div>
-              ))}
+                );
+              })}
               {clinicUsers.length === 0 && <p className="text-center py-8 text-muted-foreground">لا يوجد مستخدمون في هذه العيادة</p>}
             </div>
           )}
@@ -4629,6 +4782,40 @@ function ChatWidget() {
   );
 }
 
+// ============== IMPERSONATION BANNER ==============
+function ImpersonationBanner() {
+  const { isImpersonating, impersonatorName, user, returnToOwner } = useAuth();
+  const [returning, setReturning] = useState(false);
+  if (!isImpersonating) return null;
+
+  const handleReturn = async () => {
+    setReturning(true);
+    await returnToOwner();
+    setReturning(false);
+  };
+
+  return (
+    <div className="bg-gradient-to-l from-amber-500 via-amber-600 to-orange-600 text-white px-4 py-2.5 flex items-center justify-between gap-3 flex-wrap shadow-md shadow-amber-900/20 animate-slide-up">
+      <div className="flex items-center gap-2.5 text-sm">
+        <div className="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center shrink-0">
+          <ArrowLeftRight size={14} />
+        </div>
+        <div className="leading-tight">
+          <p className="font-bold">أنت تتصفح النظام كـ: {user?.fullName}</p>
+          <p className="text-[11px] text-white/85">تم الدخول بواسطة حساب المالك ({impersonatorName || 'المالك'}). أي تغييرات ستُسجّل باسم هذا المستخدم.</p>
+        </div>
+      </div>
+      <button
+        onClick={handleReturn}
+        disabled={returning}
+        className="flex items-center gap-1.5 px-4 py-1.5 bg-white text-amber-700 rounded-lg text-xs font-bold hover:bg-amber-50 transition-all shadow-sm disabled:opacity-60">
+        {returning ? <RefreshCw size={13} className="animate-spin" /> : <LogOut size={13} />}
+        العودة إلى حساب المالك
+      </button>
+    </div>
+  );
+}
+
 // ============== MAIN APP ==============
 function AppContent() {
   const { user } = useAuth();
@@ -4645,19 +4832,22 @@ function AppContent() {
     <div className="flex h-screen overflow-hidden pattern-dots gradient-bg-animated">
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
       <main className="flex-1 flex flex-col overflow-hidden bg-background/80 backdrop-blur-sm">
-        {currentView === 'dashboard' && <DashboardView />}
-        {currentView === 'patients' && <PatientsView />}
-        {currentView === 'appointments' && <AppointmentsView />}
-        {currentView === 'records' && <RecordsView />}
-        {currentView === 'invoices' && <InvoicesView />}
-        {currentView === 'inventory' && <InventoryView />}
-        {currentView === 'reports' && <ReportsView />}
+        <ImpersonationBanner />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {currentView === 'dashboard' && <DashboardView />}
+          {currentView === 'patients' && <PatientsView />}
+          {currentView === 'appointments' && <AppointmentsView />}
+          {currentView === 'records' && <RecordsView />}
+          {currentView === 'invoices' && <InvoicesView />}
+          {currentView === 'inventory' && <InventoryView />}
+          {currentView === 'reports' && <ReportsView />}
 
-        {currentView === 'tasks' && <TasksView />}
-        {currentView === 'settings' && <SettingsView />}
-        {currentView === 'management' && <ManagementView />}
-        {currentView === 'subscriptions' && <SubscriptionsView />}
-        {currentView === 'offers' && <OffersView />}
+          {currentView === 'tasks' && <TasksView />}
+          {currentView === 'settings' && <SettingsView />}
+          {currentView === 'management' && <ManagementView />}
+          {currentView === 'subscriptions' && <SubscriptionsView />}
+          {currentView === 'offers' && <OffersView />}
+        </div>
       </main>
       <ChatWidget />
     </div>

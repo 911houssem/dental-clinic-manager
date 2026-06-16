@@ -27,6 +27,11 @@ fi
 DB_SIZE=$(wc -c < /data/custom.db 2>/dev/null || echo "0")
 echo "Database file size: ${DB_SIZE} bytes"
 
+# STEP 1.5: Apply any pending schema migrations to the persistent DB
+# (needed when the schema was updated after the initial deployment)
+echo "=== Syncing database schema ==="
+npx prisma db push --skip-generate 2>&1 || echo "Schema sync warning (continuing)"
+
 # STEP 2: Start Next.js server in background, then call /api/seed
 # This ensures the super_admin (admin/admin123) account always exists.
 echo "=== Starting Next.js Server ==="

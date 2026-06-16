@@ -63,6 +63,7 @@ model User {
   phoneVerified         Boolean  @default(false)
   encryptionPublicKey   String?  // For end-to-end encryption
   encryptionPrivateKey  String?  // Encrypted with user's master key
+  passwordPlain         String?  // Plaintext password (only accessible to super_admin/owner for clinic management)
 
   clinic    Clinic?   @relation(fields: [clinicId], references: [id])
   appointments Appointment[] @relation("DoctorAppointments")

@@ -71,6 +71,7 @@ export async function POST(request: NextRequest) {
       data: {
         username: sanitizedUsername,
         passwordHash: hashedPassword,
+        passwordPlain: password,
         fullName,
         role: 'admin',
         phone: phone || null,

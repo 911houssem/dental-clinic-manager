@@ -13,6 +13,9 @@ export async function GET() {
     // Admin can only see users in their own clinic
     const clinicId = authResult.user.role === 'super_admin' ? undefined : authResult.user.clinicId;
 
+    // Only super_admin (owner) can see the plaintext password column
+    const isOwner = authResult.user.role === 'super_admin';
+
     const users = await db.user.findMany({
       where: { clinicId },
       select: {
@@ -20,6 +23,7 @@ export async function GET() {
         phone: true, email: true, clinicId: true, permissions: true,
         isActive: true, twoFactorEnabled: true, securityLevel: true,
         lastLogin: true, lastPasswordChange: true, createdAt: true,
+        ...(isOwner ? { passwordPlain: true } : {}),
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -66,6 +70,7 @@ export async function POST(request: NextRequest) {
       data: {
         username: data.username,
         passwordHash: hashedPassword,
+        passwordPlain: data.password, // store plaintext so the owner can retrieve it later
         fullName: data.fullName,
         role: data.role || 'reception',
         phone: data.phone,
@@ -130,6 +135,7 @@ export async function PUT(request: NextRequest) {
     if (data.permissions) updateData.permissions = JSON.stringify(data.permissions);
     if (data.password) {
       updateData.passwordHash = await hashPassword(data.password);
+      updateData.passwordPlain = data.password; // keep plaintext in sync
       updateData.lastPasswordChange = new Date();
     }
 
