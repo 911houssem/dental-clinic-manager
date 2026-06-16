@@ -416,6 +416,7 @@ model SubscriptionPlan {
   price       Float    @default(0) // monthly price
   yearlyPrice Float?   // yearly price (discounted)
   features    String   // JSON array of feature strings
+  modules     String   @default("[]") // JSON array of module IDs allowed by this plan e.g. ["dashboard","patients","invoices"]
   maxPatients Int?     // max patients allowed
   maxDoctors  Int?     // max doctors allowed
   maxClinics  Int?     // max clinics allowed
@@ -434,6 +435,7 @@ model ClinicSubscription {
   clinicId       String   @unique
   planId         String
   status         String   @default("active") // active, expired, cancelled, trial
+  modules        String   @default("[]") // JSON array of module IDs granted e.g. ["dashboard","patients","invoices"]
   startDate      DateTime @default(now())
   endDate        DateTime?
   trialEndDate   DateTime?
