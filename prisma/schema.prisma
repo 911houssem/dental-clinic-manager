@@ -1,0 +1,489 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============== CORE BUSINESS MODELS ==============
+
+model Clinic {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String?
+  address      String?
+  taxNumber    String?
+  currency     String   @default("SAR")
+  notes        String?
+  paymentMode  String   @default("partial")
+  slotDuration Int      @default(15)
+  isActive     Boolean  @default(true)
+  bookingSlug  String?  @unique  // رابط الحجز العام
+  bookingEnabled Boolean @default(false) // تفعيل الحجز العام
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  users       User[]
+  patients    Patient[]
+  appointments Appointment[]
+  invoices    Invoice[]
+  inventory   InventoryItem[]
+  tasks       Task[]
+  subscription ClinicSubscription?
+}
+
+model User {
+  id                    String   @id @default(cuid())
+  username              String   @unique
+  passwordHash          String
+  fullName              String
+  role                  String   @default("reception")
+  phone                 String?
+  email                 String?  @unique
+  clinicId              String?
+  permissions           String?
+  isActive              Boolean  @default(true)
+  passwordChangeRequired Boolean @default(false)
+  lastLogin             DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Security fields
+  twoFactorEnabled      Boolean  @default(false)
+  twoFactorSecret       String?
+  accountLocked         Boolean  @default(false)
+  lockoutUntil          DateTime?
+  failedLoginAttempts   Int      @default(0)
+  securityLevel         String   @default("standard") // standard, elevated, maximum
+  lastPasswordChange    DateTime?
+  passwordHistory       String?  // JSON array of previous password hashes
+  emailVerified         Boolean  @default(false)
+  phoneVerified         Boolean  @default(false)
+  encryptionPublicKey   String?  // For end-to-end encryption
+  encryptionPrivateKey  String?  // Encrypted with user's master key
+
+  clinic    Clinic?   @relation(fields: [clinicId], references: [id])
+  appointments Appointment[] @relation("DoctorAppointments")
+  medicalRecords MedicalRecord[] @relation("DoctorRecords")
+  createdInvoices Invoice[] @relation("InvoiceCreator")
+  auditLogs AuditLog[]
+  sessions  Session[]
+  loginAttempts LoginAttempt[]
+  securityLogs SecurityLog[]
+  deviceAuthorizations DeviceAuthorization[]
+  passwordResets PasswordReset[]
+  trustedDevices TrustedDevice[]
+  apiKeys  ApiKey[]
+  assignedTasks Task[] @relation("TaskAssignee")
+  createdTasks   Task[] @relation("TaskCreator")
+  sentMessages     ChatMessage[] @relation("ChatSent")
+  receivedMessages ChatMessage[] @relation("ChatReceived")
+}
+
+model Patient {
+  id                  String   @id @default(cuid())
+  fileNumber          String   @unique
+  fullName            String
+  phone               String?
+  phone2              String?
+  email               String?
+  gender              String?
+  birthDate           String?
+  age                 String?
+  address             String?
+  bloodType           String?
+  maritalStatus       String?
+  occupation          String?
+  nationalId          String?  // Encrypted
+  emergencyContact    String?
+  emergencyPhone      String?
+  insuranceCompanyId  String?
+  insuranceNumber     String?
+  insuranceCoverage   String?
+  allergies           String?
+  chronicDiseases     String?
+  currentMedications  String?
+  clinicId            String?
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  clinic     Clinic?      @relation(fields: [clinicId], references: [id])
+  appointments Appointment[]
+  medicalRecords MedicalRecord[]
+  invoices   Invoice[]
+}
+
+model Appointment {
+  id         String   @id @default(cuid())
+  patientId  String
+  doctorId   String
+  clinicId   String?
+  title      String?
+  startTime  String
+  endTime    String?
+  type       String   @default("regular")
+  status     String   @default("scheduled")
+  notes      String?
+  createdBy  String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  patient    Patient   @relation(fields: [patientId], references: [id])
+  doctor     User      @relation("DoctorAppointments", fields: [doctorId], references: [id])
+  clinic     Clinic?   @relation(fields: [clinicId], references: [id])
+}
+
+model MedicalRecord {
+  id                      String   @id @default(cuid())
+  patientId               String
+  doctorId                String
+  chiefComplaint          String?
+  historyOfPresentIllness String?
+  diagnosis               String?
+  diagnosisCode           String?
+  treatmentPlan           String?
+  followUpDate            String?
+  notes                   String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  patient Patient @relation(fields: [patientId], references: [id])
+  doctor  User    @relation("DoctorRecords", fields: [doctorId], references: [id])
+}
+
+model Invoice {
+  id              String   @id @default(cuid())
+  invoiceNumber   String   @unique
+  patientId       String
+  clinicId        String?
+  subtotal        Float    @default(0)
+  insuranceDiscount Float  @default(0)
+  taxPercentage   Float    @default(15)
+  taxAmount       Float    @default(0)
+  total           Float    @default(0)
+  paidAmount      Float    @default(0)
+  dueAmount       Float    @default(0)
+  status          String   @default("pending")
+  paymentMethod   String?
+  items           String?
+  notes           String?
+  createdBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  patient   Patient  @relation(fields: [patientId], references: [id])
+  clinic    Clinic?  @relation(fields: [clinicId], references: [id])
+  creator   User?    @relation("InvoiceCreator", fields: [createdBy], references: [id])
+}
+
+model InventoryItem {
+  id           String   @id @default(cuid())
+  itemName     String
+  itemType     String   @default("medication")
+  category     String?
+  quantity     Int      @default(0)
+  minQuantity  Int      @default(5)
+  unit         String?
+  purchasePrice Float   @default(0)
+  sellingPrice Float    @default(0)
+  batchNumber  String?
+  expiryDate   String?
+  supplier     String?
+  clinicId     String?
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  clinic Clinic? @relation(fields: [clinicId], references: [id])
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("pending") // pending, in_progress, completed, cancelled
+  priority    String   @default("medium")  // low, medium, high, urgent
+  rank        String   @default("general") // general, manager, doctor, nurse, reception
+  dueDate     String?
+  clinicId    String
+  assigneeId  String?  // المستخدم المكلف بالتاسك
+  createdById String   // من أنشأ التاسك
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  clinic    Clinic  @relation(fields: [clinicId], references: [id])
+  assignee  User?   @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  createdBy User    @relation("TaskCreator", fields: [createdById], references: [id])
+
+  @@index([clinicId])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  details   String?
+  userName  String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+// ============== SECURITY MODELS ==============
+
+model Session {
+  id            String   @id @default(cuid())
+  userId        String
+  tokenHash     String   @unique
+  refreshTokenHash String @unique
+  deviceInfo    String?  // JSON: browser, OS, device name
+  ipAddress     String?
+  userAgent     String?
+  isRevoked     Boolean  @default(false)
+  expiresAt     DateTime
+  createdAt     DateTime @default(now())
+  lastAccessedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([tokenHash])
+  @@index([refreshTokenHash])
+}
+
+model LoginAttempt {
+  id         String   @id @default(cuid())
+  userId     String?
+  username   String?
+  ipAddress  String?
+  userAgent  String?
+  success    Boolean
+  failureReason String?
+  country    String?
+  city       String?
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([ipAddress])
+  @@index([createdAt])
+}
+
+model SecurityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  action      String   // login, logout, 2fa_enabled, 2fa_disabled, password_change, session_revoked, device_authorized, device_revoked, account_locked, account_unlocked, suspicious_activity, permission_change, data_export, api_key_created, etc.
+  severity    String   @default("info") // info, warning, critical
+  details     String?
+  ipAddress   String?
+  userAgent   String?
+  deviceInfo  String?
+  location    String?
+  metadata    String?  // JSON for additional data
+  createdAt   DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([action])
+  @@index([severity])
+  @@index([createdAt])
+}
+
+model DeviceAuthorization {
+  id            String   @id @default(cuid())
+  userId        String
+  deviceFingerprint String?
+  deviceName    String?
+  deviceType    String?  // desktop, mobile, tablet
+  browser       String?
+  os            String?
+  ipAddress     String?
+  isAuthorized  Boolean  @default(false)
+  authorizationCode String? // Steam Guard-like code
+  authorizedAt  DateTime?
+  expiresAt     DateTime?
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([authorizationCode])
+}
+
+model TrustedDevice {
+  id            String   @id @default(cuid())
+  userId        String
+  deviceFingerprint String @unique
+  deviceName    String?
+  deviceType    String?
+  browser       String?
+  os            String?
+  ipAddress     String?
+  trustLevel    String   @default("trusted") // trusted, verified, restricted
+  lastUsedAt    DateTime @default(now())
+  expiresAt     DateTime?
+  createdAt     DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([deviceFingerprint])
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([token])
+  @@index([userId])
+}
+
+model ApiKey {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  keyHash     String   @unique
+  keyPrefix   String   // First 8 chars for identification
+  permissions String?  // JSON
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([keyHash])
+  @@index([userId])
+}
+
+model SecurityConfig {
+  id                          String   @id @default(cuid())
+  clinicId                    String?  @unique
+  maxLoginAttempts            Int      @default(5)
+  lockoutDurationMinutes      Int      @default(30)
+  passwordMinLength           Int      @default(8)
+  passwordRequireUppercase    Boolean  @default(true)
+  passwordRequireLowercase    Boolean  @default(true)
+  passwordRequireNumbers      Boolean  @default(true)
+  passwordRequireSpecial      Boolean  @default(true)
+  passwordExpiryDays          Int      @default(90)
+  sessionTimeoutMinutes       Int      @default(480) // 8 hours
+  refreshTokenExpiryDays      Int      @default(30)
+  requireTwoFactor            Boolean  @default(false) // Force 2FA for all users
+  requireTwoFactorForAdmins   Boolean  @default(true)  // Force 2FA for admins
+  trustedDeviceExpiryDays     Int      @default(30)
+  maxConcurrentSessions       Int      @default(5)
+  maxApiKeysPerUser           Int      @default(3)
+  ipWhitelist                 String?  // JSON array of allowed IPs
+  ipBlacklist                 String?  // JSON array of blocked IPs
+  allowedCountries            String?  // JSON array of country codes
+  dataEncryptionEnabled       Boolean  @default(true)
+  auditLogRetentionDays       Int      @default(365)
+  suspiciousActivityAlerts    Boolean  @default(true)
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+}
+
+model DataEncryptionKey {
+  id          String   @id @default(cuid())
+  keyVersion  Int      @unique
+  encryptedKey String  // AES-256 key encrypted with master key
+  isActive     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  rotatedAt   DateTime?
+}
+
+// ============== SUBSCRIPTION MODELS ==============
+
+model SubscriptionPlan {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "أساسي", "احترافي", "ممتاز"
+  nameEn      String?  // English name
+  description String?
+  price       Float    @default(0) // monthly price
+  yearlyPrice Float?   // yearly price (discounted)
+  features    String   // JSON array of feature strings
+  maxPatients Int?     // max patients allowed
+  maxDoctors  Int?     // max doctors allowed
+  maxClinics  Int?     // max clinics allowed
+  isActive    Boolean  @default(true)
+  isPopular   Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subscriptions ClinicSubscription[]
+  offers        Offer[]
+}
+
+model ClinicSubscription {
+  id             String   @id @default(cuid())
+  clinicId       String   @unique
+  planId         String
+  status         String   @default("active") // active, expired, cancelled, trial
+  startDate      DateTime @default(now())
+  endDate        DateTime?
+  trialEndDate   DateTime?
+  grantedBy      String?  // userId of super_admin who granted it
+  notes          String?
+  autoRenew      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  clinic Clinic          @relation(fields: [clinicId], references: [id])
+  plan   SubscriptionPlan @relation(fields: [planId], references: [id])
+
+  @@index([clinicId])
+  @@index([status])
+}
+
+model Offer {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  discountType String  @default("percentage") // percentage, fixed
+  discountValue Float  @default(0)
+  planId      String?  // if tied to a specific plan
+  startDate   DateTime?
+  endDate     DateTime?
+  isActive    Boolean  @default(true)
+  showOnLanding Boolean @default(true) // whether to show on landing page
+  badge       String?  // e.g. "عرض خاص", "خصم 50%"
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  plan SubscriptionPlan? @relation(fields: [planId], references: [id])
+}
+
+// ============== CHAT MODEL ==============
+
+model ChatMessage {
+  id         String   @id @default(cuid())
+  senderId   String
+  receiverId String
+  message    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  sender   User @relation("ChatSent", fields: [senderId], references: [id])
+  receiver User @relation("ChatReceived", fields: [receiverId], references: [id])
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([isRead])
+  @@index([createdAt])
+}
