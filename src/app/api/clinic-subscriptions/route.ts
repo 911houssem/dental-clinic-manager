@@ -57,12 +57,16 @@ export async function POST(request: NextRequest) {
       ? (typeof data.allowedModules === 'string' ? data.allowedModules : JSON.stringify(data.allowedModules))
       : null;
 
+    // billingCycle: 'monthly' (default) or 'yearly'
+    const billingCycle = data.billingCycle === 'yearly' ? 'yearly' : 'monthly';
+
     if (existing) {
       subscription = await db.clinicSubscription.update({
         where: { id: existing.id },
         data: {
           planId: data.planId,
           status: 'active',
+          billingCycle,
           startDate: new Date(),
           endDate: data.endDate ? new Date(data.endDate) : null,
           trialEndDate: data.trialEndDate ? new Date(data.trialEndDate) : null,
@@ -79,6 +83,7 @@ export async function POST(request: NextRequest) {
           clinicId: data.clinicId,
           planId: data.planId,
           status: data.status || 'active',
+          billingCycle,
           startDate: new Date(),
           endDate: data.endDate ? new Date(data.endDate) : null,
           trialEndDate: data.trialEndDate ? new Date(data.trialEndDate) : null,

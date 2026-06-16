@@ -3175,7 +3175,7 @@ function SubscriptionsView() {
   const [showGrantForm, setShowGrantForm] = useState(false);
   const [editingPlan, setEditingPlan] = useState<SubscriptionPlan | null>(null);
   const [planForm, setPlanForm] = useState({ name: '', nameEn: '', description: '', price: 0, yearlyPrice: 0, features: '[]', maxPatients: 100, maxDoctors: 5, maxClinics: 1, isPopular: false, sortOrder: 0 });
-  const [grantForm, setGrantForm] = useState({ clinicId: '', planId: '', endDate: '', notes: '' });
+  const [grantForm, setGrantForm] = useState({ clinicId: '', planId: '', endDate: '', notes: '', billingCycle: 'monthly' as 'monthly' | 'yearly' });
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -3218,14 +3218,26 @@ function SubscriptionsView() {
   };
 
   const handleGrant = async () => {
+    // If endDate is empty, auto-calculate based on billing cycle:
+    // monthly → 1 month from now, yearly → 1 year from now
+    let endDate = grantForm.endDate;
+    if (!endDate) {
+      const d = new Date();
+      if (grantForm.billingCycle === 'yearly') {
+        d.setFullYear(d.getFullYear() + 1);
+      } else {
+        d.setMonth(d.getMonth() + 1);
+      }
+      endDate = d.toISOString().split('T')[0];
+    }
     const res = await fetch('/api/clinic-subscriptions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(grantForm),
+      body: JSON.stringify({ ...grantForm, endDate, autoRenew: true }),
     });
     if (res.ok) {
       setShowGrantForm(false);
-      setGrantForm({ clinicId: '', planId: '', endDate: '', notes: '' });
+      setGrantForm({ clinicId: '', planId: '', endDate: '', notes: '', billingCycle: 'monthly' });
       fetchData();
     } else {
       const d = await res.json();
@@ -3349,6 +3361,7 @@ function SubscriptionsView() {
                 <tr className="text-foreground/70">
                   <th className="text-right py-3 px-4 font-medium">العيادة</th>
                   <th className="text-right py-3 px-4 font-medium">الخطة</th>
+                  <th className="text-right py-3 px-4 font-medium">دورة الفوترة</th>
                   <th className="text-right py-3 px-4 font-medium">الحالة</th>
                   <th className="text-right py-3 px-4 font-medium">تاريخ البدء</th>
                   <th className="text-right py-3 px-4 font-medium">تاريخ الانتهاء</th>
@@ -3360,6 +3373,15 @@ function SubscriptionsView() {
                   <tr key={sub.id} className="border-t border-border/30 hover:bg-muted/20 transition-colors">
                     <td className="py-3 px-4 font-medium text-foreground">{sub.clinic?.name || 'غير معروف'}</td>
                     <td className="py-3 px-4 text-muted-foreground">{sub.plan?.name || 'غير معروف'}</td>
+                    <td className="py-3 px-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
+                        (sub as any).billingCycle === 'yearly'
+                          ? 'bg-violet-500/15 text-violet-300 border-violet-500/30'
+                          : 'bg-sky-500/15 text-sky-300 border-sky-500/30'
+                      }`}>
+                        {(sub as any).billingCycle === 'yearly' ? 'سنوي' : 'شهري'}
+                      </span>
+                    </td>
                     <td className="py-3 px-4"><span className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[sub.status] || statusColors.active}`}>{statusLabels[sub.status] || sub.status}</span></td>
                     <td className="py-3 px-4 text-muted-foreground">{new Date(sub.startDate).toLocaleDateString('ar-EG')}</td>
                     <td className="py-3 px-4 text-muted-foreground">{sub.endDate ? new Date(sub.endDate).toLocaleDateString('ar-EG') : 'غير محدد'}</td>
@@ -3436,7 +3458,54 @@ function SubscriptionsView() {
                   {plans.filter(p => p.isActive).map(p => <option key={p.id} value={p.id}>{p.name} - {p.price} ر.س/شهر</option>)}
                 </select>
               </div>
-              <div><label className="text-sm font-medium text-foreground/80 mb-1 block">تاريخ الانتهاء (اختياري)</label><input type="date" className="w-full px-3 py-2.5 input-glass text-sm text-foreground" value={grantForm.endDate} onChange={e => setGrantForm({ ...grantForm, endDate: e.target.value })} /></div>
+              <div>
+                <label className="text-sm font-medium text-foreground/80 mb-1 block">دورة الفوترة</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setGrantForm({ ...grantForm, billingCycle: 'monthly' })}
+                    className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all border ${
+                      grantForm.billingCycle === 'monthly'
+                        ? 'bg-sky-600/20 border-sky-500 text-sky-300'
+                        : 'bg-transparent border-border/50 text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    شهري
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGrantForm({ ...grantForm, billingCycle: 'yearly' })}
+                    className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all border ${
+                      grantForm.billingCycle === 'yearly'
+                        ? 'bg-violet-600/20 border-violet-500 text-violet-300'
+                        : 'bg-transparent border-border/50 text-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    سنوي
+                    {grantForm.planId && (() => {
+                      const p = plans.find(pl => pl.id === grantForm.planId);
+                      return p?.yearlyPrice ? <span className="block text-xs opacity-70 mt-0.5">{p.yearlyPrice} ر.س/سنة</span> : null;
+                    })()}
+                  </button>
+                </div>
+                {(() => {
+                  const p = plans.find(pl => pl.id === grantForm.planId);
+                  if (!p) return null;
+                  const monthlyCost = p.price;
+                  const yearlyCost = p.yearlyPrice || (p.price * 12);
+                  const saving = monthlyCost * 12 - yearlyCost;
+                  const savingPct = monthlyCost > 0 ? Math.round((saving / (monthlyCost * 12)) * 100) : 0;
+                  if (grantForm.billingCycle === 'yearly' && saving > 0) {
+                    return (
+                      <p className="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+                        <CheckCircle size={12} /> وفّر {saving} ر.س سنوياً ({savingPct}٪ خصم)
+                      </p>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
+              <div><label className="text-sm font-medium text-foreground/80 mb-1 block">تاريخ الانتهاء (اختياري — يُحسب تلقائياً إذا تُرك فارغاً)</label><input type="date" className="w-full px-3 py-2.5 input-glass text-sm text-foreground" value={grantForm.endDate} onChange={e => setGrantForm({ ...grantForm, endDate: e.target.value })} /></div>
               <div><label className="text-sm font-medium text-foreground/80 mb-1 block">ملاحظات</label><textarea className="w-full px-3 py-2.5 input-glass text-sm text-foreground" rows={2} value={grantForm.notes} onChange={e => setGrantForm({ ...grantForm, notes: e.target.value })} /></div>
             </div>
             <div className="flex gap-3 mt-6">

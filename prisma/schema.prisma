@@ -436,6 +436,7 @@ model ClinicSubscription {
   clinicId       String   @unique
   planId         String
   status         String   @default("active") // active, expired, cancelled, trial
+  billingCycle   String   @default("monthly") // monthly, yearly
   startDate      DateTime @default(now())
   endDate        DateTime?
   trialEndDate   DateTime?
