@@ -3876,7 +3876,6 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
         {plans.map((plan, idx) => {
           const features = parseFeatures(plan.features);
           const style = planStyles[idx % planStyles.length];
-          const price = billingCycle === 'yearly' && plan.yearlyPrice ? Math.round(plan.yearlyPrice / 12) : plan.price;
           const isPopular = plan.isPopular;
 
           return (
@@ -3914,19 +3913,18 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
                 <p className="text-slate-500 text-sm leading-relaxed mb-5 min-h-[2.5rem]">{plan.description}</p>
               )}
 
-              {/* Price */}
+              {/* Price — shows ONLY the selected cycle, no cross-reference */}
               <div className="mb-6 pb-6 border-b border-slate-100">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-5xl font-black text-slate-900">{price}</span>
-                  <span className="text-slate-500 font-medium">ر.س / شهرياً</span>
-                </div>
-                {billingCycle === 'yearly' && plan.yearlyPrice ? (
-                  <p className="text-xs text-emerald-600 font-semibold mt-1.5 flex items-center gap-1">
-                    <CheckCircle2 size={14} />
-                    {plan.yearlyPrice} ر.س سنوياً — وفّر {(plan.price * 12) - plan.yearlyPrice} ر.س
-                  </p>
+                {billingCycle === 'yearly' ? (
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-slate-900">{(plan.yearlyPrice || plan.price * 12).toLocaleString('ar-EG')}</span>
+                    <span className="text-slate-500 font-medium">ر.س / سنوياً</span>
+                  </div>
                 ) : (
-                  <p className="text-xs text-slate-400 mt-1.5">السعر الشهري — يمكنك التبديل للسنوي للوفّر</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-5xl font-black text-slate-900">{plan.price.toLocaleString('ar-EG')}</span>
+                    <span className="text-slate-500 font-medium">ر.س / شهرياً</span>
+                  </div>
                 )}
               </div>
 
