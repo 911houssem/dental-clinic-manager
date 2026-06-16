@@ -4161,24 +4161,26 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
         </div>
       </section>
 
-      {/* ============ OFFERS SECTION ============ */}
-      <section id="offers" className="relative py-20 lg:py-28 overflow-hidden bg-white">
+      {/* ============ PRICING SECTION (moved up — swapped with Offers) ============ */}
+      <section id="pricing" className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-emerald-100/50 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-100/50 rounded-full blur-[120px]" />
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-violet-100/60 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-medium mb-4">
-              <Gift size={14} />
-              عروض خاصة
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 border border-violet-200 text-violet-700 text-xs font-medium mb-4">
+              <Crown size={14} />
+              باقات الاشتراك
             </div>
             <h2 className="text-3xl lg:text-5xl font-black mb-4 text-slate-900">
-              عروض <span className="gradient-text">لا تفوّتها</span>
+              اختر الخطة <span className="gradient-text">المناسبة لعيادتك</span>
             </h2>
-            <p className="text-slate-500 text-lg">استفد من عروضنا المحدودة واحصل على أفضل الأسعار</p>
+            <p className="text-slate-500 text-lg leading-relaxed">
+              خطط مرنة تناسب جميع أحجام العيادات — من العيادة الواحدة إلى السلاسل الطبية المتعددة
+            </p>
           </div>
-          <LandingOffers />
+          <LandingPricing onRegister={onRegister} />
         </div>
       </section>
 
@@ -4296,26 +4298,24 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
         </div>
       </section>
 
-      {/* ============ PRICING SECTION ============ */}
-      <section id="pricing" className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
+      {/* ============ OFFERS SECTION (moved down — swapped with Pricing) ============ */}
+      <section id="offers" className="relative py-20 lg:py-28 overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-violet-100/60 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-emerald-100/50 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-100/50 rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 border border-violet-200 text-violet-700 text-xs font-medium mb-4">
-              <Crown size={14} />
-              باقات الاشتراك
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-medium mb-4">
+              <Gift size={14} />
+              عروض خاصة
             </div>
             <h2 className="text-3xl lg:text-5xl font-black mb-4 text-slate-900">
-              اختر الخطة <span className="gradient-text">المناسبة لعيادتك</span>
+              عروض <span className="gradient-text">لا تفوّتها</span>
             </h2>
-            <p className="text-slate-500 text-lg leading-relaxed">
-              خطط مرنة تناسب جميع أحجام العيادات — من العيادة الواحدة إلى السلاسل الطبية المتعددة
-            </p>
+            <p className="text-slate-500 text-lg">استفد من عروضنا المحدودة واحصل على أفضل الأسعار</p>
           </div>
-          <LandingPricing onRegister={onRegister} />
+          <LandingOffers />
         </div>
       </section>
 
