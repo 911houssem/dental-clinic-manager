@@ -61,6 +61,7 @@ interface SubscriptionPlan {
   price: number;
   yearlyPrice?: number;
   features: string; // JSON
+  modules?: string | null; // JSON array of module IDs
   maxPatients?: number;
   maxDoctors?: number;
   maxClinics?: number;
@@ -77,6 +78,7 @@ interface ClinicSubscription {
   startDate: string;
   endDate?: string;
   trialEndDate?: string;
+  allowedModules?: string | null;
   grantedBy?: string;
   notes?: string;
   autoRenew: boolean;
@@ -3540,6 +3542,166 @@ function LandingOffers() {
   );
 }
 
+// ============== LANDING PRICING COMPONENT ==============
+function LandingPricing({ onRegister }: { onRegister: () => void }) {
+  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
+
+  useEffect(() => {
+    fetch('/api/subscriptions')
+      .then(r => r.ok ? r.json() : [])
+      .then((d: SubscriptionPlan[]) => {
+        // Only show active plans, sorted by sortOrder
+        const active = d.filter(p => p.isActive).sort((a, b) => a.sortOrder - b.sortOrder);
+        setPlans(active);
+      })
+      .catch(() => {});
+  }, []);
+
+  const parseFeatures = (f: string): string[] => {
+    try { return JSON.parse(f); } catch { return []; }
+  };
+
+  // Hero gradient per plan based on sortOrder
+  const planStyles = [
+    { gradient: 'from-violet-500 to-violet-700', shadow: 'shadow-violet-600/30', ring: 'ring-violet-500/30', icon: <Star size={22} className="text-violet-600" /> },
+    { gradient: 'from-emerald-500 to-emerald-700', shadow: 'shadow-emerald-600/30', ring: 'ring-emerald-500/30', icon: <Crown size={22} className="text-emerald-600" /> },
+    { gradient: 'from-purple-500 to-purple-700', shadow: 'shadow-purple-600/30', ring: 'ring-purple-500/30', icon: <Sparkles size={22} className="text-purple-600" /> },
+  ];
+
+  if (plans.length === 0) return null;
+
+  return (
+    <div>
+      {/* Billing cycle toggle */}
+      <div className="flex justify-center mb-12">
+        <div className="inline-flex items-center bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
+          <button
+            onClick={() => setBillingCycle('monthly')}
+            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${billingCycle === 'monthly' ? 'bg-white text-violet-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            شهري
+          </button>
+          <button
+            onClick={() => setBillingCycle('yearly')}
+            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${billingCycle === 'yearly' ? 'bg-white text-emerald-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+          >
+            سنوي
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">وفّر ٢ شهر</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Plans grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+        {plans.map((plan, idx) => {
+          const features = parseFeatures(plan.features);
+          const style = planStyles[idx % planStyles.length];
+          const price = billingCycle === 'yearly' && plan.yearlyPrice ? Math.round(plan.yearlyPrice / 12) : plan.price;
+          const isPopular = plan.isPopular;
+
+          return (
+            <div
+              key={plan.id}
+              className={`relative bg-white rounded-3xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-2 ${
+                isPopular
+                  ? 'border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20 lg:scale-105'
+                  : 'border border-slate-200 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-slate-200/60'
+              }`}
+            >
+              {/* Popular badge */}
+              {isPopular && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full shadow-lg shadow-emerald-600/40 flex items-center gap-1.5">
+                  <Crown size={14} />
+                  الأكثر شيوعاً
+                </div>
+              )}
+
+              {/* Plan header */}
+              <div className="flex items-center gap-3 mb-5">
+                <div className={`w-12 h-12 bg-gradient-to-br ${style.gradient} bg-opacity-10 rounded-2xl flex items-center justify-center`}>
+                  <div className="bg-white/95 rounded-xl w-10 h-10 flex items-center justify-center shadow-sm">
+                    {style.icon}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900">{plan.name}</h3>
+                  {plan.nameEn && <span className="text-xs text-slate-400 font-medium">{plan.nameEn}</span>}
+                </div>
+              </div>
+
+              {/* Description */}
+              {plan.description && (
+                <p className="text-slate-500 text-sm leading-relaxed mb-5 min-h-[2.5rem]">{plan.description}</p>
+              )}
+
+              {/* Price */}
+              <div className="mb-6 pb-6 border-b border-slate-100">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-5xl font-black text-slate-900">{price}</span>
+                  <span className="text-slate-500 font-medium">ر.س / شهرياً</span>
+                </div>
+                {billingCycle === 'yearly' && plan.yearlyPrice ? (
+                  <p className="text-xs text-emerald-600 font-semibold mt-1.5 flex items-center gap-1">
+                    <CheckCircle2 size={14} />
+                    {plan.yearlyPrice} ر.س سنوياً — وفّر {(plan.price * 12) - plan.yearlyPrice} ر.س
+                  </p>
+                ) : (
+                  <p className="text-xs text-slate-400 mt-1.5">السعر الشهري — يمكنك التبديل للسنوي للوفّر</p>
+                )}
+              </div>
+
+              {/* Features list */}
+              <ul className="space-y-3 mb-7 min-h-[12rem]">
+                {features.map((feat, fi) => (
+                  <li key={fi} className="flex items-start gap-2.5 text-sm">
+                    <div className={`shrink-0 w-5 h-5 rounded-full bg-gradient-to-br ${style.gradient} flex items-center justify-center mt-0.5`}>
+                      <CheckCircle2 size={12} className="text-white" />
+                    </div>
+                    <span className="text-slate-600 leading-relaxed">{feat}</span>
+                  </li>
+                ))}
+                {/* Limits info */}
+                {(plan.maxPatients || plan.maxDoctors || plan.maxClinics) && (
+                  <li className="pt-3 mt-3 border-t border-slate-100 flex items-start gap-2.5 text-xs text-slate-400">
+                    <Award size={14} className="text-slate-400 mt-0.5 shrink-0" />
+                    <span>
+                      {plan.maxPatients && plan.maxPatients > 0 ? `حتى ${plan.maxPatients} مريض · ` : 'مرضى غير محدود · '}
+                      {plan.maxDoctors && plan.maxDoctors > 0 ? `${plan.maxDoctors} طبيب · ` : 'أطباء غير محدود · '}
+                      {plan.maxClinics && plan.maxClinics > 0 ? `${plan.maxClinics} عيادة` : 'عيادات غير محدودة'}
+                    </span>
+                  </li>
+                )}
+              </ul>
+
+              {/* CTA button */}
+              <button
+                onClick={onRegister}
+                className={`w-full py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] ${
+                  isPopular
+                    ? `bg-gradient-to-l ${style.gradient} text-white shadow-lg ${style.shadow} hover:shadow-xl`
+                    : 'bg-slate-100 text-slate-900 hover:bg-slate-900 hover:text-white'
+                }`}
+              >
+                ابدأ الآن
+                <ArrowLeft size={16} className="inline-block mr-2" />
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Helper note under plans */}
+      <div className="text-center mt-10">
+        <p className="text-sm text-slate-500 flex items-center justify-center gap-2">
+          <HeadphonesIcon size={16} className="text-violet-500" />
+          جميع الخطط تشمل تجربة مجانية لمدة ساعة — بدون أي التزام
+        </p>
+      </div>
+    </div>
+  );
+}
+
 // ============== LANDING PAGE ==============
 function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -3549,7 +3711,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-      const sections = ['hero', 'features', 'stats', 'how-it-works', 'testimonials', 'cta'];
+      const sections = ['hero', 'features', 'pricing', 'offers', 'stats', 'how-it-works', 'testimonials', 'cta'];
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el) {
@@ -3572,6 +3734,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
   const navLinks = [
     { id: 'features', label: 'المميزات' },
+    { id: 'pricing', label: 'الأسعار' },
     { id: 'stats', label: 'الإحصائيات' },
     { id: 'how-it-works', label: 'كيف يعمل' },
     { id: 'testimonials', label: 'آراء العملاء' },
@@ -3977,6 +4140,29 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ============ PRICING SECTION ============ */}
+      <section id="pricing" className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-violet-100/60 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px]" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 border border-violet-200 text-violet-700 text-xs font-medium mb-4">
+              <Crown size={14} />
+              باقات الاشتراك
+            </div>
+            <h2 className="text-3xl lg:text-5xl font-black mb-4 text-slate-900">
+              اختر الخطة <span className="gradient-text">المناسبة لعيادتك</span>
+            </h2>
+            <p className="text-slate-500 text-lg leading-relaxed">
+              خطط مرنة تناسب جميع أحجام العيادات — من العيادة الواحدة إلى السلاسل الطبية المتعددة
+            </p>
+          </div>
+          <LandingPricing onRegister={onRegister} />
         </div>
       </section>
 
