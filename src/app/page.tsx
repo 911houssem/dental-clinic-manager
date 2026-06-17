@@ -1238,7 +1238,7 @@ function DashboardView() {
         </div>
       </div>
 
-      {/* Stat Cards — Professional white cards with left border accent */}
+      {/* Stat Cards — Professional white cards with left border accent + glow */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {statCards.map((card, i) => {
           const Icon = card.icon;
@@ -1246,14 +1246,14 @@ function DashboardView() {
           const iconBgs = ['bg-teal-500/10 dark:bg-teal-950/35', 'bg-orange-800/15 dark:bg-orange-700/25', 'bg-orange-600/15 dark:bg-orange-600/35', 'bg-rose-600/15 dark:bg-rose-600/35'];
           const iconColors = ['text-teal-600 dark:text-teal-400', 'text-orange-600 dark:text-orange-400', 'text-orange-600 dark:text-orange-400', 'text-rose-600 dark:text-rose-400'];
           return (
-            <div key={i} className={`bg-card rounded-xl p-5 border border-border/50 border-r-4 ${borderColors[i]} shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}
+            <div key={i} data-animate className={`stat-card-glow bg-card rounded-xl p-5 border border-border/50 border-r-4 ${borderColors[i]} shadow-sm hover:shadow-lg hover:shadow-teal-500/10 transition-all duration-300 hover:-translate-y-1`}
               style={{ animationDelay: `${i * 100}ms` }}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-muted-foreground text-sm font-medium">{card.label}</p>
-                  <p className="text-2xl lg:text-[28px] font-black mt-1.5 metric-value text-foreground">{card.value}</p>
+                  <p className="text-2xl lg:text-[28px] font-black mt-1.5 metric-value text-foreground animate-count-up">{card.value}</p>
                 </div>
-                <div className={`w-12 h-12 ${iconBgs[i]} rounded-xl flex items-center justify-center`}>
+                <div className={`w-12 h-12 ${iconBgs[i]} rounded-xl flex items-center justify-center icon-container-gradient`}>
                   <Icon size={22} className={iconColors[i]} />
                 </div>
               </div>
@@ -1266,7 +1266,7 @@ function DashboardView() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart */}
         {data?.revenueChart && (
-          <div className="bg-card rounded-xl p-5 border border-border/50 shadow-sm">
+          <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold text-foreground text-base">إيرادات الأسبوع</h3>
               <div className="flex items-center gap-1.5 text-xs text-orange-600 dark:text-orange-400 font-medium">
@@ -1278,26 +1278,26 @@ function DashboardView() {
               <AreaChart data={data.revenueChart}>
                 <defs>
                   <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#7c3aed" stopOpacity={0.3} />
-                    <stop offset="50%" stopColor="#7c3aed" stopOpacity={0.1} />
-                    <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#0d9488" stopOpacity={0.4} />
+                    <stop offset="50%" stopColor="#0d9488" stopOpacity={0.15} />
+                    <stop offset="100%" stopColor="#0d9488" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" opacity={0.3} />
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 8px 30px rgba(0,0,0,0.12)', fontSize: '13px' }} />
-                <Area type="monotone" dataKey="revenue" stroke="#7c3aed" fill="url(#colorRevenue)" strokeWidth={2.5} name="الإيرادات" dot={{ r: 4, fill: '#7c3aed', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#7c3aed', strokeWidth: 2, fill: '#fff' }} />
+                <Area type="monotone" dataKey="revenue" stroke="#0d9488" fill="url(#colorRevenue)" strokeWidth={2.5} name="الإيرادات" dot={{ r: 4, fill: '#0d9488', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#0d9488', strokeWidth: 2, fill: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         )}
 
         {/* Today's Appointments — Timeline style */}
-        <div className="bg-card rounded-xl p-5 border border-border/50 shadow-sm">
+        <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-bold text-foreground text-base">مواعيد اليوم</h3>
-            <span className="text-xs font-medium px-2.5 py-1 rounded-lg bg-teal-500/10 dark:bg-teal-900/35 text-teal-400">
+            <span className="badge-glow">
               {data?.todayAppointments?.length || 0} موعد
             </span>
           </div>
@@ -4424,12 +4424,13 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
       {/* ============ HERO SECTION ============ */}
       <section id="hero" className="relative pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-gradient-to-b from-teal-950 via-teal-950/50 to-teal-950 text-white hero-gradient">
-        {/* Background decorations — animated gradient blobs */}
+        {/* Background decorations — animated gradient blobs + particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="hero-blob hero-blob-1 absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[150px]" />
           <div className="hero-blob hero-blob-2 absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full blur-[120px]" />
           <div className="hero-blob hero-blob-3 absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[130px]" />
           <div className="absolute inset-0 pattern-dots opacity-30" />
+          <Particles count={25} />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5295,9 +5296,90 @@ function AppContent() {
   );
 }
 
+// ============== PARTICLES BACKGROUND ==============
+function Particles({ count = 25 }: { count?: number }) {
+  const particles = Array.from({ length: count }, (_, i) => {
+    const size = Math.random() * 4 + 2;
+    const left = Math.random() * 100;
+    const duration = Math.random() * 15 + 10;
+    const delay = Math.random() * 15;
+    return { id: i, size, left, duration, delay };
+  });
+  return (
+    <div className="particles-container" aria-hidden>
+      {particles.map(p => (
+        <span
+          key={p.id}
+          className="particle"
+          style={{
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            left: `${p.left}%`,
+            animationDuration: `${p.duration}s`,
+            animationDelay: `${p.delay}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ============== CURSOR TRAIL ==============
+function CursorTrail() {
+  const trailRef = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Skip on touch devices
+    if (window.matchMedia('(hover: none)').matches) return;
+    let mouseX = 0, mouseY = 0;
+    let trailX = 0, trailY = 0;
+    let rafId: number;
+    const handleMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+    const animate = () => {
+      trailX += (mouseX - trailX) * 0.15;
+      trailY += (mouseY - trailY) * 0.15;
+      if (trailRef.current) {
+        trailRef.current.style.left = `${trailX}px`;
+        trailRef.current.style.top = `${trailY}px`;
+      }
+      rafId = requestAnimationFrame(animate);
+    };
+    window.addEventListener('mousemove', handleMove);
+    rafId = requestAnimationFrame(animate);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+  return <div ref={trailRef} className="cursor-trail" style={{ width: '24px', height: '24px' }} aria-hidden />;
+}
+
+// ============== PAGE LOADER ==============
+function PageLoader() {
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    const timer = setTimeout(() => setLoaded(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+  return (
+    <div className={`page-loader ${loaded ? 'loaded' : ''}`} aria-hidden={loaded}>
+      <div className="page-loader-icon">
+        <Syringe className="text-white" size={32} />
+      </div>
+      <div className="page-loader-spinner" />
+      <div className="page-loader-text">عيادة — جاري التحميل...</div>
+    </div>
+  );
+}
+
 export default function Page() {
   return (
     <AuthProvider>
+      <PageLoader />
+      <CursorTrail />
       <AppContent />
     </AuthProvider>
   );

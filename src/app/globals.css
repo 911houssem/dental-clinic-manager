@@ -1087,3 +1087,171 @@
   0%, 80%, 100% { transform: scale(0); }
   40% { transform: scale(1); }
 }
+
+/* ============ PARTICLES BACKGROUND ============ */
+
+.particles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(45, 212, 191, 0.6);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.8);
+  animation: floatUp linear infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(100vh) translateX(0) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(90vh) translateX(0) scale(1);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-10vh) translateX(50px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ============ CURSOR TRAIL ============ */
+
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.6), transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.15s ease, height 0.15s ease, opacity 0.3s ease;
+  mix-blend-mode: screen;
+}
+
+@media (hover: none) {
+  .cursor-trail { display: none; }
+}
+
+/* ============ PAGE LOADER ============ */
+
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #0a1620, #0f1f2e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.page-loader.loaded {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.page-loader-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  box-shadow: 0 0 40px rgba(45, 212, 191, 0.5);
+}
+
+.page-loader-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(45, 212, 191, 0.2);
+  border-top-color: #14b8a6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.page-loader-text {
+  color: #2dd4bf;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  animation: pulse-soft 1.5s ease-in-out infinite;
+}
+
+/* ============ MOBILE ENHANCEMENTS ============ */
+
+@media (max-width: 768px) {
+  .glass-card-enhanced:hover {
+    transform: translateY(-2px) scale(1.01);
+  }
+  .btn-glow:hover {
+    transform: translateY(-1px);
+  }
+  .stat-card-glow:hover {
+    transform: scale(1.01);
+  }
+  /* Larger touch targets on mobile */
+  button {
+    min-height: 36px;
+  }
+  /* Smaller cursor trail on mobile (hidden via media query above) */
+  /* Better readability */
+  .text-2xl { font-size: 1.25rem; }
+  .text-3xl { font-size: 1.5rem; }
+  /* Card padding adjustments */
+  .glass-card, .glass-card-v2, .glass-card-enhanced {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Even smaller on very small phones */
+  .glass-card, .glass-card-v2, .glass-card-enhanced {
+    border-radius: 0.75rem;
+    padding: 0.875rem;
+  }
+}
+
+/* ============ TAP FEEDBACK ============ */
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+button:active, a:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* ============ SCROLL MOMENTUM ============ */
+
+.overflow-y-auto, .overflow-auto {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* ============ SAFE AREA INSETS ============ */
+
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
