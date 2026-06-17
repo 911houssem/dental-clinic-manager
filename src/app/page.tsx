@@ -22,259 +22,6 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
-// ============== I18N / TRANSLATIONS ==============
-type Lang = 'ar' | 'en';
-
-const TRANSLATIONS = {
-  // === COMMON ===
-  'app.name': { ar: 'عيادة', en: 'Clinic' },
-  'app.tagline': { ar: 'نظام إدارة العيادات', en: 'Clinic Management System' },
-  'common.save': { ar: 'حفظ', en: 'Save' },
-  'common.cancel': { ar: 'إلغاء', en: 'Cancel' },
-  'common.delete': { ar: 'حذف', en: 'Delete' },
-  'common.edit': { ar: 'تعديل', en: 'Edit' },
-  'common.add': { ar: 'إضافة', en: 'Add' },
-  'common.search': { ar: 'بحث', en: 'Search' },
-  'common.close': { ar: 'إغلاق', en: 'Close' },
-  'common.confirm': { ar: 'تأكيد', en: 'Confirm' },
-  'common.back': { ar: 'العودة', en: 'Back' },
-  'common.next': { ar: 'التالي', en: 'Next' },
-  'common.loading': { ar: 'جاري التحميل...', en: 'Loading...' },
-  'common.saved': { ar: 'تم الحفظ', en: 'Saved' },
-  'common.required': { ar: 'مطلوب', en: 'Required' },
-  'common.optional': { ar: 'اختياري', en: 'Optional' },
-  'common.yes': { ar: 'نعم', en: 'Yes' },
-  'common.no': { ar: 'لا', en: 'No' },
-  'common.active': { ar: 'نشط', en: 'Active' },
-  'common.inactive': { ar: 'غير نشط', en: 'Inactive' },
-  'common.status': { ar: 'الحالة', en: 'Status' },
-  'common.actions': { ar: 'إجراءات', en: 'Actions' },
-  'common.name': { ar: 'الاسم', en: 'Name' },
-  'common.phone': { ar: 'الهاتف', en: 'Phone' },
-  'common.email': { ar: 'البريد الإلكتروني', en: 'Email' },
-  'common.address': { ar: 'العنوان', en: 'Address' },
-  'common.date': { ar: 'التاريخ', en: 'Date' },
-  'common.time': { ar: 'الوقت', en: 'Time' },
-  'common.notes': { ar: 'ملاحظات', en: 'Notes' },
-  'common.currency': { ar: 'العملة', en: 'Currency' },
-  'common.today': { ar: 'اليوم', en: 'Today' },
-  'common.tomorrow': { ar: 'غداً', en: 'Tomorrow' },
-  'common.yesterday': { ar: 'أمس', en: 'Yesterday' },
-
-  // === NAVIGATION / SIDEBAR ===
-  'nav.clinic': { ar: 'العيادة', en: 'Clinic' },
-  'nav.dashboard': { ar: 'لوحة التحكم', en: 'Dashboard' },
-  'nav.patients': { ar: 'المرضى', en: 'Patients' },
-  'nav.appointments': { ar: 'المواعيد', en: 'Appointments' },
-  'nav.medicalRecords': { ar: 'السجلات الطبية', en: 'Medical Records' },
-  'nav.finance': { ar: 'المالية', en: 'Finance' },
-  'nav.invoices': { ar: 'الفواتير', en: 'Invoices' },
-  'nav.inventory': { ar: 'المخزون', en: 'Inventory' },
-  'nav.reports': { ar: 'التقارير', en: 'Reports' },
-  'nav.management': { ar: 'الإدارة', en: 'Management' },
-  'nav.tasks': { ar: 'المهام', en: 'Tasks' },
-  'nav.settings': { ar: 'الإعدادات', en: 'Settings' },
-  'nav.clinicManagement': { ar: 'إدارة العيادة', en: 'Clinic Management' },
-  'nav.subscriptions': { ar: 'الاشتراكات', en: 'Subscriptions' },
-  'nav.subscriptionsMgmt': { ar: 'إدارة الاشتراكات', en: 'Subscriptions Mgmt' },
-  'nav.offers': { ar: 'العروض', en: 'Offers' },
-  'nav.offersMgmt': { ar: 'إدارة العروض', en: 'Offers Mgmt' },
-  'nav.logout': { ar: 'تسجيل الخروج', en: 'Logout' },
-  'nav.role.owner': { ar: 'المالك', en: 'Owner' },
-  'nav.role.admin': { ar: 'مدير', en: 'Manager' },
-  'nav.role.doctor': { ar: 'طبيب', en: 'Doctor' },
-  'nav.role.reception': { ar: 'استقبال', en: 'Receptionist' },
-
-  // === AUTH ===
-  'auth.login': { ar: 'تسجيل الدخول', en: 'Login' },
-  'auth.register': { ar: 'إنشاء حساب', en: 'Sign Up' },
-  'auth.username': { ar: 'اسم المستخدم', en: 'Username' },
-  'auth.password': { ar: 'كلمة المرور', en: 'Password' },
-  'auth.fullName': { ar: 'الاسم الكامل', en: 'Full Name' },
-  'auth.phone': { ar: 'الهاتف', en: 'Phone' },
-  'auth.loginBtn': { ar: 'تسجيل الدخول', en: 'Sign In' },
-  'auth.registerBtn': { ar: 'إنشاء حساب', en: 'Create Account' },
-  'auth.loginSubtitle': { ar: 'أدخل بياناتك للوصول إلى حسابك', en: 'Enter your credentials to access your account' },
-  'auth.noAccount': { ar: 'ليس لديك حساب؟', en: "Don't have an account?" },
-  'auth.haveAccount': { ar: 'لديك حساب؟', en: 'Have an account?' },
-  'auth.startFree': { ar: 'ابدأ مجاناً', en: 'Start Free' },
-  'auth.welcome': { ar: 'مرحباً بعودتك', en: 'Welcome Back' },
-  'auth.demoData': { ar: 'تهيئة البيانات التجريبية', en: 'Setup Demo Data' },
-  'auth.invalidCreds': { ar: 'خطأ في اسم المستخدم أو كلمة المرور', en: 'Invalid username or password' },
-
-  // === DASHBOARD ===
-  'dash.greeting.morning': { ar: 'صباح الخير', en: 'Good Morning' },
-  'dash.greeting.afternoon': { ar: 'مساء الخير', en: 'Good Afternoon' },
-  'dash.greeting.evening': { ar: 'مساء النور', en: 'Good Evening' },
-  'dash.todayAppointments': { ar: 'مواعيد اليوم', en: "Today's Appointments" },
-  'dash.totalPatients': { ar: 'إجمالي المرضى', en: 'Total Patients' },
-  'dash.revenue': { ar: 'الإيرادات', en: 'Revenue' },
-  'dash.collected': { ar: 'المتحصل', en: 'Collected' },
-  'dash.weeklyRevenue': { ar: 'إيرادات الأسبوع', en: 'Weekly Revenue' },
-  'dash.noAppointmentsToday': { ar: 'لا توجد مواعيد اليوم', en: 'No appointments today' },
-
-  // === PATIENTS ===
-  'patients.title': { ar: 'إدارة المرضى', en: 'Patients Management' },
-  'patients.new': { ar: 'مريض جديد', en: 'New Patient' },
-  'patients.fileNumber': { ar: 'رقم الملف', en: 'File Number' },
-  'patients.fullName': { ar: 'الاسم الكامل', en: 'Full Name' },
-  'patients.gender': { ar: 'الجنس', en: 'Gender' },
-  'patients.male': { ar: 'ذكر', en: 'Male' },
-  'patients.female': { ar: 'أنثى', en: 'Female' },
-  'patients.bloodType': { ar: 'فصيلة الدم', en: 'Blood Type' },
-  'patients.age': { ar: 'العمر', en: 'Age' },
-  'patients.searchPlaceholder': { ar: 'بحث بالاسم أو الهاتف أو رقم الملف...', en: 'Search by name, phone, or file number...' },
-  'patients.medicalRecords': { ar: 'السجل الطبي للمريض', en: 'Patient Medical Records' },
-  'patients.noDiagnoses': { ar: 'لا توجد تشخيصات سابقة', en: 'No previous diagnoses' },
-  'patients.diagnosesWillAppear': { ar: 'سيتم عرض التشخيصات هنا عند إتمام مواعيد المريض', en: 'Diagnoses will appear here after completing patient appointments' },
-  'patients.previousDiagnoses': { ar: 'التشخيصات السابقة', en: 'Previous Diagnoses' },
-
-  // === APPOINTMENTS ===
-  'apt.title': { ar: 'المواعيد', en: 'Appointments' },
-  'apt.new': { ar: 'موعد جديد', en: 'New Appointment' },
-  'apt.patient': { ar: 'المريض', en: 'Patient' },
-  'apt.doctor': { ar: 'الطبيب', en: 'Doctor' },
-  'apt.type': { ar: 'النوع', en: 'Type' },
-  'apt.status.scheduled': { ar: 'مجدول', en: 'Scheduled' },
-  'apt.status.completed': { ar: 'تم', en: 'Completed' },
-  'apt.status.cancelled': { ar: 'ملغي', en: 'Cancelled' },
-  'apt.type.regular': { ar: 'عادي', en: 'Regular' },
-  'apt.type.follow_up': { ar: 'متابعة', en: 'Follow-up' },
-  'apt.type.emergency': { ar: 'طوارئ', en: 'Emergency' },
-  'apt.type.consultation': { ar: 'استشارة', en: 'Consultation' },
-  'apt.complete': { ar: 'تم', en: 'Done' },
-  'apt.cancel': { ar: 'إلغاء', en: 'Cancel' },
-  'apt.completeTitle': { ar: 'إتمام الموعد', en: 'Complete Appointment' },
-  'apt.price': { ar: 'سعر الكشف', en: 'Consultation Price' },
-  'apt.diagnosis': { ar: 'التشخيص الطبي للمريض', en: 'Medical Diagnosis' },
-  'apt.diagnosisPlaceholder': { ar: 'اكتب التشخيص الطبي للمريض بعد الكشف...', en: 'Enter the medical diagnosis after examination...' },
-  'apt.diagnosisHint': { ar: 'سيتم حفظ التشخيص في السجل الطبي للمريض، ويمكن مراجعته لاحقاً من صفحة المرضى', en: 'Diagnosis will be saved to the patient medical record, accessible later from the Patients page' },
-  'apt.confirmCreate': { ar: 'تأكيد وإنشاء فاتورة', en: 'Confirm & Create Invoice' },
-  'apt.invoiceNote': { ar: 'سيتم تسجيل فاتورة تلقائياً في الفواتير كـ', en: 'An invoice will be auto-created as' },
-  'apt.fullyPaid': { ar: 'مدفوعة كلياً', en: 'Fully Paid' },
-  'apt.value': { ar: 'بقيمة', en: 'with value' },
-  'apt.diagnosisSaved': { ar: '+ سيتم حفظ التشخيص في السجل الطبي للمريض', en: '+ Diagnosis will be saved to patient record' },
-
-  // === SETTINGS ===
-  'settings.title': { ar: 'إعدادات العيادة', en: 'Clinic Settings' },
-  'settings.clinicName': { ar: 'اسم العيادة', en: 'Clinic Name' },
-  'settings.taxNumber': { ar: 'الرقم الضريبي', en: 'Tax Number' },
-  'settings.paymentMode': { ar: 'نوع الدفع', en: 'Payment Mode' },
-  'settings.paymentMode.postpaid': { ar: 'آجل', en: 'Postpaid' },
-  'settings.paymentMode.prepaid': { ar: 'مقدم', en: 'Prepaid' },
-  'settings.slotDuration': { ar: 'مدة الموعد (دقيقة)', en: 'Slot Duration (minutes)' },
-  'settings.saveChanges': { ar: 'حفظ التغييرات', en: 'Save Changes' },
-
-  // === LANGUAGE SECTION ===
-  'lang.title': { ar: 'اللغة والاتجاه', en: 'Language & Direction' },
-  'lang.subtitle': { ar: 'اختر لغة العرض المفضلة (Language & Direction)', en: 'Choose your preferred display language' },
-  'lang.arabic': { ar: 'العربية', en: 'Arabic' },
-  'lang.english': { ar: 'الإنجليزية', en: 'English' },
-  'lang.saved': { ar: 'تم حفظ تفضيل اللغة', en: 'Language preference saved' },
-  'lang.note.ar': { ar: 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.', en: 'Note: language change applies page direction (RTL/LTR). Full content translation is in progress.' },
-  'lang.note.en': { ar: 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.', en: 'Note: language change applies page direction (RTL/LTR). Full content translation is in progress.' },
-
-  // === BACKUP ===
-  'backup.title': { ar: 'النسخ الاحتياطي والبيانات', en: 'Backup & Data' },
-  'backup.subtitle': { ar: 'صدّر نسخة كاملة من بيانات النظام كملف JSON', en: 'Export a full backup of system data as JSON' },
-  'backup.export': { ar: 'تصدير نسخة احتياطية', en: 'Export Backup' },
-  'backup.exporting': { ar: 'جاري التصدير...', en: 'Exporting...' },
-  'backup.lastBackup': { ar: 'آخر نسخة', en: 'Last backup' },
-  'backup.includes': { ar: 'تشمل النسخة: العيادات، المستخدمين (بدون كلمات المرور)، المرضى، المواعيد، الفواتير، المخزون، المهام، السجلات الطبية، خطط الاشتراك، العروض، سجلات التدقيق.', en: 'Includes: clinics, users (no passwords), patients, appointments, invoices, inventory, tasks, medical records, plans, offers, audit logs.' },
-  'backup.tip': { ar: 'يُنصح بإجراء نسخة احتياطية أسبوعياً، أو قبل أي تعديل كبير على البيانات.', en: 'Recommended: weekly backup, or before major data changes.' },
-
-  // === SUBSCRIPTIONS ===
-  'sub.title': { ar: 'إدارة الاشتراكات', en: 'Subscriptions Management' },
-  'sub.plans': { ar: 'خطط الاشتراك', en: 'Subscription Plans' },
-  'sub.clinicSubs': { ar: 'اشتراكات العيادات', en: 'Clinic Subscriptions' },
-  'sub.newPlan': { ar: 'خطة جديدة', en: 'New Plan' },
-  'sub.grant': { ar: 'منح اشتراك', en: 'Grant Subscription' },
-  'sub.billingCycle': { ar: 'دورة الفوترة', en: 'Billing Cycle' },
-  'sub.monthly': { ar: 'شهري', en: 'Monthly' },
-  'sub.yearly': { ar: 'سنوي', en: 'Yearly' },
-  'sub.saveUpTo': { ar: 'وفّر حتى ١٧٪', en: 'Save up to 17%' },
-  'sub.startDate': { ar: 'تاريخ البدء', en: 'Start Date' },
-  'sub.endDate': { ar: 'تاريخ الانتهاء', en: 'End Date' },
-  'sub.notSpecified': { ar: 'غير محدد', en: 'Not specified' },
-  'sub.endDateHint': { ar: 'تاريخ الانتهاء (اختياري — يُحسب تلقائياً إذا تُرك فارغاً)', en: 'End date (optional — auto-calculated if empty)' },
-  'sub.chooseClinic': { ar: 'اختر عيادة', en: 'Choose a clinic' },
-  'sub.choosePlan': { ar: 'اختر خطة', en: 'Choose a plan' },
-  'sub.clinic': { ar: 'العيادة', en: 'Clinic' },
-  'sub.plan': { ar: 'الخطة', en: 'Plan' },
-  'sub.grantBtn': { ar: 'منح الاشتراك', en: 'Grant Subscription' },
-  'sub.saveYearly': { ar: 'وفّر', en: 'Save' },
-  'sub.perYear': { ar: 'ر.س/سنة', en: 'SAR/year' },
-  'sub.perMonth': { ar: 'ر.س/شهر', en: 'SAR/month' },
-
-  // === LANDING ===
-  'landing.hero.badge': { ar: 'نظام إدارة العيادات رقم ١ في المنطقة', en: '#1 Clinic Management System in the Region' },
-  'landing.hero.title1': { ar: 'أدِر عيادتك', en: 'Manage Your Clinic' },
-  'landing.hero.title2': { ar: 'بذكاء وسهولة', en: 'Smartly & Easily' },
-  'landing.hero.subtitle': { ar: 'نظام متكامل لإدارة المواعيد والمرضى والفواتير. وفّر وقتك وركّز على ما يهم — رعاية مرضاك.', en: 'An integrated system for appointments, patients, and invoices. Save time and focus on what matters — patient care.' },
-  'landing.hero.cta1': { ar: 'ابدأ مجاناً الآن', en: 'Start Free Now' },
-  'landing.hero.cta2': { ar: 'شاهد كيف يعمل', en: 'See How It Works' },
-
-  // === EMPTY STATES ===
-  'empty.noData': { ar: 'لا توجد بيانات', en: 'No Data' },
-  'empty.noPatients': { ar: 'لا يوجد مرضى بعد', en: 'No patients yet' },
-  'empty.addFirst': { ar: 'أضف أول مريض للبدء', en: 'Add your first patient to get started' },
-} as Record<string, { ar: string; en: string }>;
-
-const LanguageContext = createContext<{
-  lang: Lang;
-  setLang: (l: Lang) => void;
-  t: (key: string) => string;
-}>({
-  lang: 'ar',
-  setLang: () => {},
-  t: (key: string) => key,
-});
-
-const useLang = () => useContext(LanguageContext);
-
-function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<Lang>('ar');
-
-  useEffect(() => {
-    const saved = localStorage.getItem('app-language') as Lang | null;
-    if (saved === 'ar' || saved === 'en') {
-      setLangState(saved);
-      const html = document.documentElement;
-      if (saved === 'en') {
-        html.setAttribute('dir', 'ltr');
-        html.setAttribute('lang', 'en');
-      } else {
-        html.setAttribute('dir', 'rtl');
-        html.setAttribute('lang', 'ar');
-      }
-    }
-  }, []);
-
-  const setLang = (l: Lang) => {
-    setLangState(l);
-    localStorage.setItem('app-language', l);
-    const html = document.documentElement;
-    if (l === 'en') {
-      html.setAttribute('dir', 'ltr');
-      html.setAttribute('lang', 'en');
-    } else {
-      html.setAttribute('dir', 'rtl');
-      html.setAttribute('lang', 'ar');
-    }
-  };
-
-  const t = (key: string): string => {
-    const entry = TRANSLATIONS[key];
-    if (!entry) return key;
-    return entry[lang] || entry.ar || key;
-  };
-
-  return (
-    <LanguageContext.Provider value={{ lang, setLang, t }}>
-      {children}
-    </LanguageContext.Provider>
-  );
-}
 
 // ============== TYPES ==============
 interface AuthUser {
@@ -530,7 +277,6 @@ function useAuth() {
 // ============== LOGIN PAGE ==============
 function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitchRegister?: () => void } = {}) {
   const { login, requiresTwoFactor, requiresDeviceAuth, deviceAuthCode, deviceName } = useAuth();
-  const { t } = useLang();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -561,7 +307,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
     } else if (result === 'requires_device_auth') {
       setStep('device');
     } else {
-      setError(result !== 'failed' ? result : t('auth.invalidCreds'));
+      setError(result !== 'failed' ? result : 'خطأ في اسم المستخدم أو كلمة المرور');
     }
     setLoading(false);
   };
@@ -574,7 +320,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
     if (result === 'success') {
       // Logged in
     } else {
-      setError(typeof result === 'string' && result !== 'failed' ? result : (t('auth.invalidCreds')));
+      setError(typeof result === 'string' && result !== 'failed' ? result : 'رمز التحقق غير صحيح');
     }
     setLoading(false);
   };
@@ -587,7 +333,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
     if (result === 'success') {
       // Logged in
     } else {
-      setError(typeof result === 'string' && result !== 'failed' ? result : (t('auth.invalidCreds')));
+      setError(typeof result === 'string' && result !== 'failed' ? result : 'رمز التفويض غير صحيح');
     }
     setLoading(false);
   };
@@ -769,17 +515,17 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
           </div>
 
           <div>
-            <h2 className="text-2xl font-bold text-foreground mb-1">{t('auth.login')}</h2>
-            <p className="text-muted-foreground text-sm mb-8">{t('auth.loginSubtitle')}</p>
+            <h2 className="text-2xl font-bold text-foreground mb-1">تسجيل الدخول</h2>
+            <p className="text-muted-foreground text-sm mb-8">أدخل بياناتك للوصول إلى حسابك</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">{t('auth.username')}</label>
+              <label className="text-sm font-medium text-foreground">اسم المستخدم</label>
               <div className="relative group">
                 <UserCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                 <input
-                  placeholder={t('auth.username')}
+                  placeholder="أدخل اسم المستخدم"
                   className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 focus:bg-muted/20 transition-all duration-300"
                   type="text"
                   value={username}
@@ -789,14 +535,14 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-medium text-foreground">{t('auth.password')}</label>
+              <label className="text-sm font-medium text-foreground">كلمة المرور</label>
               <div className="relative group">
                 <button type="button" onClick={() => setShowPassword(!showPassword)}
                   className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 hover:text-foreground transition-colors">
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
                 <input
-                  placeholder={t('auth.password')}
+                  placeholder="أدخل كلمة المرور"
                   className="w-full pr-4 pl-11 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 focus:bg-muted/20 transition-all duration-300"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
@@ -815,22 +561,22 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
               className="w-full py-3 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white font-bold rounded-xl shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-[15px]">
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
-                  <RefreshCw size={16} className="animate-spin" /> {t('common.loading')}
+                  <RefreshCw size={16} className="animate-spin" /> جاري التحقق...
                 </span>
-              ) : t('auth.loginBtn')}
+              ) : 'تسجيل الدخول'}
             </button>
           </form>
 
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-border/50" /></div>
-            <div className="relative flex justify-center text-xs"><span className="bg-background px-3 text-muted-foreground/60">{t('common.optional')}</span></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-background px-3 text-muted-foreground/60">أو</span></div>
           </div>
 
           {!seeded && (
             <button onClick={handleSeed}
               className="w-full py-2.5 text-sm text-muted-foreground hover:text-foreground border border-border/50 rounded-xl hover:bg-muted/30 transition-all">
-              {t('auth.demoData')}
+              تهيئة البيانات التجريبية
             </button>
           )}
 
@@ -843,7 +589,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
           <div className="mt-6 text-center">
             <button type="button" onClick={onSwitchRegister}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              {t('auth.noAccount')} <span className="font-semibold text-teal-600 dark:text-teal-400">{t('auth.register')}</span>
+              ليس لديك حساب؟ <span className="font-semibold text-teal-600 dark:text-teal-400">أنشئ حساباً جديداً</span>
             </button>
           </div>
 
@@ -1202,23 +948,22 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
 
 // ============== SIDEBAR ==============
 const NAV_ITEMS = [
-  { id: 'dashboard', label: { ar: 'لوحة التحكم', en: 'Dashboard' }, icon: LayoutDashboard, permission: 'dashboard', group: { ar: 'الرئيسية', en: 'Main' } },
-  { id: 'patients', label: { ar: 'المرضى', en: 'Patients' }, icon: Users, permission: 'patients', group: { ar: 'العيادة', en: 'Clinic' } },
-  { id: 'appointments', label: { ar: 'المواعيد', en: 'Appointments' }, icon: CalendarDays, permission: 'appointments', group: { ar: 'العيادة', en: 'Clinic' } },
-  { id: 'records', label: { ar: 'السجلات الطبية', en: 'Medical Records' }, icon: FileText, permission: 'records', group: { ar: 'العيادة', en: 'Clinic' } },
-  { id: 'invoices', label: { ar: 'الفواتير', en: 'Invoices' }, icon: Receipt, permission: 'invoices', group: { ar: 'المالية', en: 'Finance' } },
-  { id: 'inventory', label: { ar: 'المخزون', en: 'Inventory' }, icon: Package, permission: 'inventory', group: { ar: 'المالية', en: 'Finance' } },
-  { id: 'reports', label: { ar: 'التقارير', en: 'Reports' }, icon: BarChart3, permission: 'reports', group: { ar: 'المالية', en: 'Finance' } },
-  { id: 'tasks', label: { ar: 'المهام', en: 'Tasks' }, icon: ListTodo, permission: 'dashboard', group: { ar: 'الإدارة', en: 'Management' } },
-  { id: 'settings', label: { ar: 'الإعدادات', en: 'Settings' }, icon: Settings, permission: 'settings', group: { ar: 'الإدارة', en: 'Management' } },
-  { id: 'management', label: { ar: 'إدارة العيادات', en: 'Clinic Mgmt' }, icon: Building2, permission: 'settings', group: { ar: 'الإدارة', en: 'Management' } },
-  { id: 'subscriptions', label: { ar: 'إدارة الاشتراكات', en: 'Subscriptions' }, icon: Crown, permission: 'super_admin', group: { ar: 'الاشتراكات', en: 'Subscriptions' } },
-  { id: 'offers', label: { ar: 'إدارة العروض', en: 'Offers' }, icon: Star, permission: 'super_admin', group: { ar: 'الاشتراكات', en: 'Subscriptions' } },
+  { id: 'dashboard', label: 'لوحة التحكم', icon: LayoutDashboard, permission: 'dashboard', group: 'الرئيسية' },
+  { id: 'patients', label: 'المرضى', icon: Users, permission: 'patients', group: 'العيادة' },
+  { id: 'appointments', label: 'المواعيد', icon: CalendarDays, permission: 'appointments', group: 'العيادة' },
+  { id: 'records', label: 'السجلات الطبية', icon: FileText, permission: 'records', group: 'العيادة' },
+  { id: 'invoices', label: 'الفواتير', icon: Receipt, permission: 'invoices', group: 'المالية' },
+  { id: 'inventory', label: 'المخزون', icon: Package, permission: 'inventory', group: 'المالية' },
+  { id: 'reports', label: 'التقارير', icon: BarChart3, permission: 'reports', group: 'المالية' },
+  { id: 'tasks', label: 'المهام', icon: ListTodo, permission: 'dashboard', group: 'الإدارة' },
+  { id: 'settings', label: 'الإعدادات', icon: Settings, permission: 'settings', group: 'الإدارة' },
+  { id: 'management', label: 'إدارة العيادات', icon: Building2, permission: 'settings', group: 'الإدارة' },
+  { id: 'subscriptions', label: 'إدارة الاشتراكات', icon: Crown, permission: 'super_admin', group: 'الاشتراكات' },
+  { id: 'offers', label: 'إدارة العروض', icon: Star, permission: 'super_admin', group: 'الاشتراكات' },
 ];
 
 function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurrentView: (v: string) => void }) {
   const { user, logout, clinics, currentClinicId, setCurrentClinicId } = useAuth();
-  const { lang, t } = useLang();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -1241,12 +986,12 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
   };
 
   const roleLabels: Record<string, string> = {
-    super_admin: t('nav.role.owner'),
-    admin: t('nav.role.admin'),
-    doctor: t('nav.role.doctor'),
-    reception: t('nav.role.reception'),
-    accountant: lang === 'ar' ? 'محاسب' : 'Accountant',
-    nurse: lang === 'ar' ? 'تمريض' : 'Nurse',
+    super_admin: 'المالك',
+    admin: 'مدير',
+    doctor: 'طبيب',
+    reception: 'استقبال',
+    accountant: 'محاسب',
+    nurse: 'تمريض',
   };
 
   const sidebarContent = (
@@ -1255,12 +1000,12 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
       <div className="p-5 pb-4">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[0.85rem] flex items-center justify-center shadow-lg shadow-teal-600/30 shrink-0">
-            <span className="text-white font-black text-lg">{lang === 'ar' ? 'ع' : 'C'}</span>
+            <span className="text-white font-black text-lg">ع</span>
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <h2 className="font-extrabold text-[15px] truncate tracking-tight text-foreground">{t('app.name')}</h2>
-              <p className="text-[11px] text-muted-foreground/70 truncate">{t('app.tagline')}</p>
+              <h2 className="font-extrabold text-[15px] truncate tracking-tight text-foreground">عيادة</h2>
+              <p className="text-[11px] text-muted-foreground/70 truncate">نظام إدارة العيادات</p>
             </div>
           )}
         </div>
@@ -1274,7 +1019,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
             onChange={e => setCurrentClinicId(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-muted/50 dark:bg-white/5 border border-border/60 text-sm outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500/40 transition-all"
           >
-            <option value="">{lang === 'ar' ? 'اختر عيادة' : 'Select clinic'}</option>
+            <option value="">اختر عيادة</option>
             {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
@@ -1288,17 +1033,15 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
           return visibleItems.map((item, idx) => {
             const Icon = item.icon;
             const active = currentView === item.id;
-            const groupLabel = item.group[lang];
-            const itemLabel = item.label[lang];
-            const showGroup = groupLabel !== lastGroup && !collapsed;
-            lastGroup = groupLabel;
+            const showGroup = item.group !== lastGroup && !collapsed;
+            lastGroup = item.group;
             return (
               <div key={item.id}>
                 {showGroup && idx > 0 && (
                   <div className="px-2 pt-5 pb-2">
                     <div className="flex items-center gap-2">
                       <div className="h-px flex-1 bg-gradient-to-l from-border/60 to-transparent" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50 whitespace-nowrap">{groupLabel}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50 whitespace-nowrap">{item.group}</span>
                       <div className="h-px flex-1 bg-gradient-to-r from-border/60 to-transparent" />
                     </div>
                   </div>
@@ -1315,7 +1058,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
                   <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 ${active ? 'bg-teal-600/20' : 'group-hover/nav:bg-muted/80'}`}>
                     <Icon size={17} className={`transition-all duration-300 ${active ? 'text-teal-600 dark:text-teal-400' : ''}`} />
                   </div>
-                  {!collapsed && <span className="truncate">{itemLabel}</span>}
+                  {!collapsed && <span className="truncate">{item.label}</span>}
                 </button>
               </div>
             );
@@ -1337,7 +1080,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
                   {roleLabels[user.role] || user.role}
                 </span>
               </div>
-              <button onClick={logout} className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50/80 dark:hover:bg-rose-900/20 transition-all duration-200" title={t('nav.logout')}>
+              <button onClick={logout} className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50/80 dark:hover:bg-rose-900/20 transition-all duration-200" title="تسجيل الخروج">
                 <LogOut size={16} />
               </button>
             </div>
@@ -1389,7 +1132,6 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
 // ============== DASHBOARD ==============
 function DashboardView() {
   const { currentClinicId, user } = useAuth();
-  const { t } = useLang();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] = useState<'checking' | 'active' | 'inactive'>('checking');
@@ -1473,10 +1215,10 @@ function DashboardView() {
 
   const stats = data?.stats || { todayAppointments: 0, totalPatients: 0, totalRevenue: 0, totalCollected: 0 };
   const statCards = [
-    { label: t('dash.todayAppointments'), value: stats.todayAppointments, gradient: 'from-teal-500 to-teal-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
-    { label: t('dash.totalPatients'), value: stats.totalPatients, gradient: 'from-orange-500 to-orange-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
-    { label: t('dash.revenue'), value: `${stats.totalRevenue?.toFixed(0)} ${currentClinic?.currency || 'SAR'}`, gradient: 'from-orange-600 to-orange-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
-    { label: t('dash.collected'), value: `${stats.totalCollected?.toFixed(0)} ${currentClinic?.currency || 'SAR'}`, gradient: 'from-rose-500 to-rose-600', icon: DollarSign, glow: 'stat-glow-rose', bg: 'bg-gradient-to-br' },
+    { label: 'مواعيد اليوم', value: stats.todayAppointments, gradient: 'from-teal-500 to-teal-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
+    { label: 'إجمالي المرضى', value: stats.totalPatients, gradient: 'from-orange-500 to-orange-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
+    { label: 'الإيرادات', value: `${stats.totalRevenue?.toFixed(0)} ${currentClinic?.currency || 'ر.س'}`, gradient: 'from-orange-600 to-orange-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
+    { label: 'المتحصل', value: `${stats.totalCollected?.toFixed(0)} ${currentClinic?.currency || 'ر.س'}`, gradient: 'from-rose-500 to-rose-600', icon: DollarSign, glow: 'stat-glow-rose', bg: 'bg-gradient-to-br' },
   ];
 
   const statusColors: Record<string, string> = {
@@ -1496,9 +1238,9 @@ function DashboardView() {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return t('dash.greeting.morning');
-    if (hour < 17) return t('dash.greeting.afternoon');
-    return t('dash.greeting.evening');
+    if (hour < 12) return 'صباح الخير';
+    if (hour < 17) return 'مساء الخير';
+    return 'مساء النور';
   };
 
   return (
@@ -1541,10 +1283,10 @@ function DashboardView() {
         {data?.revenueChart && (
           <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-bold text-foreground text-base">{t('dash.weeklyRevenue')}</h3>
+              <h3 className="font-bold text-foreground text-base">إيرادات الأسبوع</h3>
               <div className="flex items-center gap-1.5 text-xs text-orange-600 dark:text-orange-400 font-medium">
                 <TrendingUp size={14} />
-                <span>{t('common.active')}</span>
+                <span>إيجابي</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={260}>
@@ -1560,7 +1302,7 @@ function DashboardView() {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 8px 30px rgba(0,0,0,0.12)', fontSize: '13px' }} />
-                <Area type="monotone" dataKey="revenue" stroke="#0d9488" fill="url(#colorRevenue)" strokeWidth={2.5} name={t('dash.revenue')} dot={{ r: 4, fill: '#0d9488', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#0d9488', strokeWidth: 2, fill: '#fff' }} />
+                <Area type="monotone" dataKey="revenue" stroke="#0d9488" fill="url(#colorRevenue)" strokeWidth={2.5} name="الإيرادات" dot={{ r: 4, fill: '#0d9488', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#0d9488', strokeWidth: 2, fill: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -1569,7 +1311,7 @@ function DashboardView() {
         {/* Today's Appointments — Timeline style */}
         <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="font-bold text-foreground text-base">{t('dash.todayAppointments')}</h3>
+            <h3 className="font-bold text-foreground text-base">مواعيد اليوم</h3>
             <span className="badge-glow">
               {data?.todayAppointments?.length || 0} موعد
             </span>
@@ -1579,7 +1321,7 @@ function DashboardView() {
               <div className="w-14 h-14 mx-auto bg-muted/40 rounded-xl flex items-center justify-center mb-3">
                 <CalendarDays size={28} className="text-muted-foreground/30" />
               </div>
-              <p className="text-muted-foreground text-sm font-medium">{t('dash.noAppointmentsToday')}</p>
+              <p className="text-muted-foreground text-sm font-medium">لا توجد مواعيد اليوم</p>
             </div>
           ) : (
             <div className="space-y-0 max-h-[300px] overflow-y-auto sidebar-nav-scroll">
@@ -1621,7 +1363,7 @@ function DashboardView() {
 // ============== PATIENTS VIEW ==============
 function PatientsView() {
   const { currentClinicId } = useAuth();
-  const { t } = useLang();
+  
   const [patients, setPatients] = useState<any[]>([]);
   const [search, setSearch] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -1695,10 +1437,10 @@ function PatientsView() {
   return (
     <div className="flex-1 p-4 lg:p-6 overflow-y-auto space-y-6 page-transition-enter">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-2xl font-bold text-foreground">{t('patients.title')}</h1>
+        <h1 className="text-2xl font-bold text-foreground">إدارة المرضى</h1>
         <button onClick={openNew}
           className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
-          <Plus size={16} /> {t('patients.new')}
+          <Plus size={16} /> مريض جديد
         </button>
       </div>
 
@@ -1706,7 +1448,7 @@ function PatientsView() {
       <div className="relative">
         <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={18} />
         <input
-          placeholder={t('patients.searchPlaceholder')}
+          placeholder="بحث بالاسم أو الهاتف أو رقم الملف..."
           className="w-full pr-10 pl-4 py-3 bg-card border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(1); }}
@@ -1719,12 +1461,12 @@ function PatientsView() {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-muted/40 border-b border-border/40">
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('patients.fileNumber')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('patients.fullName')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('common.phone')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('patients.gender')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('patients.bloodType')}</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">{t('common.actions')}</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">رقم الملف</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">الاسم</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">الهاتف</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">الجنس</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">فصيلة الدم</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wider text-muted-foreground">إجراءات</th>
               </tr>
             </thead>
             <tbody>
@@ -1733,7 +1475,7 @@ function PatientsView() {
                   <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{p.fileNumber}</td>
                   <td className="px-4 py-3 font-medium text-foreground">{p.fullName}</td>
                   <td className="px-4 py-3 text-muted-foreground">{p.phone || '-'}</td>
-                  <td className="px-4 py-3">{p.gender === 'male' ? t('patients.male') : p.gender === 'female' ? t('patients.female') : '-'}</td>
+                  <td className="px-4 py-3">{p.gender === 'male' ? 'ذكر' : p.gender === 'female' ? 'أنثى' : '-'}</td>
                   <td className="px-4 py-3">{p.bloodType || '-'}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -2001,7 +1743,7 @@ function PatientsView() {
 // ============== APPOINTMENTS VIEW ==============
 function AppointmentsView() {
   const { currentClinicId, clinics } = useAuth();
-  const { t, lang } = useLang();
+  
   const [appointments, setAppointments] = useState<any[]>([]);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [doctors, setDoctors] = useState<any[]>([]);
@@ -2123,7 +1865,7 @@ function AppointmentsView() {
     await updateStatus(id, 'cancelled');
   };
 
-  const typeLabels: Record<string, string> = { regular: t('apt.type.regular'), follow_up: t('apt.type.follow_up'), emergency: t('apt.type.emergency'), consultation: t('apt.type.consultation') };
+  const typeLabels: Record<string, string> = { regular: 'عادي', follow_up: 'متابعة', emergency: 'طوارئ', consultation: 'استشارة' };
   const typeColors: Record<string, string> = {
     regular: 'border-r-teal-500 bg-teal-500/8 dark:bg-teal-500/18',
     follow_up: 'border-r-orange-800 bg-orange-800/8 dark:bg-orange-800/18',
@@ -2131,7 +1873,7 @@ function AppointmentsView() {
     consultation: 'border-r-orange-600 bg-orange-600/8 dark:bg-orange-600/18',
   };
   const statusLabels: Record<string, string> = {
-    scheduled: t('apt.status.scheduled'), completed: t('apt.status.completed'), cancelled: t('apt.status.cancelled'),
+    scheduled: 'مجدول', completed: 'تم', cancelled: 'ملغي',
   };
   const statusColors: Record<string, string> = {
     scheduled: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
@@ -3564,7 +3306,7 @@ function ManagementView() {
 // ============== SETTINGS VIEW ==============
 function SettingsView() {
   const { currentClinicId } = useAuth();
-  const { t } = useLang();
+  
   const [clinic, setClinic] = useState<any>(null);
   const [form, setForm] = useState<any>({});
   const [saved, setSaved] = useState(false);
@@ -3586,34 +3328,34 @@ function SettingsView() {
 
   return (
     <div className="flex-1 p-4 lg:p-6 overflow-y-auto space-y-6 page-transition-enter">
-      <h1 className="text-3xl font-black gradient-text">{t('settings.title')}</h1>
+      <h1 className="text-3xl font-black gradient-text">إعدادات العيادة</h1>
 
       <div className="glass-card-v2 rounded-2xl p-6 space-y-5 gradient-border">
         <div>
-          <label className="text-sm font-medium mb-1 block">{t('settings.clinicName')}</label>
+          <label className="text-sm font-medium mb-1 block">اسم العيادة</label>
           <input className="w-full px-3 py-2.5 input-glow text-sm" value={form.name || ''} onChange={e => setForm({ ...form, name: e.target.value })} />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">{t('common.phone')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
-          <div><label className="text-sm font-medium mb-1 block">{t('common.email')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">الهاتف</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">البريد الإلكتروني</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
         </div>
-        <div><label className="text-sm font-medium mb-1 block">{t('common.address')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
+        <div><label className="text-sm font-medium mb-1 block">العنوان</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">{t('settings.taxNumber')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.taxNumber || ''} onChange={e => setForm({ ...form, taxNumber: e.target.value })} /></div>
-          <div><label className="text-sm font-medium mb-1 block">{t('common.currency')}</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
+          <div><label className="text-sm font-medium mb-1 block">الرقم الضريبي</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.taxNumber || ''} onChange={e => setForm({ ...form, taxNumber: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">{t('settings.paymentMode')}</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.paymentMode || 'postpaid'} onChange={e => setForm({ ...form, paymentMode: e.target.value })}><option value="postpaid">{t('settings.paymentMode.postpaid')}</option><option value="prepaid">{t('settings.paymentMode.prepaid')}</option></select></div>
-          <div><label className="text-sm font-medium mb-1 block">{t('settings.slotDuration')}</label><input type="number" className="w-full px-3 py-2.5 input-glow text-sm" value={form.slotDuration || 30} onChange={e => setForm({ ...form, slotDuration: parseInt(e.target.value) })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">نوع الدفع</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.paymentMode || 'postpaid'} onChange={e => setForm({ ...form, paymentMode: e.target.value })}><option value="postpaid">آجل</option><option value="prepaid">مقدم</option></select></div>
+          <div><label className="text-sm font-medium mb-1 block">مدة الموعد (دقيقة)</label><input type="number" className="w-full px-3 py-2.5 input-glow text-sm" value={form.slotDuration || 30} onChange={e => setForm({ ...form, slotDuration: parseInt(e.target.value) })} /></div>
         </div>
-        <div><label className="text-sm font-medium mb-1 block">{t('common.notes')}</label><textarea className="w-full px-3 py-2.5 input-glow text-sm resize-none" rows={3} value={form.notes || ''} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
+        <div><label className="text-sm font-medium mb-1 block">ملاحظات</label><textarea className="w-full px-3 py-2.5 input-glow text-sm resize-none" rows={3} value={form.notes || ''} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
 
         <div className="flex items-center gap-3 pt-2">
           <button onClick={handleSave}
             className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
-            <Save size={16} /> {t('settings.saveChanges')}
+            <Save size={16} /> حفظ التغييرات
           </button>
-          {saved && <span className="text-sm text-orange-600 dark:text-orange-400 flex items-center gap-1"><CheckCircle size={14} /> {t('common.saved')}</span>}
+          {saved && <span className="text-sm text-orange-600 dark:text-orange-400 flex items-center gap-1"><CheckCircle size={14} /> تم الحفظ</span>}
         </div>
       </div>
 
@@ -3628,11 +3370,25 @@ function SettingsView() {
 
 // ============== LANGUAGE SECTION (inside Settings) ==============
 function LanguageSection() {
-  const { lang, setLang, t } = useLang();
+  const [language, setLanguage] = useState<'ar' | 'en'>('ar');
   const [saved, setSaved] = useState(false);
 
-  const handleLanguageChange = (l: 'ar' | 'en') => {
-    setLang(l);
+  useEffect(() => {
+    const saved = localStorage.getItem('app-language') as 'ar' | 'en' | null;
+    if (saved === 'en' || saved === 'ar') setLanguage(saved);
+  }, []);
+
+  const handleLanguageChange = (lang: 'ar' | 'en') => {
+    setLanguage(lang);
+    localStorage.setItem('app-language', lang);
+    const html = document.documentElement;
+    if (lang === 'en') {
+      html.setAttribute('dir', 'ltr');
+      html.setAttribute('lang', 'en');
+    } else {
+      html.setAttribute('dir', 'rtl');
+      html.setAttribute('lang', 'ar');
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -3644,8 +3400,8 @@ function LanguageSection() {
           <Globe size={20} className="text-teal-500" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">{t('lang.title')}</h2>
-          <p className="text-xs text-muted-foreground">{t('lang.subtitle')}</p>
+          <h2 className="text-lg font-bold text-foreground">اللغة والاتجاه</h2>
+          <p className="text-xs text-muted-foreground">اختر لغة العرض المفضلة (Language & Direction)</p>
         </div>
       </div>
 
@@ -3653,25 +3409,25 @@ function LanguageSection() {
         <button
           onClick={() => handleLanguageChange('ar')}
           className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
-            lang === 'ar'
+            language === 'ar'
               ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
               : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
           }`}
         >
           <span className="text-xl">🇸🇦</span>
-          {t('lang.arabic')}
+          العربية
           <span className="text-xs opacity-70">(RTL)</span>
         </button>
         <button
           onClick={() => handleLanguageChange('en')}
           className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
-            lang === 'en'
+            language === 'en'
               ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
               : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
           }`}
         >
           <span className="text-xl">🇬🇧</span>
-          {t('lang.english')}
+          English
           <span className="text-xs opacity-70">(LTR)</span>
         </button>
       </div>
@@ -3679,17 +3435,13 @@ function LanguageSection() {
       {saved && (
         <div className="bg-teal-500/10 border border-teal-500/30 rounded-xl p-3 text-teal-600 dark:text-teal-400 text-sm flex items-center gap-2">
           <CheckCircle size={14} />
-          {t('lang.saved')}
+          تم حفظ تفضيل اللغة
         </div>
       )}
 
       <p className="text-xs text-muted-foreground/70 flex items-start gap-2">
         <Info size={12} className="mt-0.5 shrink-0" />
-        <span>
-          {lang === 'ar'
-            ? 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR).'
-            : 'Note: language change applies page direction (RTL/LTR).'}
-        </span>
+        <span>ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR).</span>
       </p>
     </div>
   );
@@ -5935,13 +5687,11 @@ function PageLoader() {
 
 export default function Page() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <ToastProvider>
-          <PageLoader />
-          <AppContent />
-        </ToastProvider>
-      </AuthProvider>
-    </LanguageProvider>
+    <AuthProvider>
+      <ToastProvider>
+        <PageLoader />
+        <AppContent />
+      </ToastProvider>
+    </AuthProvider>
   );
 }
