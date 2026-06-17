@@ -1234,7 +1234,7 @@ function DashboardView() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl lg:text-3xl font-black text-foreground">{getGreeting()} 👋</h1>
-          <p className="text-muted-foreground/70 text-sm mt-1">{new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p className="text-muted-foreground/70 text-sm mt-1">{formatArabicDate(new Date(), { weekday: 'long', month: 'long', year: true, day: true })}</p>
         </div>
       </div>
 
@@ -1673,7 +1673,7 @@ function PatientsView() {
                         </div>
                         <div>
                           <div className="font-bold text-sm text-foreground">
-                            {new Date(record.createdAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })}
+                            {formatArabicDate(record.createdAt, { month: 'long', year: true, day: true })}
                           </div>
                           <div className="text-xs text-muted-foreground">
                             {record.doctor?.fullName ? `د. ${record.doctor.fullName}` : 'الطبيب المعالج'}
@@ -1808,7 +1808,7 @@ function AppointmentsView() {
           doctorId: selectedApt.doctorId,
           chiefComplaint: selectedApt.title || 'كشف طبي',
           diagnosis: diagnosis.trim(),
-          notes: `تشخيص من موعد بتاريخ ${new Date(selectedApt.startTime).toLocaleDateString('ar-EG')}`,
+          notes: `تشخيص من موعد بتاريخ ${formatDateEN(selectedApt.startTime)}`,
         }),
       });
     }
@@ -1894,7 +1894,7 @@ function AppointmentsView() {
       <div className="flex items-center gap-3 glass-card-v2 rounded-2xl p-3.5 gradient-border">
         <button onClick={prevDay} className="p-2 hover:bg-teal-500/10 rounded-lg transition-colors"><ChevronRight size={18} /></button>
         <span className="font-bold flex-1 text-center">
-          {new Date(date + 'T00:00:00').toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          {formatArabicDate(date + 'T00:00:00', { weekday: 'long', month: 'long', year: true, day: true })}
         </span>
         <button onClick={nextDay} className="p-2 hover:bg-teal-500/10 rounded-lg transition-colors"><ChevronLeft size={18} /></button>
         <button onClick={() => setDate(new Date().toISOString().split('T')[0])}
@@ -2252,7 +2252,7 @@ function RecordsView() {
           {records.map(r => (
             <div key={r.id} className="glass-card-v2 rounded-2xl p-4 space-y-2 border-r-4 border-r-teal-600">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">{new Date(r.createdAt).toLocaleDateString('ar-EG')}</span>
+                <span className="text-sm text-muted-foreground">{formatDateEN(r.createdAt)}</span>
                 <span className="text-sm text-teal-300">{r.doctor?.fullName}</span>
               </div>
               {r.chiefComplaint && <div><span className="text-sm font-medium">الشكوى: </span><span className="text-sm">{r.chiefComplaint}</span></div>}
@@ -2812,7 +2812,7 @@ function TasksView() {
                 {t.description && <p className="text-sm text-muted-foreground mt-1">{t.description}</p>}
                 <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
                   {t.assignee && <span>{t.assignee.fullName}</span>}
-                  {t.dueDate && <span>{new Date(t.dueDate).toLocaleDateString('ar-EG')}</span>}
+                  {t.dueDate && <span>{formatDateEN(t.dueDate)}</span>}
                 </div>
               </div>
               <div className="flex gap-1">
@@ -3374,7 +3374,7 @@ function BackupSection() {
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      setLastBackup(new Date().toLocaleString('ar-EG'));
+      setLastBackup(formatDateTimeEN(new Date()));
     } catch (e: any) {
       setError(e.message || 'حدث خطأ');
     } finally {
@@ -3620,23 +3620,23 @@ function SubscriptionsView() {
                   <div className="mb-4">
                     {/* Primary price — changes based on selected billing cycle */}
                     <div className="flex items-baseline gap-1.5">
-                      <span className="text-3xl font-black text-foreground">{displayedPrice.toLocaleString('ar-EG')}</span>
+                      <span className="text-3xl font-black text-foreground">{displayedPrice.toLocaleString('en-GB')}</span>
                       <span className="text-muted-foreground text-sm">{priceUnit}</span>
                     </div>
                     {/* Secondary info under the price */}
                     {isYearly ? (
                       monthlyEquivalent ? (
                         <p className="text-xs text-muted-foreground/70 mt-1">
-                          ≈ {monthlyEquivalent.toLocaleString('ar-EG')} ر.س/شهر
+                          ≈ {monthlyEquivalent.toLocaleString('en-GB')} ر.س/شهر
                           {yearlySaving > 0 && (
-                            <span className="text-orange-400 mr-2">— وفّر {yearlySaving.toLocaleString('ar-EG')} ر.س سنوياً</span>
+                            <span className="text-orange-400 mr-2">— وفّر {yearlySaving.toLocaleString('en-GB')} ر.س سنوياً</span>
                           )}
                         </p>
                       ) : null
                     ) : (
                       plan.yearlyPrice ? (
                         <p className="text-xs text-muted-foreground/70 mt-1">
-                          أو {plan.yearlyPrice.toLocaleString('ar-EG')} ر.س/سنة
+                          أو {plan.yearlyPrice.toLocaleString('en-GB')} ر.س/سنة
                         </p>
                       ) : null
                     )}
@@ -3709,8 +3709,8 @@ function SubscriptionsView() {
                       </span>
                     </td>
                     <td className="py-3 px-4"><span className={`px-2 py-1 rounded-full text-xs font-medium border ${statusColors[sub.status] || statusColors.active}`}>{statusLabels[sub.status] || sub.status}</span></td>
-                    <td className="py-3 px-4 text-muted-foreground">{new Date(sub.startDate).toLocaleDateString('ar-EG')}</td>
-                    <td className="py-3 px-4 text-muted-foreground">{sub.endDate ? new Date(sub.endDate).toLocaleDateString('ar-EG') : 'غير محدد'}</td>
+                    <td className="py-3 px-4 text-muted-foreground">{formatDateEN(sub.startDate)}</td>
+                    <td className="py-3 px-4 text-muted-foreground">{sub.endDate ? formatDateEN(sub.endDate) : 'غير محدد'}</td>
                     <td className="py-3 px-4">
                       {sub.status === 'active' && (
                         <button onClick={() => handleRevoke(sub.id)} className="px-3 py-1.5 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-lg text-xs font-medium transition-all">
@@ -3965,8 +3965,8 @@ function OffersView() {
               </div>
               {(offer.startDate || offer.endDate) && (
                 <div className="text-xs text-muted-foreground/60 mb-3">
-                  {offer.startDate && <span>من {new Date(offer.startDate).toLocaleDateString('ar-EG')}</span>}
-                  {offer.endDate && <span> إلى {new Date(offer.endDate).toLocaleDateString('ar-EG')}</span>}
+                  {offer.startDate && <span>من {formatDateEN(offer.startDate)}</span>}
+                  {offer.endDate && <span> إلى {formatDateEN(offer.endDate)}</span>}
                 </div>
               )}
               <div className="flex items-center gap-2 mb-4 text-xs">
@@ -4186,12 +4186,12 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
               <div className="mb-6 pb-6 border-b border-slate-100">
                 {billingCycle === 'yearly' ? (
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-slate-900">{(plan.yearlyPrice || plan.price * 12).toLocaleString('ar-EG')}</span>
+                    <span className="text-5xl font-black text-slate-900">{(plan.yearlyPrice || plan.price * 12).toLocaleString('en-GB')}</span>
                     <span className="text-slate-500 font-medium">ر.س / سنوياً</span>
                   </div>
                 ) : (
                   <div className="flex items-baseline gap-2">
-                    <span className="text-5xl font-black text-slate-900">{plan.price.toLocaleString('ar-EG')}</span>
+                    <span className="text-5xl font-black text-slate-900">{plan.price.toLocaleString('en-GB')}</span>
                     <span className="text-slate-500 font-medium">ر.س / شهرياً</span>
                   </div>
                 )}
@@ -4963,7 +4963,7 @@ function ChatWidget() {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
     if (d.toDateString() === yesterday.toDateString()) return 'أمس';
-    return d.toLocaleDateString('ar-EG', { month: 'short', day: 'numeric' });
+    return formatArabicDate(d, { month: 'short', day: true, year: false });
   };
 
   const getRoleLabel = (role: string) => {
@@ -5258,6 +5258,41 @@ function ImpersonationBanner() {
   );
 }
 
+// ============== DATE FORMATTING HELPERS ==============
+// Format dates with Arabic month/weekday names but English (Latin) digits
+const AR_WEEKDAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+const AR_MONTHS_SHORT = ['ينا', 'فبر', 'مار', 'أبر', 'ماي', 'يون', 'يول', 'أغس', 'سبت', 'أكت', 'نوف', 'ديس'];
+
+// Format date with English digits + Arabic labels (e.g. "الثلاثاء، 17 يونيو 2026")
+function formatArabicDate(date: Date | string, opts?: { weekday?: 'long'; month?: 'long' | 'short'; year?: boolean; day?: boolean }): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  const parts: string[] = [];
+  if (opts?.weekday === 'long') parts.push(AR_WEEKDAYS[d.getDay()]);
+  if (opts?.day !== false) parts.push(String(d.getDate()));
+  if (opts?.month === 'short') parts.push(AR_MONTHS_SHORT[d.getMonth()]);
+  else if (opts?.month === 'long' || opts?.month === undefined) parts.push(AR_MONTHS[d.getMonth()]);
+  if (opts?.year !== false) parts.push(String(d.getFullYear()));
+  return parts.join(' ');
+}
+
+// Format date as DD/MM/YYYY with English digits (no Arabic labels)
+function formatDateEN(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+// Format date+time as DD/MM/YYYY, HH:MM with English digits
+function formatDateTimeEN(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  const hh = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return `${formatDateEN(d)}, ${hh}:${min}`;
+}
+
 // ============== MAIN APP ==============
 function AppContent() {
   const { user } = useAuth();
@@ -5527,7 +5562,6 @@ export default function Page() {
     <AuthProvider>
       <ToastProvider>
         <PageLoader />
-        <CursorTrail />
         <AppContent />
       </ToastProvider>
     </AuthProvider>

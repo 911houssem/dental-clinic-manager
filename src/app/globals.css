@@ -1123,23 +1123,6 @@
   }
 }
 
-/* ============ CURSOR TRAIL ============ */
-
-.cursor-trail {
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(45, 212, 191, 0.6), transparent 70%);
-  transform: translate(-50%, -50%);
-  transition: width 0.15s ease, height 0.15s ease, opacity 0.3s ease;
-  mix-blend-mode: screen;
-}
-
-@media (hover: none) {
-  .cursor-trail { display: none; }
-}
-
 /* ============ PAGE LOADER ============ */
 
 .page-loader {
