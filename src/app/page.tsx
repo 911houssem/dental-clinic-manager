@@ -855,14 +855,28 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                         className="w-full px-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         value={form.clinicCurrency} onChange={e => setForm({ ...form, clinicCurrency: e.target.value })}>
                         <option value="SAR" className="bg-background">ريال سعودي (ر.س)</option>
-                        <option value="EGP" className="bg-background">جنيه مصري (ج.م)</option>
-                        <option value="AED" className="bg-background">درهم إماراتي (د.إ)</option>
-                        <option value="KWD" className="bg-background">دينار كويتي (د.ك)</option>
                         <option value="QAR" className="bg-background">ريال قطري (ر.ق)</option>
+                        <option value="AED" className="bg-background">درهم إماراتي (د.إ)</option>
+                        <option value="EGP" className="bg-background">جنيه مصري (ج.م)</option>
+                        <option value="KWD" className="bg-background">دينار كويتي (د.ك)</option>
                         <option value="BHD" className="bg-background">دينار بحريني (د.ب)</option>
                         <option value="OMR" className="bg-background">ريال عماني (ر.ع)</option>
                         <option value="JOD" className="bg-background">دينار أردني (د.أ)</option>
+                        <option value="LBP" className="bg-background">ليرة لبنانية (ل.ل)</option>
                         <option value="IQD" className="bg-background">دينار عراقي (د.ع)</option>
+                        <option value="SYP" className="bg-background">ليرة سورية (ل.س)</option>
+                        <option value="YER" className="bg-background">ريال يمني (ر.ي)</option>
+                        <option value="DZD" className="bg-background">دينار جزائري (د.ج)</option>
+                        <option value="TND" className="bg-background">دينار تونسي (د.ت)</option>
+                        <option value="MAD" className="bg-background">درهم مغربي (د.م)</option>
+                        <option value="LYD" className="bg-background">دينار ليبي (د.ل)</option>
+                        <option value="SDG" className="bg-background">جنيه سوداني (ج.س)</option>
+                        <option value="MRU" className="bg-background">أوقية موريتانية (أ.م)</option>
+                        <option value="SOS" className="bg-background">شلن صومالي (ش.ص)</option>
+                        <option value="DJF" className="bg-background">فرنك جيبوتي (ف.ج)</option>
+                        <option value="USD" className="bg-background">دولار أمريكي ($)</option>
+                        <option value="EUR" className="bg-background">يورو (€)</option>
+                        <option value="GBP" className="bg-background">جنيه إسترليني (£)</option>
                       </select>
                     </div>
                   </div>
@@ -3048,7 +3062,7 @@ function ManagementView() {
                 <div><label className="text-xs text-muted-foreground">اسم العيادة</label><p className="font-medium">{selectedClinic.name}</p></div>
                 <div><label className="text-xs text-muted-foreground">الهاتف</label><p className="font-medium">{selectedClinic.phone || '-'}</p></div>
                 <div><label className="text-xs text-muted-foreground">العنوان</label><p className="font-medium">{selectedClinic.address || '-'}</p></div>
-                <div><label className="text-xs text-muted-foreground">العملة</label><p className="font-medium">{selectedClinic.currency}</p></div>
+                <div><label className="text-xs text-muted-foreground">العملة</label><p className="font-medium">{getCurrencyLabel(selectedClinic.currency)}</p></div>
               </div>
               <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border">
                 <div className="text-center p-3 bg-muted/30 rounded-xl"><p className="text-2xl font-bold gradient-text">{selectedClinic._count?.patients || 0}</p><p className="text-xs text-muted-foreground">مرضى</p></div>
@@ -3207,7 +3221,7 @@ function ManagementView() {
                 <div><label className="text-sm font-medium mb-1 block">العنوان</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={clinicForm.address || ''} onChange={e => setClinicForm({ ...clinicForm, address: e.target.value })} /></div>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={clinicForm.currency || 'SAR'} onChange={e => setClinicForm({ ...clinicForm, currency: e.target.value })}><option value="SAR">ريال سعودي</option><option value="EGP">جنيه مصري</option><option value="AED">درهم إماراتي</option></select></div>
+                <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={clinicForm.currency || 'SAR'} onChange={e => setClinicForm({ ...clinicForm, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
                 <div><label className="text-sm font-medium mb-1 block">مدة الموعد (دقيقة)</label><input type="number" className="w-full px-3 py-2.5 input-glow text-sm" value={clinicForm.slotDuration || 30} onChange={e => setClinicForm({ ...clinicForm, slotDuration: parseInt(e.target.value) })} /></div>
               </div>
             </div>
@@ -3324,7 +3338,7 @@ function SettingsView() {
         <div><label className="text-sm font-medium mb-1 block">العنوان</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
         <div className="grid grid-cols-2 gap-4">
           <div><label className="text-sm font-medium mb-1 block">الرقم الضريبي</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.taxNumber || ''} onChange={e => setForm({ ...form, taxNumber: e.target.value })} /></div>
-          <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي</option><option value="EGP">جنيه مصري</option><option value="AED">درهم إماراتي</option></select></div>
+          <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div><label className="text-sm font-medium mb-1 block">نوع الدفع</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.paymentMode || 'postpaid'} onChange={e => setForm({ ...form, paymentMode: e.target.value })}><option value="postpaid">آجل</option><option value="prepaid">مقدم</option></select></div>
@@ -3341,8 +3355,95 @@ function SettingsView() {
         </div>
       </div>
 
+      {/* إعدادات اللغة والعرض */}
+      <LanguageSection />
+
       {/* النسخ الاحتياطي والبيانات */}
       <BackupSection />
+    </div>
+  );
+}
+
+// ============== LANGUAGE SECTION (inside Settings) ==============
+function LanguageSection() {
+  const [language, setLanguage] = useState<'ar' | 'en'>('ar');
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('app-language') as 'ar' | 'en' | null;
+    if (saved === 'en' || saved === 'ar') setLanguage(saved);
+  }, []);
+
+  const handleLanguageChange = (lang: 'ar' | 'en') => {
+    setLanguage(lang);
+    localStorage.setItem('app-language', lang);
+    // Apply direction and lang to <html>
+    const html = document.documentElement;
+    if (lang === 'en') {
+      html.setAttribute('dir', 'ltr');
+      html.setAttribute('lang', 'en');
+    } else {
+      html.setAttribute('dir', 'rtl');
+      html.setAttribute('lang', 'ar');
+    }
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  };
+
+  return (
+    <div className="glass-card-v2 rounded-2xl p-6 space-y-4">
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500/20 to-orange-500/15 flex items-center justify-center">
+          <Globe size={20} className="text-teal-500" />
+        </div>
+        <div>
+          <h2 className="text-lg font-bold text-foreground">اللغة والاتجاه</h2>
+          <p className="text-xs text-muted-foreground">اختر لغة العرض المفضلة (Language & Direction)</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => handleLanguageChange('ar')}
+          className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
+            language === 'ar'
+              ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
+              : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
+          }`}
+        >
+          <span className="text-xl">🇸🇦</span>
+          العربية
+          <span className="text-xs opacity-70">(RTL)</span>
+        </button>
+        <button
+          onClick={() => handleLanguageChange('en')}
+          className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
+            language === 'en'
+              ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
+              : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
+          }`}
+        >
+          <span className="text-xl">🇬🇧</span>
+          English
+          <span className="text-xs opacity-70">(LTR)</span>
+        </button>
+      </div>
+
+      {saved && (
+        <div className="bg-teal-500/10 border border-teal-500/30 rounded-xl p-3 text-teal-600 dark:text-teal-400 text-sm flex items-center gap-2">
+          <CheckCircle size={14} />
+          {language === 'ar' ? 'تم حفظ تفضيل اللغة' : 'Language preference saved'}
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground/70 flex items-start gap-2">
+        <Info size={12} className="mt-0.5 shrink-0" />
+        <span>
+          {language === 'ar'
+            ? 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.'
+            : 'Note: changing language applies the page direction (RTL/LTR). Full content translation to English is in progress — some elements may remain in Arabic temporarily.'}
+        </span>
+      </p>
     </div>
   );
 }
@@ -5262,6 +5363,34 @@ function ImpersonationBanner() {
 // Format dates with Arabic month/weekday names but English (Latin) digits
 const AR_WEEKDAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 const AR_MONTHS = ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'];
+
+// Currency labels map — code → Arabic name with symbol
+const CURRENCY_LABELS: Record<string, string> = {
+  SAR: 'ريال سعودي (ر.س)',
+  QAR: 'ريال قطري (ر.ق)',
+  AED: 'درهم إماراتي (د.إ)',
+  EGP: 'جنيه مصري (ج.م)',
+  KWD: 'دينار كويتي (د.ك)',
+  BHD: 'دينار بحريني (د.ب)',
+  OMR: 'ريال عماني (ر.ع)',
+  JOD: 'دينار أردني (د.أ)',
+  LBP: 'ليرة لبنانية (ل.ل)',
+  IQD: 'دينار عراقي (د.ع)',
+  SYP: 'ليرة سورية (ل.س)',
+  YER: 'ريال يمني (ر.ي)',
+  DZD: 'دينار جزائري (د.ج)',
+  TND: 'دينار تونسي (د.ت)',
+  MAD: 'درهم مغربي (د.م)',
+  LYD: 'دينار ليبي (د.ل)',
+  SDG: 'جنيه سوداني (ج.س)',
+  MRU: 'أوقية موريتانية (أ.م)',
+  SOS: 'شلن صومالي (ش.ص)',
+  DJF: 'فرنك جيبوتي (ف.ج)',
+  USD: 'دولار أمريكي ($)',
+  EUR: 'يورو (€)',
+  GBP: 'جنيه إسترليني (£)',
+};
+const getCurrencyLabel = (code: string): string => CURRENCY_LABELS[code] || code;
 const AR_MONTHS_SHORT = ['ينا', 'فبر', 'مار', 'أبر', 'ماي', 'يون', 'يول', 'أغس', 'سبت', 'أكت', 'نوف', 'ديس'];
 
 // Format date with English digits + Arabic labels (e.g. "الثلاثاء، 17 يونيو 2026")
