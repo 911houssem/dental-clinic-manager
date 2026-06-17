@@ -13,7 +13,7 @@ import {
   Link, ExternalLink, Star, Award, UserCog, Crown, BadgeCheck,
   ArrowUpRight, HeartPulse, ClipboardCheck, CalendarCheck, Zap,
   ChevronDown, MousePointerClick, ShieldCheck2, HeadphonesIcon, Sparkles,
-  Database, Download,
+  Database, Download, Info,
   ArrowRight, Play, Gift, Tag, Percent, Ban, MessageCircle, Send,
   LogIn, ArrowLeftRight, KeyRound
 } from 'lucide-react';
@@ -1355,6 +1355,10 @@ function PatientsView() {
   const [form, setForm] = useState<any>({});
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [showRecordsModal, setShowRecordsModal] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [medicalRecords, setMedicalRecords] = useState<any[]>([]);
+  const [loadingRecords, setLoadingRecords] = useState(false);
 
   const fetchPatients = async () => {
     if (!currentClinicId) return;
@@ -1394,6 +1398,24 @@ function PatientsView() {
     setEditPatient(null);
     setForm({ fullName: '', phone: '', gender: 'male', bloodType: '', age: '', notes: '' });
     setShowModal(true);
+  };
+
+  const openMedicalRecords = async (p: any) => {
+    setSelectedPatient(p);
+    setShowRecordsModal(true);
+    setLoadingRecords(true);
+    setMedicalRecords([]);
+    try {
+      const res = await fetch(`/api/records?patientId=${p.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setMedicalRecords(data);
+      }
+    } catch (e) {
+      console.error('Error fetching records:', e);
+    } finally {
+      setLoadingRecords(false);
+    }
   };
 
   return (
@@ -1441,6 +1463,7 @@ function PatientsView() {
                   <td className="px-4 py-3">{p.bloodType || '-'}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => openMedicalRecords(p)} className="p-1.5 hover:bg-emerald-500/10 dark:hover:bg-emerald-950/20 rounded-lg transition-colors" title="عرض السجل الطبي والتشخيصات"><ClipboardCheck size={14} className="text-emerald-500" /></button>
                       <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-violet-500/10 dark:hover:bg-violet-950/20 rounded-lg transition-colors" title="تعديل"><Edit3 size={14} className="text-violet-500" /></button>
                       <button onClick={() => handleDelete(p.id)} className="p-1.5 hover:bg-red-950/30 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="حذف"><Trash2 size={14} className="text-red-500" /></button>
                     </div>
@@ -1578,6 +1601,125 @@ function PatientsView() {
           </div>
         </div>
       )}
+
+      {/* Medical Records Modal — shows all past diagnoses for this patient */}
+      {showRecordsModal && selectedPatient && (
+        <div className="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4" onClick={() => setShowRecordsModal(false)}>
+          <div className="glass-card-v2 rounded-2xl p-6 w-full max-w-2xl max-h-[85vh] overflow-y-auto animate-scale-in gradient-border" onClick={e => e.stopPropagation()}>
+            {/* Header */}
+            <div className="flex items-center justify-between mb-5 pb-4 border-b border-border/30">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/25">
+                  <ClipboardCheck className="text-white" size={22} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black gradient-text">السجل الطبي للمريض</h3>
+                  <p className="text-sm text-muted-foreground">
+                    {selectedPatient.fullName} — {selectedPatient.fileNumber}
+                  </p>
+                </div>
+              </div>
+              <button onClick={() => setShowRecordsModal(false)} className="p-2 hover:bg-muted/40 rounded-lg transition-colors">
+                <XCircle size={20} className="text-muted-foreground" />
+              </button>
+            </div>
+
+            {/* Patient info card */}
+            <div className="bg-muted/30 border border-border/40 rounded-xl p-4 mb-5 grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+              <div>
+                <div className="text-xs text-muted-foreground mb-0.5">الجنس</div>
+                <div className="font-medium">{selectedPatient.gender === 'male' ? 'ذكر' : selectedPatient.gender === 'female' ? 'أنثى' : '-'}</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-0.5">العمر</div>
+                <div className="font-medium">{selectedPatient.age || '-'} سنة</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-0.5">فصيلة الدم</div>
+                <div className="font-medium">{selectedPatient.bloodType || '-'}</div>
+              </div>
+              <div>
+                <div className="text-xs text-muted-foreground mb-0.5">الهاتف</div>
+                <div className="font-medium" dir="ltr">{selectedPatient.phone || '-'}</div>
+              </div>
+            </div>
+
+            {/* Records list */}
+            {loadingRecords ? (
+              <div className="flex items-center justify-center py-12">
+                <RefreshCw className="animate-spin text-violet-400" size={28} />
+                <span className="mr-2 text-muted-foreground">جاري تحميل السجلات...</span>
+              </div>
+            ) : medicalRecords.length === 0 ? (
+              <div className="text-center py-12">
+                <ClipboardCheck size={48} className="mx-auto mb-3 text-muted-foreground/30" />
+                <p className="text-muted-foreground font-medium">لا توجد تشخيصات سابقة</p>
+                <p className="text-xs text-muted-foreground/60 mt-1">سيتم عرض التشخيصات هنا عند إتمام مواعيد المريض</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-bold text-sm flex items-center gap-2">
+                    <FileCheck size={16} className="text-emerald-600" />
+                    التشخيصات السابقة ({medicalRecords.length})
+                  </h4>
+                </div>
+                {medicalRecords.map((record, idx) => (
+                  <div key={record.id} className="bg-card border border-border/40 rounded-xl p-4 hover:border-emerald-500/30 transition-colors">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+                          {medicalRecords.length - idx}
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-foreground">
+                            {new Date(record.createdAt).toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' })}
+                          </div>
+                          <div className="text-xs text-muted-foreground">
+                            {record.doctor?.fullName ? `د. ${record.doctor.fullName}` : 'الطبيب المعالج'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {record.chiefComplaint && (
+                      <div className="mb-2 text-sm">
+                        <span className="text-muted-foreground text-xs">الشكوى الرئيسية: </span>
+                        <span className="text-foreground">{record.chiefComplaint}</span>
+                      </div>
+                    )}
+                    {record.diagnosis && (
+                      <div className="bg-emerald-500/5 border-r-2 border-emerald-500 rounded-lg p-3 my-2">
+                        <div className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                          <ClipboardCheck size={12} /> التشخيص
+                        </div>
+                        <div className="text-sm text-foreground leading-relaxed">{record.diagnosis}</div>
+                      </div>
+                    )}
+                    {record.treatmentPlan && (
+                      <div className="mb-2 text-sm">
+                        <span className="text-muted-foreground text-xs">خطة العلاج: </span>
+                        <span className="text-foreground">{record.treatmentPlan}</span>
+                      </div>
+                    )}
+                    {record.notes && (
+                      <div className="text-xs text-muted-foreground italic mt-2 pt-2 border-t border-border/20">
+                        📝 {record.notes}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="flex justify-end mt-6 pt-4 border-t border-border/30">
+              <button onClick={() => setShowRecordsModal(false)}
+                className="px-6 py-2.5 bg-muted/60 hover:bg-muted rounded-xl font-medium transition-colors text-sm">
+                إغلاق
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1595,6 +1737,7 @@ function AppointmentsView() {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [selectedApt, setSelectedApt] = useState<any>(null);
   const [appointmentPrice, setAppointmentPrice] = useState('');
+  const [diagnosis, setDiagnosis] = useState('');
 
   const currentClinic = clinics.find(c => c.id === currentClinicId);
 
@@ -1641,6 +1784,7 @@ function AppointmentsView() {
   const handleComplete = (apt: any) => {
     setSelectedApt(apt);
     setAppointmentPrice('');
+    setDiagnosis('');
     setShowPriceModal(true);
   };
 
@@ -1653,6 +1797,21 @@ function AppointmentsView() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id: selectedApt.id, status: 'completed' }),
     });
+
+    // Save diagnosis as a medical record (if provided)
+    if (diagnosis.trim()) {
+      await fetch('/api/records', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientId: selectedApt.patientId,
+          doctorId: selectedApt.doctorId,
+          chiefComplaint: selectedApt.title || 'كشف طبي',
+          diagnosis: diagnosis.trim(),
+          notes: `تشخيص من موعد بتاريخ ${new Date(selectedApt.startTime).toLocaleDateString('ar-EG')}`,
+        }),
+      });
+    }
 
     // Create invoice as fully paid
     const price = Number(appointmentPrice);
@@ -1681,6 +1840,7 @@ function AppointmentsView() {
     setShowPriceModal(false);
     setSelectedApt(null);
     setAppointmentPrice('');
+    setDiagnosis('');
     fetchAppointments();
   };
 
@@ -1899,9 +2059,28 @@ function AppointmentsView() {
                   />
                 </div>
               </div>
+              <div>
+                <label className="text-sm font-bold mb-2 block flex items-center gap-2">
+                  <ClipboardCheck size={16} className="text-emerald-600" />
+                  التشخيص الطبي للمريض
+                  <span className="text-xs font-normal text-muted-foreground">(اختياري — يُحفظ في السجل الطبي للمريض)</span>
+                </label>
+                <textarea
+                  placeholder="اكتب التشخيص الطبي للمريض بعد الكشف..."
+                  className="w-full px-4 py-3 input-glow text-sm resize-none"
+                  rows={3}
+                  value={diagnosis}
+                  onChange={e => setDiagnosis(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground mt-1.5 flex items-center gap-1">
+                  <Info size={12} />
+                  سيتم حفظ التشخيص في السجل الطبي للمريض، ويمكن مراجعته لاحقاً من صفحة المرضى
+                </p>
+              </div>
               <div className="bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-700/40 rounded-xl p-3.5">
                 <p className="text-sm text-violet-700 dark:text-violet-300 font-medium">
                   سيتم تسجيل فاتورة تلقائياً في الفواتير كـ <span className="font-black">مدفوعة كلياً</span> بقيمة <span className="font-black text-violet-900 dark:text-violet-200">{appointmentPrice || '0'}</span> ر.س
+                  {diagnosis.trim() && <span className="block mt-1 text-emerald-600 dark:text-emerald-400">+ سيتم حفظ التشخيص في السجل الطبي للمريض ✓</span>}
                 </p>
               </div>
             </div>
