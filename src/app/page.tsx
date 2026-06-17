@@ -340,26 +340,26 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
   // 2FA Verification Step
   if (step === '2fa' || requiresTwoFactor) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-violet-900 to-violet-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-teal-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-violet-950/25 rounded-full blur-[100px]" />
-          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-emerald-900/25 rounded-full blur-[100px]" />
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-teal-950/25 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-orange-900/25 rounded-full blur-[100px]" />
         </div>
         <div className="w-full max-w-[420px] relative z-10 animate-slide-up">
           <div className="text-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-emerald-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-emerald-600/30 animate-float">
+            <div className="w-20 h-20 bg-gradient-to-br from-orange-600 to-orange-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl shadow-orange-600/30 animate-float">
               <ShieldCheck className="text-white" size={36} />
             </div>
             <h1 className="text-2xl font-bold text-white mb-1">التحقق الثنائي</h1>
-            <p className="text-violet-500/80 text-sm">أدخل رمز التحقق من تطبيق المصادقة</p>
+            <p className="text-teal-500/80 text-sm">أدخل رمز التحقق من تطبيق المصادقة</p>
           </div>
           <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border border-white/10 shadow-2xl">
             <form onSubmit={handle2FA} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-violet-200">رمز التحقق (6 أرقام)</label>
+                <label className="text-sm font-medium text-teal-200">رمز التحقق (6 أرقام)</label>
                 <input
                   placeholder="000000"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white text-center text-2xl tracking-[0.5em] placeholder-violet-400/40 outline-none focus:border-emerald-400/60 focus:ring-2 focus:ring-emerald-600/30 transition-all"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white text-center text-2xl tracking-[0.5em] placeholder-teal-400/40 outline-none focus:border-orange-400/60 focus:ring-2 focus:ring-orange-600/30 transition-all"
                   type="text"
                   maxLength={6}
                   value={twoFactorCode}
@@ -367,7 +367,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
                   autoFocus
                 />
               </div>
-              <label className="flex items-center gap-2 text-violet-500/80 text-sm cursor-pointer">
+              <label className="flex items-center gap-2 text-teal-500/80 text-sm cursor-pointer">
                 <input type="checkbox" checked={trustDevice} onChange={e => setTrustDevice(e.target.checked)}
                   className="rounded border-white/20 bg-white/10" />
                 <span>الثوق في هذا الجهاز</span>
@@ -376,11 +376,11 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
                 <div className="bg-red-500/30 border border-red-500/30 rounded-xl p-3 text-red-200 text-sm text-center">{error}</div>
               )}
               <button type="submit" disabled={loading || twoFactorCode.length !== 6}
-                className="w-full py-3 bg-gradient-to-l from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-600/35 transition-all hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50">
+                className="w-full py-3 bg-gradient-to-l from-orange-700 to-orange-600 hover:from-orange-800 hover:to-orange-700 text-white font-semibold rounded-2xl shadow-lg shadow-orange-600/35 transition-all hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50">
                 {loading ? 'جاري التحقق...' : 'تحقق'}
               </button>
               <button type="button" onClick={() => setStep('login')}
-                className="w-full py-2.5 text-sm text-violet-500/80 hover:text-violet-400 border border-white/10 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                className="w-full py-2.5 text-sm text-teal-500/80 hover:text-teal-400 border border-white/10 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
                 <ArrowLeft size={14} /> العودة لتسجيل الدخول
               </button>
             </form>
@@ -393,10 +393,10 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
   // Device Authorization Step
   if (step === 'device' || requiresDeviceAuth) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-violet-900 to-violet-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-teal-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-violet-950/25 rounded-full blur-[100px]" />
-          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-emerald-900/25 rounded-full blur-[100px]" />
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-teal-950/25 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-orange-900/25 rounded-full blur-[100px]" />
         </div>
         <div className="w-full max-w-[420px] relative z-10 animate-slide-up">
           <div className="text-center mb-8">
@@ -404,19 +404,19 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
               <Fingerprint className="text-white" size={36} />
             </div>
             <h1 className="text-2xl font-bold text-white mb-1">جهاز جديد</h1>
-            <p className="text-violet-500/80 text-sm">تم اكتشاف جهاز جديد. يرجى التحقق من الهوية</p>
+            <p className="text-teal-500/80 text-sm">تم اكتشاف جهاز جديد. يرجى التحقق من الهوية</p>
           </div>
           <div className="bg-white/10 backdrop-blur-2xl rounded-3xl p-8 border border-white/10 shadow-2xl">
-            <div className="bg-emerald-500/10 border border-emerald-600/30 rounded-xl p-3 mb-4 text-emerald-200 text-sm text-center">
+            <div className="bg-orange-500/10 border border-orange-600/30 rounded-xl p-3 mb-4 text-orange-200 text-sm text-center">
               <Monitor size={16} className="inline-block ml-1" />
               {deviceName}
             </div>
             <form onSubmit={handleDeviceAuth} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-sm font-medium text-violet-200">رمز تفويض الجهاز</label>
+                <label className="text-sm font-medium text-teal-200">رمز تفويض الجهاز</label>
                 <input
                   placeholder="أدخل رمز التفويض"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white text-center text-xl tracking-[0.3em] placeholder-violet-400/40 outline-none focus:border-rose-400/60 focus:ring-2 focus:ring-rose-600/30 transition-all"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-2xl text-white text-center text-xl tracking-[0.3em] placeholder-teal-400/40 outline-none focus:border-rose-400/60 focus:ring-2 focus:ring-rose-600/30 transition-all"
                   type="text"
                   value={deviceCode}
                   onChange={e => setDeviceCode(e.target.value.toUpperCase())}
@@ -424,12 +424,12 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
                 />
               </div>
               {deviceAuthCode && (
-                <div className="bg-emerald-700/10 border border-emerald-700/30 rounded-xl p-3 text-emerald-200 text-sm text-center">
+                <div className="bg-orange-700/10 border border-orange-700/30 rounded-xl p-3 text-orange-200 text-sm text-center">
                   <p className="text-xs mb-1">رمز التفويض (للتجربة):</p>
                   <p className="text-xl font-mono font-bold tracking-widest">{deviceAuthCode}</p>
                 </div>
               )}
-              <label className="flex items-center gap-2 text-violet-500/80 text-sm cursor-pointer">
+              <label className="flex items-center gap-2 text-teal-500/80 text-sm cursor-pointer">
                 <input type="checkbox" checked={trustDevice} onChange={e => setTrustDevice(e.target.checked)}
                   className="rounded border-white/20 bg-white/10" />
                 <span>الثوق في هذا الجهاز لمدة 30 يوم</span>
@@ -442,7 +442,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
                 {loading ? 'جاري التحقق...' : 'تفويض الجهاز'}
               </button>
               <button type="button" onClick={() => setStep('login')}
-                className="w-full py-2.5 text-sm text-violet-500/80 hover:text-violet-400 border border-white/10 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+                className="w-full py-2.5 text-sm text-teal-500/80 hover:text-teal-400 border border-white/10 rounded-xl hover:bg-white/5 transition-all flex items-center justify-center gap-2">
                 <ArrowLeft size={14} /> العودة لتسجيل الدخول
               </button>
             </form>
@@ -456,27 +456,27 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
   return (
     <div className="min-h-screen flex relative overflow-hidden">
       {/* Left Branding Panel (hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-violet-900 to-violet-800 relative items-center justify-center p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-teal-900 to-teal-800 relative items-center justify-center p-12 overflow-hidden">
         {/* Animated bg elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="deco-blob absolute -top-32 -right-32 w-[500px] h-[500px] bg-violet-800/15" style={{ animationDelay: '0s' }} />
-          <div className="deco-blob absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-emerald-500/25" style={{ animationDelay: '2s' }} />
-          <div className="absolute top-1/3 left-1/4 w-[250px] h-[250px] bg-emerald-400/10 rounded-full blur-[100px]" />
+          <div className="deco-blob absolute -top-32 -right-32 w-[500px] h-[500px] bg-teal-800/15" style={{ animationDelay: '0s' }} />
+          <div className="deco-blob absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-orange-500/25" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-1/3 left-1/4 w-[250px] h-[250px] bg-orange-400/10 rounded-full blur-[100px]" />
           <div className="absolute inset-0 pattern-dots opacity-40" />
           {/* Orbiting dot */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="animate-orbit">
-              <div className="w-2.5 h-2.5 bg-violet-800/40 rounded-full shadow-lg shadow-violet-500/30" />
+              <div className="w-2.5 h-2.5 bg-teal-800/40 rounded-full shadow-lg shadow-teal-500/30" />
             </div>
           </div>
         </div>
         <div className="relative z-10 max-w-md text-center space-y-8 animate-slide-up">
-          <div className="w-20 h-20 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-2xl shadow-violet-600/50 animate-float">
+          <div className="w-20 h-20 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-2xl shadow-teal-600/50 animate-float">
             <Syringe className="text-white" size={36} />
           </div>
           <div>
             <h1 className="text-5xl font-black text-white mb-3 tracking-tight">عيادة</h1>
-            <p className="text-violet-300/80 text-lg font-medium leading-relaxed">نظام إدارة العيادات المتكامل</p>
+            <p className="text-teal-300/80 text-lg font-medium leading-relaxed">نظام إدارة العيادات المتكامل</p>
           </div>
           {/* Feature bullets */}
           <div className="space-y-4 text-right">
@@ -490,7 +490,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
               return (
                 <div key={i} className="flex items-center gap-3 text-white/85 hover:text-white transition-colors">
                   <div className="w-9 h-9 rounded-lg bg-white/[0.08] border border-white/[0.12] flex items-center justify-center shrink-0">
-                    <FIcon size={16} className="text-violet-500" />
+                    <FIcon size={16} className="text-teal-500" />
                   </div>
                   <span className="text-sm font-medium">{f.text}</span>
                 </div>
@@ -507,7 +507,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
         <div className="w-full max-w-[420px] animate-slide-up relative z-10">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-xl shadow-violet-600/40 mb-3">
+            <div className="w-16 h-16 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-xl shadow-teal-600/40 mb-3">
               <Syringe className="text-white" size={28} />
             </div>
             <h1 className="text-3xl font-black gradient-text">عيادة</h1>
@@ -522,10 +522,10 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
             <div className="space-y-1.5">
               <label className="text-sm font-medium text-foreground">اسم المستخدم</label>
               <div className="relative group">
-                <UserCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                <UserCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                 <input
                   placeholder="أدخل اسم المستخدم"
-                  className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 focus:bg-muted/20 transition-all duration-300"
+                  className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 focus:bg-muted/20 transition-all duration-300"
                   type="text"
                   value={username}
                   onChange={e => setUsername(e.target.value)}
@@ -542,7 +542,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
                 </button>
                 <input
                   placeholder="أدخل كلمة المرور"
-                  className="w-full pr-4 pl-11 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 focus:bg-muted/20 transition-all duration-300"
+                  className="w-full pr-4 pl-11 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 focus:bg-muted/20 transition-all duration-300"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={e => setPassword(e.target.value)}
@@ -557,7 +557,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
             )}
 
             <button type="submit" disabled={loading}
-              className="w-full py-3 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white font-bold rounded-xl shadow-lg shadow-violet-600/25 hover:shadow-xl hover:shadow-violet-600/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-[15px]">
+              className="w-full py-3 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white font-bold rounded-xl shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-[15px]">
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <RefreshCw size={16} className="animate-spin" /> جاري التحقق...
@@ -580,7 +580,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
           )}
 
           {seeded && (
-            <div className="bg-emerald-900/30 dark:bg-emerald-900/20 border border-emerald-700/40 dark:border-emerald-800/50 rounded-xl p-3 text-emerald-400 text-xs text-center">
+            <div className="bg-orange-900/30 dark:bg-orange-900/20 border border-orange-700/40 dark:border-orange-800/50 rounded-xl p-3 text-orange-400 text-xs text-center">
               تم تهيئة البيانات — admin / admin123
             </div>
           )}
@@ -588,7 +588,7 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
           <div className="mt-6 text-center">
             <button type="button" onClick={onSwitchRegister}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              ليس لديك حساب؟ <span className="font-semibold text-violet-600 dark:text-violet-400">أنشئ حساباً جديداً</span>
+              ليس لديك حساب؟ <span className="font-semibold text-teal-600 dark:text-teal-400">أنشئ حساباً جديداً</span>
             </button>
           </div>
 
@@ -678,23 +678,23 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-violet-900 to-violet-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-teal-800 flex items-center justify-center p-4 relative overflow-hidden pattern-dots">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-emerald-900/25 rounded-full blur-[100px]" />
-          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-violet-950/25 rounded-full blur-[100px]" />
+          <div className="absolute -top-40 -right-40 w-[500px] h-[500px] bg-orange-900/25 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-teal-950/25 rounded-full blur-[100px]" />
         </div>
         <div className="w-full max-w-[440px] relative z-10 animate-scale-in text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-800 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-emerald-700/30">
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-orange-800 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-orange-700/30">
             <CheckCircle className="text-white" size={36} />
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">تم إنشاء الحساب بنجاح!</h1>
-          <p className="text-violet-400/75 text-sm mb-2">يمكنك الآن تسجيل الدخول بحسابك</p>
+          <p className="text-teal-400/75 text-sm mb-2">يمكنك الآن تسجيل الدخول بحسابك</p>
           <div className="bg-white/10 backdrop-blur-2xl rounded-2xl p-4 border border-white/10 mb-6">
             <div className="text-sm text-white/90 mb-1">اسم المستخدم</div>
-            <div className="text-lg font-bold text-violet-500">{form.username}</div>
+            <div className="text-lg font-bold text-teal-500">{form.username}</div>
           </div>
           <button onClick={onSwitchLogin}
-            className="w-full py-3.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white font-bold rounded-2xl shadow-lg shadow-violet-600/40 hover:shadow-xl hover:shadow-violet-600/50 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] text-base">
+            className="w-full py-3.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white font-bold rounded-2xl shadow-lg shadow-teal-600/40 hover:shadow-xl hover:shadow-teal-600/50 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98] text-base">
             تسجيل الدخول الآن
           </button>
         </div>
@@ -705,19 +705,19 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
   return (
     <div className="min-h-screen flex relative overflow-hidden">
       {/* Left Branding Panel (hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-violet-900 to-violet-800 relative items-center justify-center p-12 overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-slate-900 via-teal-900 to-teal-800 relative items-center justify-center p-12 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="deco-blob absolute -top-32 -right-32 w-[500px] h-[500px] bg-violet-800/15" style={{ animationDelay: '0s' }} />
-          <div className="deco-blob absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-emerald-500/25" style={{ animationDelay: '2s' }} />
+          <div className="deco-blob absolute -top-32 -right-32 w-[500px] h-[500px] bg-teal-800/15" style={{ animationDelay: '0s' }} />
+          <div className="deco-blob absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-orange-500/25" style={{ animationDelay: '2s' }} />
           <div className="absolute inset-0 pattern-dots opacity-40" />
         </div>
         <div className="relative z-10 max-w-md text-center space-y-8 animate-slide-up">
-          <div className="w-20 h-20 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-2xl shadow-violet-600/50 animate-float">
+          <div className="w-20 h-20 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-2xl shadow-teal-600/50 animate-float">
             <UserPlus className="text-white" size={36} />
           </div>
           <div>
             <h1 className="text-4xl font-black text-white mb-3 tracking-tight">إنشاء حساب جديد</h1>
-            <p className="text-violet-300/80 text-lg font-medium leading-relaxed">انضم لآلاف العيادات التي تثق بنظام عيادة</p>
+            <p className="text-teal-300/80 text-lg font-medium leading-relaxed">انضم لآلاف العيادات التي تثق بنظام عيادة</p>
           </div>
           <div className="space-y-3 text-right">
             {[
@@ -726,7 +726,7 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
               { num: '٣', text: 'ابدأ باستقبال المرضى' },
             ].map((f, i) => (
               <div key={i} className="flex items-center gap-3 text-white/85">
-                <div className="w-9 h-9 rounded-lg bg-white/[0.08] border border-white/[0.12] flex items-center justify-center shrink-0 text-violet-300 font-bold text-sm">{f.num}</div>
+                <div className="w-9 h-9 rounded-lg bg-white/[0.08] border border-white/[0.12] flex items-center justify-center shrink-0 text-teal-300 font-bold text-sm">{f.num}</div>
                 <span className="text-sm font-medium">{f.text}</span>
               </div>
             ))}
@@ -741,7 +741,7 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
         <div className="w-full max-w-[480px] animate-slide-up relative z-10">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-6">
-            <div className="w-14 h-14 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-xl shadow-violet-600/40 mb-3">
+            <div className="w-14 h-14 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[1.25rem] flex items-center justify-center mx-auto shadow-xl shadow-teal-600/40 mb-3">
               <UserPlus className="text-white" size={26} />
             </div>
             <h1 className="text-2xl font-black gradient-text">إنشاء حساب جديد</h1>
@@ -750,12 +750,12 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
           {/* Steps indicator */}
           <div className="flex items-center justify-center gap-0 mb-6" dir="ltr">
             <div className={`flex items-center gap-1.5 ${step === 1 ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${step === 1 ? 'bg-violet-800 text-white shadow-md shadow-violet-600/30' : 'bg-violet-500/10 dark:bg-violet-900/35 text-violet-300'}`}>1</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${step === 1 ? 'bg-teal-800 text-white shadow-md shadow-teal-600/30' : 'bg-teal-500/10 dark:bg-teal-900/35 text-teal-300'}`}>1</div>
               <span className={`text-xs font-medium ${step === 1 ? 'text-foreground' : 'text-muted-foreground'}`}>حسابك</span>
             </div>
-            <div className={`w-12 h-0.5 mx-2 rounded-full transition-colors duration-300 ${step === 2 ? 'bg-violet-800' : 'bg-border'}`} />
+            <div className={`w-12 h-0.5 mx-2 rounded-full transition-colors duration-300 ${step === 2 ? 'bg-teal-800' : 'bg-border'}`} />
             <div className={`flex items-center gap-1.5 ${step === 2 ? 'opacity-100' : 'opacity-50'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${step === 2 ? 'bg-violet-800 text-white shadow-md shadow-violet-600/30' : 'bg-muted text-muted-foreground'}`}>2</div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${step === 2 ? 'bg-teal-800 text-white shadow-md shadow-teal-600/30' : 'bg-muted text-muted-foreground'}`}>2</div>
               <span className={`text-xs font-medium ${step === 2 ? 'text-foreground' : 'text-muted-foreground'}`}>عيادتك</span>
             </div>
           </div>
@@ -767,9 +767,9 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">الاسم الكامل *</label>
                     <div className="relative group">
-                      <UserCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <UserCircle className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <input placeholder="أدخل اسمك الكامل"
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         value={form.fullName} onChange={e => setForm({ ...form, fullName: e.target.value })} />
                     </div>
                   </div>
@@ -777,9 +777,9 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">اسم المستخدم *</label>
                     <div className="relative group">
-                      <Hash className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <Hash className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <input placeholder="اختر اسم مستخدم فريد"
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         value={form.username} onChange={e => setForm({ ...form, username: e.target.value.replace(/\s/g, '') })} />
                     </div>
                   </div>
@@ -788,18 +788,18 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-foreground">رقم الجوال</label>
                       <div className="relative group">
-                        <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={16} />
+                        <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={16} />
                         <input placeholder="05xxxxxxxx"
-                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300 text-sm"
+                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm"
                           value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
                       </div>
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-foreground">البريد الإلكتروني</label>
                       <div className="relative group">
-                        <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={16} />
+                        <Mail className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={16} />
                         <input placeholder="email@example.com" type="email" dir="ltr"
-                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300 text-sm"
+                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm"
                           value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
                       </div>
                     </div>
@@ -808,9 +808,9 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">كلمة المرور *</label>
                     <div className="relative group">
-                      <Lock className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <Lock className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <input placeholder="أدخل كلمة مرور قوية (٦ أحرف على الأقل)"
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         type="password"
                         value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} />
                     </div>
@@ -819,9 +819,9 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">تأكيد كلمة المرور *</label>
                     <div className="relative group">
-                      <Lock className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <Lock className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <input placeholder="أعد كتابة كلمة المرور"
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         type="password"
                         value={form.confirmPassword} onChange={e => setForm({ ...form, confirmPassword: e.target.value })} />
                     </div>
@@ -832,9 +832,9 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">اسم العيادة *</label>
                     <div className="relative group">
-                      <Building2 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <Building2 className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <input placeholder="مثال: عيادة الشفاء"
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         value={form.clinicName} onChange={e => setForm({ ...form, clinicName: e.target.value })} />
                     </div>
                   </div>
@@ -843,16 +843,16 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-foreground">هاتف العيادة</label>
                       <div className="relative group">
-                        <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={16} />
+                        <Phone className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={16} />
                         <input placeholder="رقم هاتف العيادة"
-                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300 text-sm"
+                          className="w-full pr-10 pl-3 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 text-sm"
                           value={form.clinicPhone} onChange={e => setForm({ ...form, clinicPhone: e.target.value })} />
                       </div>
                     </div>
                     <div className="space-y-1.5">
                       <label className="text-sm font-medium text-foreground">العملة</label>
                       <select
-                        className="w-full px-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300"
+                        className="w-full px-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300"
                         value={form.clinicCurrency} onChange={e => setForm({ ...form, clinicCurrency: e.target.value })}>
                         <option value="SAR" className="bg-background">ريال سعودي (ر.س)</option>
                         <option value="EGP" className="bg-background">جنيه مصري (ج.م)</option>
@@ -870,18 +870,18 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   <div className="space-y-1.5">
                     <label className="text-sm font-medium text-foreground">عنوان العيادة</label>
                     <div className="relative group">
-                      <MapPin className="absolute right-3.5 top-4 text-muted-foreground/50 group-focus-within:text-violet-500 transition-colors" size={18} />
+                      <MapPin className="absolute right-3.5 top-4 text-muted-foreground/50 group-focus-within:text-teal-500 transition-colors" size={18} />
                       <textarea placeholder="المدينة، الحي، الشارع..."
-                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/20 transition-all duration-300 resize-none"
+                        className="w-full pr-11 pl-4 py-3 bg-muted/30 border border-border/60 rounded-xl text-foreground placeholder-muted-foreground/50 outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/20 transition-all duration-300 resize-none"
                         rows={2}
                         value={form.clinicAddress} onChange={e => setForm({ ...form, clinicAddress: e.target.value })} />
                     </div>
                   </div>
 
                   {/* Info note */}
-                  <div className="bg-violet-900/10 dark:bg-violet-950/15 border border-violet-950/40 dark:border-violet-900/40 rounded-xl p-3 flex items-start gap-2">
-                    <Sparkles size={16} className="text-violet-600 dark:text-violet-400 shrink-0 mt-0.5" />
-                    <p className="text-xs text-violet-400">ستكون مدير العيادة بصلاحيات كاملة ويمكنك لاحقاً إضافة موظفين وأطباء من داخل لوحة التحكم</p>
+                  <div className="bg-teal-900/10 dark:bg-teal-950/15 border border-teal-950/40 dark:border-teal-900/40 rounded-xl p-3 flex items-start gap-2">
+                    <Sparkles size={16} className="text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                    <p className="text-xs text-teal-400">ستكون مدير العيادة بصلاحيات كاملة ويمكنك لاحقاً إضافة موظفين وأطباء من داخل لوحة التحكم</p>
                   </div>
                 </>
               )}
@@ -900,7 +900,7 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
                   </button>
                 )}
                 <button type="submit" disabled={loading}
-                  className="flex-1 py-3 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white font-bold rounded-xl shadow-lg shadow-violet-600/25 hover:shadow-xl hover:shadow-violet-600/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 text-[15px]">
+                  className="flex-1 py-3 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white font-bold rounded-xl shadow-lg shadow-teal-600/25 hover:shadow-xl hover:shadow-teal-600/40 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 text-[15px]">
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
                       <RefreshCw size={16} className="animate-spin" /> جاري الإنشاء...
@@ -913,7 +913,7 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
             <div className="mt-5 text-center">
               <button onClick={onSwitchLogin}
                 className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                لديك حساب بالفعل؟ <span className="font-semibold text-violet-600 dark:text-violet-400">سجّل دخولك</span>
+                لديك حساب بالفعل؟ <span className="font-semibold text-teal-600 dark:text-teal-400">سجّل دخولك</span>
               </button>
             </div>
           </div>
@@ -964,8 +964,8 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
   const roleColors: Record<string, string> = {
     super_admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
     admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
-    doctor: 'bg-violet-100 text-violet-700 dark:bg-violet-900/35 dark:text-violet-400',
-    reception: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/35 dark:text-emerald-400',
+    doctor: 'bg-teal-100 text-teal-700 dark:bg-teal-900/35 dark:text-teal-400',
+    reception: 'bg-orange-100 text-orange-700 dark:bg-orange-900/35 dark:text-orange-400',
     accountant: 'bg-purple-100 text-purple-700 dark:bg-purple-900/35 dark:text-purple-300',
     nurse: 'bg-amber-100 text-amber-700 dark:bg-amber-900/35 dark:text-amber-300',
   };
@@ -980,11 +980,11 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
   };
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-gradient-to-b from-white via-slate-50/50 to-violet-50/30 dark:from-violet-950 dark:via-violet-950 dark:to-violet-950/20">
+    <div className="flex flex-col h-full bg-gradient-to-b from-white via-slate-50/50 to-teal-50/30 dark:from-teal-950 dark:via-teal-950 dark:to-teal-950/20">
       {/* Brand */}
       <div className="p-5 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-[0.85rem] flex items-center justify-center shadow-lg shadow-violet-600/30 shrink-0">
+          <div className="w-11 h-11 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[0.85rem] flex items-center justify-center shadow-lg shadow-teal-600/30 shrink-0">
             <span className="text-white font-black text-lg">ع</span>
           </div>
           {!collapsed && (
@@ -1002,7 +1002,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
           <select
             value={currentClinicId || ''}
             onChange={e => setCurrentClinicId(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-muted/50 dark:bg-white/5 border border-border/60 text-sm outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500/40 transition-all"
+            className="w-full px-3 py-2 rounded-lg bg-muted/50 dark:bg-white/5 border border-border/60 text-sm outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500/40 transition-all"
           >
             <option value="">اختر عيادة</option>
             {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -1034,14 +1034,14 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
                 <button onClick={() => { setCurrentView(item.id); setMobileOpen(false); }}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] transition-all duration-300 relative group/nav ${
                     active
-                      ? 'bg-gradient-to-l from-violet-500/20 to-violet-700/10 text-violet-700 dark:text-violet-300 font-semibold shadow-sm'
+                      ? 'bg-gradient-to-l from-teal-500/20 to-teal-700/10 text-teal-700 dark:text-teal-300 font-semibold shadow-sm'
                       : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground'
                   }`}>
                   {active && (
-                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-5/6 rounded-l-full bg-gradient-to-b from-violet-500 to-emerald-500 shadow-sm shadow-violet-600/40" />
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[3px] h-5/6 rounded-l-full bg-gradient-to-b from-teal-500 to-orange-500 shadow-sm shadow-teal-600/40" />
                   )}
-                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 ${active ? 'bg-violet-600/20' : 'group-hover/nav:bg-muted/80'}`}>
-                    <Icon size={17} className={`transition-all duration-300 ${active ? 'text-violet-600 dark:text-violet-400' : ''}`} />
+                  <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 ${active ? 'bg-teal-600/20' : 'group-hover/nav:bg-muted/80'}`}>
+                    <Icon size={17} className={`transition-all duration-300 ${active ? 'text-teal-600 dark:text-teal-400' : ''}`} />
                   </div>
                   {!collapsed && <span className="truncate">{item.label}</span>}
                 </button>
@@ -1054,9 +1054,9 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
       {/* User Profile Card */}
       <div className="p-3 mt-auto">
         {!collapsed ? (
-          <div className="rounded-xl bg-gradient-to-l from-violet-50/80 to-emerald-50/50 dark:from-violet-950/20 dark:to-emerald-950/10 border border-violet-200/40 dark:border-violet-900/30 p-3">
+          <div className="rounded-xl bg-gradient-to-l from-teal-50/80 to-orange-50/50 dark:from-teal-950/20 dark:to-orange-950/10 border border-teal-200/40 dark:border-teal-900/30 p-3">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-600 via-violet-700 to-emerald-500 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-md shadow-violet-600/25">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-xl flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-md shadow-teal-600/25">
                 {user.fullName?.charAt(0)}
               </div>
               <div className="overflow-hidden flex-1 min-w-0">
@@ -1172,13 +1172,13 @@ function DashboardView() {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="text-center max-w-md space-y-6">
-          <div className="w-20 h-20 bg-gradient-to-br from-emerald-600/20 to-red-600/20 rounded-2xl flex items-center justify-center mx-auto">
-            <Crown size={36} className="text-emerald-500" />
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-2xl flex items-center justify-center mx-auto">
+            <Crown size={36} className="text-orange-500" />
           </div>
           <h2 className="text-2xl font-bold text-foreground">اشتراك مطلوب</h2>
           <p className="text-muted-foreground leading-relaxed">هذه العيادة ليس لديها اشتراك فعال. يرجى التواصل مع المالك للحصول على اشتراك.</p>
-          <div className="bg-emerald-900/15 border border-emerald-700/30 rounded-xl p-4">
-            <p className="text-emerald-400 text-sm">للحصول على اشتراك، تواصل مع إدارة النظام</p>
+          <div className="bg-orange-900/15 border border-orange-700/30 rounded-xl p-4">
+            <p className="text-orange-400 text-sm">للحصول على اشتراك، تواصل مع إدارة النظام</p>
           </div>
         </div>
       </div>
@@ -1189,8 +1189,8 @@ function DashboardView() {
     <div className="flex-1 flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="relative">
-          <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center glow-ring">
-            <RefreshCw className="animate-spin text-violet-600" size={28} />
+          <div className="w-16 h-16 rounded-2xl bg-teal-500/10 flex items-center justify-center glow-ring">
+            <RefreshCw className="animate-spin text-teal-600" size={28} />
           </div>
         </div>
         <p className="text-sm text-muted-foreground animate-pulse">جاري تحميل البيانات...</p>
@@ -1200,15 +1200,15 @@ function DashboardView() {
 
   const stats = data?.stats || { todayAppointments: 0, totalPatients: 0, totalRevenue: 0, totalCollected: 0 };
   const statCards = [
-    { label: 'مواعيد اليوم', value: stats.todayAppointments, gradient: 'from-violet-500 to-violet-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
-    { label: 'إجمالي المرضى', value: stats.totalPatients, gradient: 'from-emerald-500 to-emerald-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
-    { label: 'الإيرادات', value: `${stats.totalRevenue?.toFixed(0)} ر.س`, gradient: 'from-emerald-600 to-emerald-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
+    { label: 'مواعيد اليوم', value: stats.todayAppointments, gradient: 'from-teal-500 to-teal-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
+    { label: 'إجمالي المرضى', value: stats.totalPatients, gradient: 'from-orange-500 to-orange-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
+    { label: 'الإيرادات', value: `${stats.totalRevenue?.toFixed(0)} ر.س`, gradient: 'from-orange-600 to-orange-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
     { label: 'المتحصل', value: `${stats.totalCollected?.toFixed(0)} ر.س`, gradient: 'from-rose-500 to-rose-600', icon: DollarSign, glow: 'stat-glow-rose', bg: 'bg-gradient-to-br' },
   ];
 
   const statusColors: Record<string, string> = {
-    scheduled: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-    completed: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+    scheduled: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
+    completed: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
     cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
   };
 
@@ -1217,7 +1217,7 @@ function DashboardView() {
   };
 
   const typeColors: Record<string, string> = {
-    regular: 'border-violet-500', follow_up: 'border-emerald-500',
+    regular: 'border-teal-500', follow_up: 'border-orange-500',
     emergency: 'border-red-500', consultation: 'border-amber-500',
   };
 
@@ -1242,9 +1242,9 @@ function DashboardView() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
         {statCards.map((card, i) => {
           const Icon = card.icon;
-          const borderColors = ['border-r-violet-600', 'border-r-emerald-800', 'border-r-emerald-600', 'border-r-rose-600'];
-          const iconBgs = ['bg-violet-500/10 dark:bg-violet-950/35', 'bg-emerald-800/15 dark:bg-emerald-700/25', 'bg-emerald-600/15 dark:bg-emerald-600/35', 'bg-rose-600/15 dark:bg-rose-600/35'];
-          const iconColors = ['text-violet-600 dark:text-violet-400', 'text-emerald-600 dark:text-emerald-400', 'text-emerald-600 dark:text-emerald-400', 'text-rose-600 dark:text-rose-400'];
+          const borderColors = ['border-r-teal-600', 'border-r-orange-800', 'border-r-orange-600', 'border-r-rose-600'];
+          const iconBgs = ['bg-teal-500/10 dark:bg-teal-950/35', 'bg-orange-800/15 dark:bg-orange-700/25', 'bg-orange-600/15 dark:bg-orange-600/35', 'bg-rose-600/15 dark:bg-rose-600/35'];
+          const iconColors = ['text-teal-600 dark:text-teal-400', 'text-orange-600 dark:text-orange-400', 'text-orange-600 dark:text-orange-400', 'text-rose-600 dark:text-rose-400'];
           return (
             <div key={i} className={`bg-card rounded-xl p-5 border border-border/50 border-r-4 ${borderColors[i]} shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}
               style={{ animationDelay: `${i * 100}ms` }}>
@@ -1269,7 +1269,7 @@ function DashboardView() {
           <div className="bg-card rounded-xl p-5 border border-border/50 shadow-sm">
             <div className="flex items-center justify-between mb-5">
               <h3 className="font-bold text-foreground text-base">إيرادات الأسبوع</h3>
-              <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+              <div className="flex items-center gap-1.5 text-xs text-orange-600 dark:text-orange-400 font-medium">
                 <TrendingUp size={14} />
                 <span>إيجابي</span>
               </div>
@@ -1297,7 +1297,7 @@ function DashboardView() {
         <div className="bg-card rounded-xl p-5 border border-border/50 shadow-sm">
           <div className="flex items-center justify-between mb-5">
             <h3 className="font-bold text-foreground text-base">مواعيد اليوم</h3>
-            <span className="text-xs font-medium px-2.5 py-1 rounded-lg bg-violet-500/10 dark:bg-violet-900/35 text-violet-400">
+            <span className="text-xs font-medium px-2.5 py-1 rounded-lg bg-teal-500/10 dark:bg-teal-900/35 text-teal-400">
               {data?.todayAppointments?.length || 0} موعد
             </span>
           </div>
@@ -1311,7 +1311,7 @@ function DashboardView() {
           ) : (
             <div className="space-y-0 max-h-[300px] overflow-y-auto sidebar-nav-scroll">
               {data?.todayAppointments?.map((apt: any, idx: number) => {
-                const typeBorderColors: Record<string, string> = { regular: 'bg-violet-500', follow_up: 'bg-emerald-500', emergency: 'bg-red-500', consultation: 'bg-amber-500' };
+                const typeBorderColors: Record<string, string> = { regular: 'bg-teal-500', follow_up: 'bg-orange-500', emergency: 'bg-red-500', consultation: 'bg-amber-500' };
                 return (
                   <div key={apt.id} className="flex gap-3.5 group relative">
                     {/* Timeline line */}
@@ -1423,7 +1423,7 @@ function PatientsView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-foreground">إدارة المرضى</h1>
         <button onClick={openNew}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-violet-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
+          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
           <Plus size={16} /> مريض جديد
         </button>
       </div>
@@ -1433,7 +1433,7 @@ function PatientsView() {
         <Search className="absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/50" size={18} />
         <input
           placeholder="بحث بالاسم أو الهاتف أو رقم الملف..."
-          className="w-full pr-10 pl-4 py-3 bg-card border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+          className="w-full pr-10 pl-4 py-3 bg-card border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
           value={search}
           onChange={e => { setSearch(e.target.value); setPage(1); }}
         />
@@ -1455,7 +1455,7 @@ function PatientsView() {
             </thead>
             <tbody>
               {patients.map(p => (
-                <tr key={p.id} className="border-t border-border/30 hover:bg-violet-600/[0.08] transition-colors group">
+                <tr key={p.id} className="border-t border-border/30 hover:bg-teal-600/[0.08] transition-colors group">
                   <td className="px-4 py-3 font-mono text-xs text-muted-foreground">{p.fileNumber}</td>
                   <td className="px-4 py-3 font-medium text-foreground">{p.fullName}</td>
                   <td className="px-4 py-3 text-muted-foreground">{p.phone || '-'}</td>
@@ -1463,8 +1463,8 @@ function PatientsView() {
                   <td className="px-4 py-3">{p.bloodType || '-'}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => openMedicalRecords(p)} className="p-1.5 hover:bg-emerald-500/10 dark:hover:bg-emerald-950/20 rounded-lg transition-colors" title="عرض السجل الطبي والتشخيصات"><ClipboardCheck size={14} className="text-emerald-500" /></button>
-                      <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-violet-500/10 dark:hover:bg-violet-950/20 rounded-lg transition-colors" title="تعديل"><Edit3 size={14} className="text-violet-500" /></button>
+                      <button onClick={() => openMedicalRecords(p)} className="p-1.5 hover:bg-orange-500/10 dark:hover:bg-orange-950/20 rounded-lg transition-colors" title="عرض السجل الطبي والتشخيصات"><ClipboardCheck size={14} className="text-orange-500" /></button>
+                      <button onClick={() => openEdit(p)} className="p-1.5 hover:bg-teal-500/10 dark:hover:bg-teal-950/20 rounded-lg transition-colors" title="تعديل"><Edit3 size={14} className="text-teal-500" /></button>
                       <button onClick={() => handleDelete(p.id)} className="p-1.5 hover:bg-red-950/30 dark:hover:bg-red-900/20 rounded-lg transition-colors" title="حذف"><Trash2 size={14} className="text-red-500" /></button>
                     </div>
                   </td>
@@ -1495,7 +1495,7 @@ function PatientsView() {
             const pageNum = i + 1;
             return (
               <button key={pageNum} onClick={() => setPage(pageNum)}
-                className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${page === pageNum ? 'bg-violet-800 text-white shadow-sm' : 'bg-card border border-border/40 text-muted-foreground hover:bg-muted/50'}`}>
+                className={`w-8 h-8 rounded-lg text-sm font-medium transition-colors ${page === pageNum ? 'bg-teal-800 text-white shadow-sm' : 'bg-card border border-border/40 text-muted-foreground hover:bg-muted/50'}`}>
                 {pageNum}
               </button>
             );
@@ -1511,34 +1511,34 @@ function PatientsView() {
         <div className="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
           <div className="bg-card rounded-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto animate-scale-in border border-border/40 shadow-xl" onClick={e => e.stopPropagation()}>
             {/* Modal Header */}
-            <div className="flex items-center gap-3 px-6 py-4 border-b border-border/40 bg-gradient-to-l from-violet-700/25 to-transparent">
-              <div className="w-9 h-9 bg-violet-500/10 dark:bg-violet-900/35 rounded-lg flex items-center justify-center">
-                <Edit3 size={16} className="text-violet-600 dark:text-violet-400" />
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-border/40 bg-gradient-to-l from-teal-700/25 to-transparent">
+              <div className="w-9 h-9 bg-teal-500/10 dark:bg-teal-900/35 rounded-lg flex items-center justify-center">
+                <Edit3 size={16} className="text-teal-600 dark:text-teal-400" />
               </div>
               <h3 className="text-base font-bold text-foreground">{editPatient ? 'تعديل مريض' : 'مريض جديد'}</h3>
             </div>
             <div className="p-6 space-y-3">
               <div>
                 <label className="text-sm font-medium mb-1 block text-foreground/80">الاسم الكامل *</label>
-                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                   value={form.fullName || ''} onChange={e => setForm({ ...form, fullName: e.target.value })} />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">الهاتف</label>
-                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">هاتف آخر</label>
-                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.phone2 || ''} onChange={e => setForm({ ...form, phone2: e.target.value })} />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">الجنس</label>
-                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.gender || 'male'} onChange={e => setForm({ ...form, gender: e.target.value })}>
                     <option value="male">ذكر</option>
                     <option value="female">أنثى</option>
@@ -1546,7 +1546,7 @@ function PatientsView() {
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">فصيلة الدم</label>
-                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.bloodType || ''} onChange={e => setForm({ ...form, bloodType: e.target.value })}>
                     <option value="">-</option>
                     {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(b => <option key={b} value={b}>{b}</option>)}
@@ -1556,12 +1556,12 @@ function PatientsView() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">العمر</label>
-                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.age || ''} onChange={e => setForm({ ...form, age: e.target.value })} />
                 </div>
                 <div>
                   <label className="text-sm font-medium mb-1 block text-foreground/80">الحالة الاجتماعية</label>
-                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                  <select className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                     value={form.maritalStatus || ''} onChange={e => setForm({ ...form, maritalStatus: e.target.value })}>
                     <option value="">-</option>
                     <option value="single">أعزب</option>
@@ -1573,24 +1573,24 @@ function PatientsView() {
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block text-foreground/80">البريد الإلكتروني</label>
-                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                   value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} type="email" />
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block text-foreground/80">العنوان</label>
-                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                <input className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                   value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} />
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block text-foreground/80">ملاحظات</label>
-                <textarea className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm resize-none outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-800/10 transition-all"
+                <textarea className="w-full px-3 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm resize-none outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-800/10 transition-all"
                   rows={3} value={form.notes || ''} onChange={e => setForm({ ...form, notes: e.target.value })} />
               </div>
             </div>
             {/* Modal Footer */}
             <div className="flex gap-3 px-6 py-4 border-t border-border/40 bg-muted/20">
               <button onClick={handleSave}
-                className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-md shadow-violet-600/25 text-sm">
+                className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-md shadow-teal-600/25 text-sm">
                 <Save size={15} className="inline ml-1.5" />حفظ
               </button>
               <button onClick={() => { setShowModal(false); setEditPatient(null); }}
@@ -1609,7 +1609,7 @@ function PatientsView() {
             {/* Header */}
             <div className="flex items-center justify-between mb-5 pb-4 border-b border-border/30">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/25">
+                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-orange-700 rounded-xl flex items-center justify-center shadow-lg shadow-orange-600/25">
                   <ClipboardCheck className="text-white" size={22} />
                 </div>
                 <div>
@@ -1647,7 +1647,7 @@ function PatientsView() {
             {/* Records list */}
             {loadingRecords ? (
               <div className="flex items-center justify-center py-12">
-                <RefreshCw className="animate-spin text-violet-400" size={28} />
+                <RefreshCw className="animate-spin text-teal-400" size={28} />
                 <span className="mr-2 text-muted-foreground">جاري تحميل السجلات...</span>
               </div>
             ) : medicalRecords.length === 0 ? (
@@ -1660,15 +1660,15 @@ function PatientsView() {
               <div className="space-y-3">
                 <div className="flex items-center justify-between mb-2">
                   <h4 className="font-bold text-sm flex items-center gap-2">
-                    <FileCheck size={16} className="text-emerald-600" />
+                    <FileCheck size={16} className="text-orange-600" />
                     التشخيصات السابقة ({medicalRecords.length})
                   </h4>
                 </div>
                 {medicalRecords.map((record, idx) => (
-                  <div key={record.id} className="bg-card border border-border/40 rounded-xl p-4 hover:border-emerald-500/30 transition-colors">
+                  <div key={record.id} className="bg-card border border-border/40 rounded-xl p-4 hover:border-orange-500/30 transition-colors">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold">
+                        <div className="w-7 h-7 rounded-full bg-orange-500/15 text-orange-600 dark:text-orange-400 flex items-center justify-center text-xs font-bold">
                           {medicalRecords.length - idx}
                         </div>
                         <div>
@@ -1688,8 +1688,8 @@ function PatientsView() {
                       </div>
                     )}
                     {record.diagnosis && (
-                      <div className="bg-emerald-500/5 border-r-2 border-emerald-500 rounded-lg p-3 my-2">
-                        <div className="text-xs text-emerald-600 dark:text-emerald-400 font-bold mb-1 flex items-center gap-1">
+                      <div className="bg-orange-500/5 border-r-2 border-orange-500 rounded-lg p-3 my-2">
+                        <div className="text-xs text-orange-600 dark:text-orange-400 font-bold mb-1 flex items-center gap-1">
                           <ClipboardCheck size={12} /> التشخيص
                         </div>
                         <div className="text-sm text-foreground leading-relaxed">{record.diagnosis}</div>
@@ -1850,17 +1850,17 @@ function AppointmentsView() {
 
   const typeLabels: Record<string, string> = { regular: 'عادي', follow_up: 'متابعة', emergency: 'طوارئ', consultation: 'استشارة' };
   const typeColors: Record<string, string> = {
-    regular: 'border-r-violet-500 bg-violet-500/8 dark:bg-violet-500/18',
-    follow_up: 'border-r-emerald-800 bg-emerald-800/8 dark:bg-emerald-800/18',
+    regular: 'border-r-teal-500 bg-teal-500/8 dark:bg-teal-500/18',
+    follow_up: 'border-r-orange-800 bg-orange-800/8 dark:bg-orange-800/18',
     emergency: 'border-r-red-600 bg-red-600/8 dark:bg-red-600/18',
-    consultation: 'border-r-emerald-600 bg-emerald-600/8 dark:bg-emerald-600/18',
+    consultation: 'border-r-orange-600 bg-orange-600/8 dark:bg-orange-600/18',
   };
   const statusLabels: Record<string, string> = {
     scheduled: 'مجدول', completed: 'تم', cancelled: 'ملغي',
   };
   const statusColors: Record<string, string> = {
-    scheduled: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-    completed: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+    scheduled: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
+    completed: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
     cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
   };
 
@@ -1885,36 +1885,36 @@ function AppointmentsView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-3xl font-black gradient-text">المواعيد</h1>
         <button onClick={() => { setForm({ type: 'regular', patientId: '', doctorId: '', startTime: `${date}T09:00`, endTime: `${date}T09:30` }); setShowModal(true); }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-bold transition-all duration-300 shadow-lg shadow-violet-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-bold transition-all duration-300 shadow-lg shadow-teal-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
           <Plus size={16} /> موعد جديد
         </button>
       </div>
 
       {/* Date Navigator */}
       <div className="flex items-center gap-3 glass-card-v2 rounded-2xl p-3.5 gradient-border">
-        <button onClick={prevDay} className="p-2 hover:bg-violet-500/10 rounded-lg transition-colors"><ChevronRight size={18} /></button>
+        <button onClick={prevDay} className="p-2 hover:bg-teal-500/10 rounded-lg transition-colors"><ChevronRight size={18} /></button>
         <span className="font-bold flex-1 text-center">
           {new Date(date + 'T00:00:00').toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         </span>
-        <button onClick={nextDay} className="p-2 hover:bg-violet-500/10 rounded-lg transition-colors"><ChevronLeft size={18} /></button>
+        <button onClick={nextDay} className="p-2 hover:bg-teal-500/10 rounded-lg transition-colors"><ChevronLeft size={18} /></button>
         <button onClick={() => setDate(new Date().toISOString().split('T')[0])}
-          className="px-4 py-1.5 text-xs bg-violet-500/10 text-violet-500 rounded-lg font-bold hover:bg-violet-500/10 transition-colors">اليوم</button>
+          className="px-4 py-1.5 text-xs bg-teal-500/10 text-teal-500 rounded-lg font-bold hover:bg-teal-500/10 transition-colors">اليوم</button>
       </div>
 
       {/* Booking Link */}
       {currentClinic && (
-        <div className="flex items-center gap-2 glass-card bg-violet-50 dark:bg-violet-900/20 border border-violet-200 dark:border-violet-700/40 rounded-xl p-3 gradient-border">
-          <Link size={16} className="text-violet-600 dark:text-violet-400 shrink-0" />
-          <span className="text-sm text-violet-700 dark:text-violet-300 flex-1 font-bold">رابط الحجز العام للمرضى</span>
+        <div className="flex items-center gap-2 glass-card bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700/40 rounded-xl p-3 gradient-border">
+          <Link size={16} className="text-teal-600 dark:text-teal-400 shrink-0" />
+          <span className="text-sm text-teal-700 dark:text-teal-300 flex-1 font-bold">رابط الحجز العام للمرضى</span>
           {currentClinic.bookingSlug ? (
             <>
               <input readOnly value={`${typeof window !== 'undefined' ? window.location.origin : ''}/booking/${currentClinic.bookingSlug}`}
-                className="flex-1 px-2 py-1.5 bg-white dark:bg-violet-900 border border-violet-300 dark:border-violet-700 rounded-lg text-xs font-mono max-w-[260px] text-foreground" />
+                className="flex-1 px-2 py-1.5 bg-white dark:bg-teal-900 border border-teal-300 dark:border-teal-700 rounded-lg text-xs font-mono max-w-[260px] text-foreground" />
               <button onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/booking/${currentClinic.bookingSlug}`);
                 setBookingCopied(true);
                 setTimeout(() => setBookingCopied(false), 2000);
-              }} className="px-3 py-1.5 bg-violet-600 hover:bg-violet-700 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
+              }} className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-bold transition-colors flex items-center gap-1">
                 {bookingCopied ? <CheckCircle2 size={12} /> : <Copy size={12} />}
                 {bookingCopied ? 'تم' : 'نسخ'}
               </button>
@@ -1928,7 +1928,7 @@ function AppointmentsView() {
       {/* Active Appointments List */}
       <div>
         <div className="section-header">
-          <Clock size={20} className="text-violet-500" />
+          <Clock size={20} className="text-teal-500" />
           <h2 className="text-lg font-black">المواعيد النشطة</h2>
           <span className="text-sm font-normal text-muted-foreground bg-muted/60 px-2.5 py-0.5 rounded-full">{activeAppointments.length}</span>
         </div>
@@ -1954,7 +1954,7 @@ function AppointmentsView() {
                   </div>
                   <div className="flex items-center gap-2">
                     <button onClick={() => handleComplete(apt)}
-                      className="text-xs px-4 py-2 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg font-bold transition-all duration-200 shadow-md shadow-emerald-600/30 hover:shadow-lg flex items-center gap-1.5">
+                      className="text-xs px-4 py-2 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-600 text-white rounded-lg font-bold transition-all duration-200 shadow-md shadow-orange-600/30 hover:shadow-lg flex items-center gap-1.5">
                       <CheckCircle size={14} /> تم
                     </button>
                     <button onClick={() => handleCancel(apt.id)}
@@ -1973,20 +1973,20 @@ function AppointmentsView() {
       {completedAppointments.length > 0 && (
         <div>
           <div className="section-header">
-            <CheckCircle size={20} className="text-emerald-500" />
+            <CheckCircle size={20} className="text-orange-500" />
             <h2 className="text-lg font-black">المواعيد المكتملة</h2>
-            <span className="text-sm font-normal text-muted-foreground bg-emerald-100 dark:bg-emerald-900/30 px-2.5 py-0.5 rounded-full">{completedAppointments.length}</span>
+            <span className="text-sm font-normal text-muted-foreground bg-orange-100 dark:bg-orange-900/30 px-2.5 py-0.5 rounded-full">{completedAppointments.length}</span>
           </div>
           <div className="space-y-3">
             {completedAppointments.map(apt => (
-              <div key={apt.id} className="border-r-4 border-r-emerald-500 glass-card-v2 rounded-2xl p-4 opacity-75">
+              <div key={apt.id} className="border-r-4 border-r-orange-500 glass-card-v2 rounded-2xl p-4 opacity-75">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1.5">
                       <Clock size={14} className="text-muted-foreground" />
                       <span className="text-sm font-medium">{apt.startTime?.split('T')[1]?.slice(0, 5)} - {apt.endTime?.split('T')[1]?.slice(0, 5)}</span>
                       <span className="text-xs px-2.5 py-0.5 bg-muted/70 rounded-full">{typeLabels[apt.type] || apt.type}</span>
-                      <span className="status-pill bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">تم</span>
+                      <span className="status-pill bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">تم</span>
                     </div>
                     <p className="font-semibold">{apt.patient?.fullName}</p>
                     <p className="text-sm text-muted-foreground">{apt.doctor?.fullName} • {apt.title || typeLabels[apt.type]}</p>
@@ -2032,7 +2032,7 @@ function AppointmentsView() {
         <div className="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4" onClick={() => setShowPriceModal(false)}>
           <div className="glass-card-v2 rounded-2xl p-6 w-full max-w-md animate-scale-in gradient-border" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-700 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-600/25">
+              <div className="w-10 h-10 bg-gradient-to-br from-orange-700 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-600/25">
                 <CheckCircle className="text-white" size={20} />
               </div>
               <div>
@@ -2061,7 +2061,7 @@ function AppointmentsView() {
               </div>
               <div>
                 <label className="text-sm font-bold mb-2 block flex items-center gap-2">
-                  <ClipboardCheck size={16} className="text-emerald-600" />
+                  <ClipboardCheck size={16} className="text-orange-600" />
                   التشخيص الطبي للمريض
                   <span className="text-xs font-normal text-muted-foreground">(اختياري — يُحفظ في السجل الطبي للمريض)</span>
                 </label>
@@ -2077,10 +2077,10 @@ function AppointmentsView() {
                   سيتم حفظ التشخيص في السجل الطبي للمريض، ويمكن مراجعته لاحقاً من صفحة المرضى
                 </p>
               </div>
-              <div className="bg-violet-50 dark:bg-violet-950/30 border border-violet-200 dark:border-violet-700/40 rounded-xl p-3.5">
-                <p className="text-sm text-violet-700 dark:text-violet-300 font-medium">
-                  سيتم تسجيل فاتورة تلقائياً في الفواتير كـ <span className="font-black">مدفوعة كلياً</span> بقيمة <span className="font-black text-violet-900 dark:text-violet-200">{appointmentPrice || '0'}</span> ر.س
-                  {diagnosis.trim() && <span className="block mt-1 text-emerald-600 dark:text-emerald-400">+ سيتم حفظ التشخيص في السجل الطبي للمريض ✓</span>}
+              <div className="bg-teal-50 dark:bg-teal-950/30 border border-teal-200 dark:border-teal-700/40 rounded-xl p-3.5">
+                <p className="text-sm text-teal-700 dark:text-teal-300 font-medium">
+                  سيتم تسجيل فاتورة تلقائياً في الفواتير كـ <span className="font-black">مدفوعة كلياً</span> بقيمة <span className="font-black text-teal-900 dark:text-teal-200">{appointmentPrice || '0'}</span> ر.س
+                  {diagnosis.trim() && <span className="block mt-1 text-orange-600 dark:text-orange-400">+ سيتم حفظ التشخيص في السجل الطبي للمريض ✓</span>}
                 </p>
               </div>
             </div>
@@ -2088,7 +2088,7 @@ function AppointmentsView() {
               <button
                 onClick={confirmComplete}
                 disabled={!appointmentPrice || Number(appointmentPrice) <= 0}
-                className="flex-1 py-3 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-xl font-bold transition-all duration-300 shadow-lg shadow-emerald-600/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                className="flex-1 py-3 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-600 text-white rounded-xl font-bold transition-all duration-300 shadow-lg shadow-orange-600/25 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                 <CheckCircle size={16} /> تأكيد وإنشاء فاتورة
               </button>
               <button onClick={() => setShowPriceModal(false)} className="px-6 py-3 bg-muted/70 hover:bg-muted rounded-xl font-bold transition-colors">إلغاء</button>
@@ -2102,7 +2102,7 @@ function AppointmentsView() {
         <div className="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4" onClick={() => setShowModal(false)}>
           <div className="glass-card-v2 rounded-2xl p-6 w-full max-w-lg max-h-[85vh] overflow-y-auto animate-scale-in gradient-border" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-700 to-violet-900 rounded-xl flex items-center justify-center shadow-lg shadow-violet-600/30">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-900 rounded-xl flex items-center justify-center shadow-lg shadow-teal-600/30">
                 <CalendarDays className="text-white" size={20} />
               </div>
               <h3 className="text-lg font-black gradient-text">موعد جديد</h3>
@@ -2158,7 +2158,7 @@ function AppointmentsView() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
               <button onClick={() => setShowModal(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -2221,8 +2221,8 @@ function RecordsView() {
         <div className="space-y-2">
           {patients.map(p => (
             <button key={p.id} onClick={() => selectPatient(p)}
-              className="w-full flex items-center gap-3 p-3 glass-card-v2 rounded-xl hover:bg-violet-500/10 transition-all text-right hover-lift">
-              <Activity className="text-violet-500 shrink-0" size={18} />
+              className="w-full flex items-center gap-3 p-3 glass-card-v2 rounded-xl hover:bg-teal-500/10 transition-all text-right hover-lift">
+              <Activity className="text-teal-500 shrink-0" size={18} />
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{p.fullName}</p>
                 <p className="text-sm text-muted-foreground">{p.fileNumber} • {p.phone}</p>
@@ -2239,7 +2239,7 @@ function RecordsView() {
             </div>
             <div className="flex gap-2">
               <button onClick={() => { setForm({}); setShowForm(true); }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-violet-600/25">
+                className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-teal-600/25">
                 <Plus size={14} /> كشف جديد
               </button>
               <button onClick={() => { setSelectedPatient(null); setRecords([]); }}
@@ -2250,10 +2250,10 @@ function RecordsView() {
           </div>
 
           {records.map(r => (
-            <div key={r.id} className="glass-card-v2 rounded-2xl p-4 space-y-2 border-r-4 border-r-violet-600">
+            <div key={r.id} className="glass-card-v2 rounded-2xl p-4 space-y-2 border-r-4 border-r-teal-600">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">{new Date(r.createdAt).toLocaleDateString('ar-EG')}</span>
-                <span className="text-sm text-violet-300">{r.doctor?.fullName}</span>
+                <span className="text-sm text-teal-300">{r.doctor?.fullName}</span>
               </div>
               {r.chiefComplaint && <div><span className="text-sm font-medium">الشكوى: </span><span className="text-sm">{r.chiefComplaint}</span></div>}
               {r.diagnosis && <div><span className="text-sm font-medium">التشخيص: </span><span className="text-sm">{r.diagnosis}</span></div>}
@@ -2293,7 +2293,7 @@ function RecordsView() {
                   </div>
                 </div>
                 <div className="flex gap-3 mt-6">
-                  <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+                  <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
                   <button onClick={() => setShowForm(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
                 </div>
               </div>
@@ -2352,8 +2352,8 @@ function InvoicesView() {
   const statusLabels: Record<string, string> = { pending: 'معلقة', paid: 'مدفوعة', partial: 'جزئية', cancelled: 'ملغاة' };
   const statusColors: Record<string, string> = {
     pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
-    paid: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-    partial: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+    paid: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
+    partial: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
     cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
   };
 
@@ -2362,15 +2362,15 @@ function InvoicesView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-foreground">الفواتير</h1>
         <button onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-bold transition-all duration-300 shadow-lg shadow-violet-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-bold transition-all duration-300 shadow-lg shadow-teal-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
           <Plus size={16} /> فاتورة جديدة
         </button>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'إجمالي الفواتير', value: `${(stats.totalRevenue || 0).toFixed(0)} ر.س`, icon: Receipt, color: 'text-violet-700', bg: 'bg-violet-100/50' },
-          { label: 'المدفوع', value: `${(stats.totalCollected || 0).toFixed(0)} ر.س`, icon: CheckCircle, color: 'text-emerald-600', bg: 'bg-emerald-100/50' },
+          { label: 'إجمالي الفواتير', value: `${(stats.totalRevenue || 0).toFixed(0)} ر.س`, icon: Receipt, color: 'text-teal-700', bg: 'bg-teal-100/50' },
+          { label: 'المدفوع', value: `${(stats.totalCollected || 0).toFixed(0)} ر.س`, icon: CheckCircle, color: 'text-orange-600', bg: 'bg-orange-100/50' },
           { label: 'المعلق', value: `${(stats.totalPending || 0).toFixed(0)} ر.س`, icon: AlertCircle, color: 'text-red-400', bg: 'bg-red-600/15' },
           { label: 'عدد الفواتير', value: stats.totalInvoices || 0, icon: Hash, color: 'text-purple-600', bg: 'bg-purple-600/15' },
         ].map((s, i) => {
@@ -2416,7 +2416,7 @@ function InvoicesView() {
                   </td>
                   <td className="px-4 py-3.5">
                     <button onClick={() => toggleStatus(inv)}
-                      className="text-xs px-3 py-1.5 bg-violet-500/10 text-violet-400 rounded-lg hover:bg-violet-500/10 transition-colors font-bold">
+                      className="text-xs px-3 py-1.5 bg-teal-500/10 text-teal-400 rounded-lg hover:bg-teal-500/10 transition-colors font-bold">
                       {inv.status === 'paid' ? 'إلغاء الدفع' : 'تأكيد الدفع'}
                     </button>
                   </td>
@@ -2460,7 +2460,7 @@ function InvoicesView() {
                   </div>
                 ))}
                 <button onClick={() => setForm({ ...form, items: [...form.items, { item_name: '', unit_price: 0, quantity: 1 }] })}
-                  className="text-sm text-violet-300 hover:underline">+ إضافة بند</button>
+                  className="text-sm text-teal-300 hover:underline">+ إضافة بند</button>
               </div>
               <div>
                 <label className="text-sm font-medium mb-1 block">المبلغ المدفوع</label>
@@ -2474,7 +2474,7 @@ function InvoicesView() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
               <button onClick={() => setShowModal(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -2516,7 +2516,7 @@ function InventoryView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold text-foreground">إدارة المخزون</h1>
         <button onClick={() => { setEditItem(null); setForm({ itemName: '', itemType: 'medication', quantity: 0, purchasePrice: 0, sellingPrice: 0 }); setShowModal(true); }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-violet-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
+          className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-medium transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
           <Plus size={16} /> صنف جديد
         </button>
       </div>
@@ -2540,7 +2540,7 @@ function InventoryView() {
       <div className="glass-card-v2 rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-violet-900/12 dark:bg-violet-900/18">
+            <thead className="bg-teal-900/12 dark:bg-teal-900/18">
               <tr>
                 <th className="text-right px-4 py-3 font-medium">الاسم</th>
                 <th className="text-right px-4 py-3 font-medium">النوع</th>
@@ -2552,7 +2552,7 @@ function InventoryView() {
             </thead>
             <tbody>
               {items.map(item => (
-                <tr key={item.id} className="border-t border-border hover:bg-violet-600/8 transition-colors">
+                <tr key={item.id} className="border-t border-border hover:bg-teal-600/8 transition-colors">
                   <td className="px-4 py-3 font-medium">{item.itemName}</td>
                   <td className="px-4 py-3"><span className="text-xs px-2 py-1 bg-muted rounded-full">{typeLabels[item.itemType] || item.itemType}</span></td>
                   <td className="px-4 py-3">{item.quantity}</td>
@@ -2560,7 +2560,7 @@ function InventoryView() {
                   <td className="px-4 py-3">{item.sellingPrice?.toFixed(2)}</td>
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
-                      <button onClick={() => { setEditItem(item); setForm(item); setShowModal(true); }} className="p-1.5 hover:bg-violet-500/10 dark:hover:bg-violet-950/20 rounded-lg transition-colors"><Edit3 size={15} className="text-violet-500" /></button>
+                      <button onClick={() => { setEditItem(item); setForm(item); setShowModal(true); }} className="p-1.5 hover:bg-teal-500/10 dark:hover:bg-teal-950/20 rounded-lg transition-colors"><Edit3 size={15} className="text-teal-500" /></button>
                       <button onClick={async () => { if (!confirm('حذف؟')) return; await fetch('/api/inventory', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: item.id }) }); fetchInventory(); }} className="p-1.5 hover:bg-red-950/30 dark:hover:bg-red-900/20 rounded-lg transition-colors"><Trash2 size={15} className="text-red-500" /></button>
                     </div>
                   </td>
@@ -2608,7 +2608,7 @@ function InventoryView() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
               <button onClick={() => setShowModal(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -2634,7 +2634,7 @@ function ReportsView() {
       .catch(() => setLoading(false));
   }, [currentClinicId]);
 
-  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-violet-300" size={32} /></div>;
+  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-teal-300" size={32} /></div>;
 
   const CHART_COLORS = ['#14b8a6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
 
@@ -2654,7 +2654,7 @@ function ReportsView() {
         ].map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              tab === t.id ? 'bg-gradient-to-l from-violet-700 to-violet-800 text-white shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              tab === t.id ? 'bg-gradient-to-l from-teal-700 to-teal-800 text-white shadow-md' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             }`}>{t.label}</button>
         ))}
       </div>
@@ -2713,9 +2713,9 @@ function ReportsView() {
             <h3 className="font-bold mb-4 gradient-text">إحصائيات عامة</h3>
             <div className="space-y-4">
               {[
-                { label: 'إجمالي المرضى', value: data?.stats?.totalPatients || 0, icon: Users, color: 'text-violet-700', bg: 'bg-violet-100/50' },
-                { label: 'مواعيد اليوم', value: data?.stats?.todayAppointments || 0, icon: CalendarDays, color: 'text-emerald-600', bg: 'bg-emerald-100/50' },
-                { label: 'الإيرادات الكلية', value: `${(data?.stats?.totalRevenue || 0).toFixed(0)} ر.س`, icon: TrendingUp, color: 'text-emerald-600', bg: 'bg-emerald-600/15' },
+                { label: 'إجمالي المرضى', value: data?.stats?.totalPatients || 0, icon: Users, color: 'text-teal-700', bg: 'bg-teal-100/50' },
+                { label: 'مواعيد اليوم', value: data?.stats?.todayAppointments || 0, icon: CalendarDays, color: 'text-orange-600', bg: 'bg-orange-100/50' },
+                { label: 'الإيرادات الكلية', value: `${(data?.stats?.totalRevenue || 0).toFixed(0)} ر.س`, icon: TrendingUp, color: 'text-orange-600', bg: 'bg-orange-600/15' },
               ].map((s, i) => {
                 const Icon = s.icon;
                 return (
@@ -2773,10 +2773,10 @@ function TasksView() {
     fetchTasks();
   };
 
-  const priorityColors: Record<string, string> = { critical: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300', high: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300', medium: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300', low: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300' };
+  const priorityColors: Record<string, string> = { critical: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300', high: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300', medium: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300', low: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300' };
   const priorityLabels: Record<string, string> = { critical: 'حرج', high: 'عالي', medium: 'متوسط', low: 'منخفض' };
   const statusLabels: Record<string, string> = { todo: 'معلقة', in_progress: 'جارية', done: 'مكتملة', cancelled: 'ملغاة' };
-  const statusColors: Record<string, string> = { todo: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300', in_progress: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300', done: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300', cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' };
+  const statusColors: Record<string, string> = { todo: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300', in_progress: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300', done: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300', cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' };
   const rankLabels: Record<string, string> = { owner: 'المالك', manager: 'مدير', senior: 'أول', junior: 'مبتدئ' };
 
   return (
@@ -2784,7 +2784,7 @@ function TasksView() {
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-3xl font-black gradient-text">المهام</h1>
         <button onClick={() => { fetchUsers(); setForm({ title: '', description: '', priority: 'medium', rank: 'junior', assigneeId: '', dueDate: '' }); setShowModal(true); }}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-violet-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-teal-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
           <Plus size={16} /> مهمة جديدة
         </button>
       </div>
@@ -2793,14 +2793,14 @@ function TasksView() {
         {['', 'todo', 'in_progress', 'done'].map(s => (
           <button key={s} onClick={() => setStatusFilter(s)}
             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-              statusFilter === s ? 'bg-gradient-to-l from-violet-700 to-violet-800 text-white' : 'glass-card text-muted-foreground hover:text-foreground'
+              statusFilter === s ? 'bg-gradient-to-l from-teal-700 to-teal-800 text-white' : 'glass-card text-muted-foreground hover:text-foreground'
             }`}>{s === '' ? 'الكل' : statusLabels[s]}</button>
         ))}
       </div>
 
       <div className="space-y-3">
         {tasks.map(t => (
-          <div key={t.id} className="glass-card-v2 rounded-2xl p-4 hover-lift border-r-4 border-r-violet-600 table-row-hover">
+          <div key={t.id} className="glass-card-v2 rounded-2xl p-4 hover-lift border-r-4 border-r-teal-600 table-row-hover">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -2816,8 +2816,8 @@ function TasksView() {
                 </div>
               </div>
               <div className="flex gap-1">
-                {t.status === 'todo' && <button onClick={() => updateStatus(t.id, 'in_progress')} className="text-xs px-2.5 py-1.5 bg-violet-800 text-white rounded-lg">بدء</button>}
-                {t.status === 'in_progress' && <button onClick={() => updateStatus(t.id, 'done')} className="text-xs px-2.5 py-1.5 bg-emerald-700 text-white rounded-lg">إتمام</button>}
+                {t.status === 'todo' && <button onClick={() => updateStatus(t.id, 'in_progress')} className="text-xs px-2.5 py-1.5 bg-teal-800 text-white rounded-lg">بدء</button>}
+                {t.status === 'in_progress' && <button onClick={() => updateStatus(t.id, 'done')} className="text-xs px-2.5 py-1.5 bg-orange-700 text-white rounded-lg">إتمام</button>}
               </div>
             </div>
           </div>
@@ -2840,7 +2840,7 @@ function TasksView() {
               <div><label className="text-sm font-medium mb-1 block">تاريخ الاستحقاق</label><input type="date" className="w-full px-3 py-2.5 input-glow text-sm" value={form.dueDate || ''} onChange={e => setForm({ ...form, dueDate: e.target.value })} /></div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
               <button onClick={() => setShowModal(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -2989,7 +2989,7 @@ function ManagementView() {
     // On success the entire app re-renders under the impersonated user, so no need to reset state.
   };
 
-  const roleColors: Record<string, string> = { super_admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300', admin: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300', doctor: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-400', reception: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400', accountant: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300', nurse: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' };
+  const roleColors: Record<string, string> = { super_admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300', admin: 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300', doctor: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-400', reception: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-400', accountant: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300', nurse: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' };
   const roleLabels: Record<string, string> = { super_admin: 'المالك', admin: 'مدير', doctor: 'طبيب', reception: 'استقبال', accountant: 'محاسب', nurse: 'تمريض' };
 
   return (
@@ -2998,7 +2998,7 @@ function ManagementView() {
         <h1 className="text-3xl font-black gradient-text">إدارة العيادات</h1>
         {user?.role === 'super_admin' && (
           <button onClick={() => { setClinicForm({ name: '', phone: '', address: '', currency: 'SAR', paymentMode: 'postpaid', slotDuration: 30 }); setShowAddClinic(true); }}
-            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-violet-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
+            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-teal-600/30 hover:-translate-y-0.5 active:scale-[0.98] btn-primary-enhanced">
             <Plus size={16} /> إضافة عيادة
           </button>
         )}
@@ -3008,7 +3008,7 @@ function ManagementView() {
         {clinics.map(c => (
           <button key={c.id} onClick={() => setSelectedClinic(c)}
             className={`px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
-              selectedClinic?.id === c.id ? 'bg-gradient-to-l from-violet-700 to-violet-800 text-white shadow-lg shadow-violet-600/25' : 'glass-card text-muted-foreground hover:text-foreground'
+              selectedClinic?.id === c.id ? 'bg-gradient-to-l from-teal-700 to-teal-800 text-white shadow-lg shadow-teal-600/25' : 'glass-card text-muted-foreground hover:text-foreground'
             }`}>{c.name}</button>
         ))}
       </div>
@@ -3024,11 +3024,11 @@ function ManagementView() {
         <>
           {/* Empty state banner */}
           {(!selectedClinic._count || (selectedClinic._count.patients === 0 && selectedClinic._count.appointments === 0 && selectedClinic._count.tasks === 0)) && (
-            <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-300 dark:border-violet-900 rounded-2xl p-4 flex items-center gap-3">
-              <Building2 className="text-violet-500 shrink-0" size={20} />
+            <div className="bg-teal-50 dark:bg-teal-950/20 border border-teal-300 dark:border-teal-900 rounded-2xl p-4 flex items-center gap-3">
+              <Building2 className="text-teal-500 shrink-0" size={20} />
               <div>
-                <p className="text-sm font-medium text-violet-400">عيادة جديدة — غير مستخدمة</p>
-                <p className="text-xs text-violet-600 dark:text-violet-400">جميع البيانات صفرية. ابدأ بإضافة المرضى والموظفين.</p>
+                <p className="text-sm font-medium text-teal-400">عيادة جديدة — غير مستخدمة</p>
+                <p className="text-xs text-teal-600 dark:text-teal-400">جميع البيانات صفرية. ابدأ بإضافة المرضى والموظفين.</p>
               </div>
             </div>
           )}
@@ -3037,7 +3037,7 @@ function ManagementView() {
             {(['info', 'users', 'tasks', 'booking'] as const).map(t => (
               <button key={t} onClick={() => setTab(t)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                  tab === t ? 'bg-gradient-to-l from-violet-700 to-violet-800 text-white shadow-md' : 'glass-card text-muted-foreground hover:text-foreground'
+                  tab === t ? 'bg-gradient-to-l from-teal-700 to-teal-800 text-white shadow-md' : 'glass-card text-muted-foreground hover:text-foreground'
                 }`}>{t === 'info' ? 'معلومات' : t === 'users' ? 'المستخدمون والرتب' : t === 'tasks' ? 'المهام' : 'رابط الحجز'}</button>
             ))}
           </div>
@@ -3067,7 +3067,7 @@ function ManagementView() {
                 </div>
               )}
               {user?.role === 'super_admin' && (
-                <div className="bg-violet-50 dark:bg-violet-950/20 border border-violet-300 dark:border-violet-900 rounded-xl p-3 text-violet-700 dark:text-violet-300 text-xs flex items-start gap-2">
+                <div className="bg-teal-50 dark:bg-teal-950/20 border border-teal-300 dark:border-teal-900 rounded-xl p-3 text-teal-700 dark:text-teal-300 text-xs flex items-start gap-2">
                   <ShieldCheck size={14} className="mt-0.5 shrink-0" />
                   <div>
                     <p className="font-medium">صلاحيات المالك</p>
@@ -3077,7 +3077,7 @@ function ManagementView() {
               )}
               <div className="flex justify-end">
                 <button onClick={() => { setStaffForm({ username: '', password: '', fullName: '', role: 'reception', phone: '', email: '' }); setStaffError(''); setShowAddStaff(true); }}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-violet-700 to-violet-800 text-white rounded-xl text-sm font-medium shadow-lg shadow-violet-600/25">
+                  className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-teal-700 to-teal-800 text-white rounded-xl text-sm font-medium shadow-lg shadow-teal-600/25">
                   <UserPlus size={14} /> إضافة موظف
                 </button>
               </div>
@@ -3088,7 +3088,7 @@ function ManagementView() {
                 return (
                   <div key={u.id} className="glass-card-v2 rounded-xl p-4 hover-lift table-row-hover">
                     <div className="flex items-center gap-3 flex-wrap">
-                      <div className="w-11 h-11 bg-gradient-to-br from-violet-500 to-emerald-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-violet-600/30 avatar-ring shrink-0">{u.fullName?.charAt(0)}</div>
+                      <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-teal-600/30 avatar-ring shrink-0">{u.fullName?.charAt(0)}</div>
                       <div className="flex-1 min-w-[140px]">
                         <div className="flex items-center gap-2 flex-wrap">
                           <p className="font-medium">{u.fullName}</p>
@@ -3101,13 +3101,13 @@ function ManagementView() {
                       {user?.role === 'super_admin' && (
                         <div className="flex items-center gap-2 flex-wrap">
                           <div className="bg-muted/40 dark:bg-white/5 border border-border/60 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5" dir="ltr">
-                            <KeyRound size={12} className="text-violet-500 shrink-0" />
+                            <KeyRound size={12} className="text-teal-500 shrink-0" />
                             <span className="text-xs font-mono text-foreground/90 select-all">{masked}</span>
-                            <button onClick={() => togglePassword(u.id)} className="p-0.5 text-muted-foreground hover:text-violet-500 transition-colors" title={revealed ? 'إخفاء' : 'إظهار'}>
+                            <button onClick={() => togglePassword(u.id)} className="p-0.5 text-muted-foreground hover:text-teal-500 transition-colors" title={revealed ? 'إخفاء' : 'إظهار'}>
                               {revealed ? <EyeOff size={13} /> : <Eye size={13} />}
                             </button>
-                            <button onClick={() => copyCredential(u.id, password)} className="p-0.5 text-muted-foreground hover:text-emerald-500 transition-colors" title="نسخ">
-                              {copiedId === u.id ? <CheckCircle2 size={13} className="text-emerald-500" /> : <Copy size={13} />}
+                            <button onClick={() => copyCredential(u.id, password)} className="p-0.5 text-muted-foreground hover:text-orange-500 transition-colors" title="نسخ">
+                              {copiedId === u.id ? <CheckCircle2 size={13} className="text-orange-500" /> : <Copy size={13} />}
                             </button>
                           </div>
                         </div>
@@ -3128,7 +3128,7 @@ function ManagementView() {
                           onClick={() => handleImpersonate(u)}
                           disabled={impersonating}
                           title={`الدخول كـ ${u.fullName}`}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg text-xs font-medium shadow-md shadow-emerald-600/25 transition-all hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-600 text-white rounded-lg text-xs font-medium shadow-md shadow-orange-600/25 transition-all hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
                           {impersonating ? <RefreshCw size={12} className="animate-spin" /> : <LogIn size={12} />}
                           دخول
                         </button>
@@ -3145,13 +3145,13 @@ function ManagementView() {
             <div className="space-y-3">
               <div className="flex justify-end">
                 <button onClick={() => { setTaskForm({ title: '', description: '', priority: 'medium', rank: 'junior', assigneeId: '', dueDate: '' }); setShowTaskModal(true); }}
-                  className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-violet-700 to-violet-800 text-white rounded-xl text-sm font-medium shadow-lg shadow-violet-600/25">
+                  className="flex items-center gap-1.5 px-3 py-2 bg-gradient-to-l from-teal-700 to-teal-800 text-white rounded-xl text-sm font-medium shadow-lg shadow-teal-600/25">
                   <Plus size={14} /> مهمة جديدة
                 </button>
               </div>
               {clinicTasks.map(t => (
                 <div key={t.id} className="glass-card-v2 rounded-xl p-3 hover-lift flex items-center gap-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${t.status === 'done' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'}`}>{t.status === 'done' ? 'مكتملة' : t.status === 'in_progress' ? 'جارية' : 'معلقة'}</span>
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${t.status === 'done' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300' : 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300'}`}>{t.status === 'done' ? 'مكتملة' : t.status === 'in_progress' ? 'جارية' : 'معلقة'}</span>
                   <span className="font-medium text-sm flex-1">{t.title}</span>
                   {t.assignee && <span className="text-xs text-muted-foreground">{t.assignee.fullName}</span>}
                 </div>
@@ -3164,13 +3164,13 @@ function ManagementView() {
             <div className="glass-card-v2 rounded-2xl p-6 space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold text-violet-700 dark:text-violet-400">رابط الحجز العام</h3>
+                  <h3 className="font-bold text-teal-700 dark:text-teal-400">رابط الحجز العام</h3>
                   <p className="text-sm text-muted-foreground mt-1">يمكن للمرضى حجز مواعيد عبر هذا الرابط</p>
                 </div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <span className="text-sm text-foreground">{selectedClinic.bookingEnabled ? 'مفعّل' : 'معطّل'}</span>
                   <button onClick={() => updateClinic({ bookingEnabled: !selectedClinic.bookingEnabled })}
-                    className={`p-1 rounded-lg transition-colors ${selectedClinic.bookingEnabled ? 'bg-violet-800 text-white' : 'bg-muted text-muted-foreground'}`}>
+                    className={`p-1 rounded-lg transition-colors ${selectedClinic.bookingEnabled ? 'bg-teal-800 text-white' : 'bg-muted text-muted-foreground'}`}>
                     {selectedClinic.bookingEnabled ? <ToggleRight size={24} /> : <ToggleLeft size={24} />}
                   </button>
                 </label>
@@ -3180,14 +3180,14 @@ function ManagementView() {
                   <input readOnly value={`${typeof window !== 'undefined' ? window.location.origin : ''}/booking/${selectedClinic.bookingSlug}`}
                     className="flex-1 px-3 py-2 input-glow text-sm font-mono text-foreground" />
                   <button onClick={() => { navigator.clipboard.writeText(`${window.location.origin}/booking/${selectedClinic.bookingSlug}`); setBookingCopied(true); setTimeout(() => setBookingCopied(false), 2000); }}
-                    className="px-4 py-2 bg-gradient-to-l from-violet-600 to-violet-700 text-white rounded-xl text-sm font-medium flex items-center gap-1 shadow-lg shadow-violet-600/25">
+                    className="px-4 py-2 bg-gradient-to-l from-teal-600 to-teal-700 text-white rounded-xl text-sm font-medium flex items-center gap-1 shadow-lg shadow-teal-600/25">
                     {bookingCopied ? <CheckCircle2 size={14} /> : <Copy size={14} />}
                     {bookingCopied ? 'تم' : 'نسخ'}
                   </button>
                 </div>
               ) : (
-                <div className="bg-emerald-100 dark:bg-emerald-900/20 border border-emerald-400/40 dark:border-emerald-800/30 rounded-xl p-4 text-center">
-                  <p className="text-emerald-700 dark:text-emerald-400 text-sm font-medium">رابط الحجز غير متاح بعد</p>
+                <div className="bg-orange-100 dark:bg-orange-900/20 border border-orange-400/40 dark:border-orange-800/30 rounded-xl p-4 text-center">
+                  <p className="text-orange-700 dark:text-orange-400 text-sm font-medium">رابط الحجز غير متاح بعد</p>
                   <p className="text-muted-foreground text-xs mt-1">سيتم إنشاؤه تلقائياً عند تفعيل الحجز</p>
                 </div>
               )}
@@ -3212,7 +3212,7 @@ function ManagementView() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={addClinic} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">إضافة</button>
+              <button onClick={addClinic} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">إضافة</button>
               <button onClick={() => setShowAddClinic(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -3233,7 +3233,7 @@ function ManagementView() {
               <div><label className="text-sm font-medium mb-1 block">المسؤول</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={taskForm.assigneeId || ''} onChange={e => setTaskForm({ ...taskForm, assigneeId: e.target.value })}><option value="">اختر</option>{clinicUsers.map(u => <option key={u.id} value={u.id}>{u.fullName}</option>)}</select></div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={addTask} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">حفظ</button>
+              <button onClick={addTask} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">حفظ</button>
               <button onClick={() => setShowTaskModal(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
             </div>
           </div>
@@ -3244,7 +3244,7 @@ function ManagementView() {
         <div className="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4" onClick={() => setShowAddStaff(false)}>
           <div className="glass-card-v2 rounded-2xl p-6 w-full max-w-lg max-h-[85vh] overflow-y-auto animate-scale-in" onClick={e => e.stopPropagation()}>
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-700 to-violet-900 rounded-xl flex items-center justify-center shadow-lg shadow-violet-600/25">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-700 to-teal-900 rounded-xl flex items-center justify-center shadow-lg shadow-teal-600/25">
                 <UserPlus className="text-white" size={20} />
               </div>
               <div>
@@ -3274,7 +3274,7 @@ function ManagementView() {
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={addStaff} disabled={staffLoading}
-                className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25 disabled:opacity-50">
+                className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25 disabled:opacity-50">
                 {staffLoading ? 'جاري الإضافة...' : 'إضافة الموظف'}
               </button>
               <button onClick={() => setShowAddStaff(false)} className="px-6 py-2.5 bg-muted hover:bg-muted/80 rounded-xl font-medium transition-colors">إلغاء</button>
@@ -3306,7 +3306,7 @@ function SettingsView() {
     setTimeout(() => setSaved(false), 2000);
   };
 
-  if (!clinic) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-violet-300" size={32} /></div>;
+  if (!clinic) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-teal-300" size={32} /></div>;
 
   return (
     <div className="flex-1 p-4 lg:p-6 overflow-y-auto space-y-6 page-transition-enter">
@@ -3334,10 +3334,10 @@ function SettingsView() {
 
         <div className="flex items-center gap-3 pt-2">
           <button onClick={handleSave}
-            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
+            className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
             <Save size={16} /> حفظ التغييرات
           </button>
-          {saved && <span className="text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-1"><CheckCircle size={14} /> تم الحفظ</span>}
+          {saved && <span className="text-sm text-orange-600 dark:text-orange-400 flex items-center gap-1"><CheckCircle size={14} /> تم الحفظ</span>}
         </div>
       </div>
 
@@ -3385,8 +3385,8 @@ function BackupSection() {
   return (
     <div className="glass-card-v2 rounded-2xl p-6 space-y-4">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-700/15 flex items-center justify-center">
-          <Database size={20} className="text-emerald-500" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500/20 to-orange-700/15 flex items-center justify-center">
+          <Database size={20} className="text-orange-500" />
         </div>
         <div>
           <h2 className="text-lg font-bold text-foreground">النسخ الاحتياطي والبيانات</h2>
@@ -3396,11 +3396,11 @@ function BackupSection() {
 
       <div className="bg-muted/30 border border-border/40 rounded-xl p-4 space-y-2">
         <div className="flex items-start gap-2 text-sm text-muted-foreground">
-          <Shield size={14} className="text-emerald-500 shrink-0 mt-0.5" />
+          <Shield size={14} className="text-orange-500 shrink-0 mt-0.5" />
           <span>تشمل النسخة: العيادات، المستخدمين (بدون كلمات المرور)، المرضى، المواعيد، الفواتير، المخزون، المهام، السجلات الطبية، خطط الاشتراك، العروض، سجلات التدقيق.</span>
         </div>
         <div className="flex items-start gap-2 text-sm text-muted-foreground">
-          <Clock size={14} className="text-violet-500 shrink-0 mt-0.5" />
+          <Clock size={14} className="text-teal-500 shrink-0 mt-0.5" />
           <span>يُنصح بإجراء نسخة احتياطية أسبوعياً، أو قبل أي تعديل كبير على البيانات.</span>
         </div>
       </div>
@@ -3409,7 +3409,7 @@ function BackupSection() {
         <button
           onClick={handleExport}
           disabled={exporting}
-          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-emerald-600/25 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-orange-600/25 hover:-translate-y-0.5 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {exporting ? (
             <><RefreshCw size={16} className="animate-spin" /> جاري التصدير...</>
@@ -3418,7 +3418,7 @@ function BackupSection() {
           )}
         </button>
         {lastBackup && (
-          <span className="text-xs text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+          <span className="text-xs text-orange-600 dark:text-orange-400 flex items-center gap-1">
             <CheckCircle size={14} /> آخر نسخة: {lastBackup}
           </span>
         )}
@@ -3521,13 +3521,13 @@ function SubscriptionsView() {
     if (res.ok) fetchData();
   };
 
-  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-violet-300" size={32} /></div>;
+  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-teal-300" size={32} /></div>;
 
   const statusColors: Record<string, string> = {
-    active: 'bg-emerald-100 text-emerald-700 border-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300 dark:border-emerald-700',
+    active: 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/40 dark:text-orange-300 dark:border-orange-700',
     expired: 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700',
     cancelled: 'bg-gray-100 text-gray-700 border-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600',
-    trial: 'bg-violet-100 text-violet-700 border-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:border-violet-700',
+    trial: 'bg-teal-100 text-teal-700 border-teal-200 dark:bg-teal-900/40 dark:text-teal-300 dark:border-teal-700',
   };
   const statusLabels: Record<string, string> = {
     active: 'نشط', expired: 'منتهي', cancelled: 'ملغي', trial: 'تجريبي',
@@ -3539,15 +3539,15 @@ function SubscriptionsView() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl lg:text-3xl font-black text-foreground flex items-center gap-3">
-            <Crown size={28} className="text-emerald-500" /> إدارة الاشتراكات
+            <Crown size={28} className="text-orange-500" /> إدارة الاشتراكات
           </h1>
           <p className="text-muted-foreground/70 text-sm mt-1">إدارة خطط الاشتراك واشتراكات العيادات</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => { setShowGrantForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-xl font-medium transition-all shadow-lg shadow-emerald-600/25 flex items-center gap-2 text-sm">
+          <button onClick={() => { setShowGrantForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl font-medium transition-all shadow-lg shadow-orange-600/25 flex items-center gap-2 text-sm">
             <Plus size={16} /> منح اشتراك
           </button>
-          <button onClick={() => { setEditingPlan(null); setShowPlanForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25 flex items-center gap-2 text-sm">
+          <button onClick={() => { setEditingPlan(null); setShowPlanForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25 flex items-center gap-2 text-sm">
             <Plus size={16} /> خطة جديدة
           </button>
         </div>
@@ -3556,7 +3556,7 @@ function SubscriptionsView() {
       {/* Plans Section */}
       <div className="glass-card rounded-2xl p-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-          <h2 className="text-lg font-bold text-foreground flex items-center gap-2"><Crown size={20} className="text-violet-500" /> خطط الاشتراك</h2>
+          <h2 className="text-lg font-bold text-foreground flex items-center gap-2"><Crown size={20} className="text-teal-500" /> خطط الاشتراك</h2>
           {/* Billing cycle toggle */}
           <div className="inline-flex items-center gap-1 p-1 bg-muted/40 rounded-xl border border-border/40">
             <button
@@ -3575,13 +3575,13 @@ function SubscriptionsView() {
               onClick={() => setViewCycle('yearly')}
               className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
                 viewCycle === 'yearly'
-                  ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
+                  ? 'bg-teal-600 text-white shadow-md shadow-teal-600/30'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
               سنوي
               <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                viewCycle === 'yearly' ? 'bg-white/20 text-white' : 'bg-emerald-500/15 text-emerald-400'
+                viewCycle === 'yearly' ? 'bg-white/20 text-white' : 'bg-orange-500/15 text-orange-400'
               }`}>
                 وفّر حتى ١٧٪
               </span>
@@ -3604,15 +3604,15 @@ function SubscriptionsView() {
               const monthlyEquivalent = isYearly && plan.yearlyPrice ? Math.round(plan.yearlyPrice / 12) : null;
               const yearlySaving = isYearly && plan.yearlyPrice ? (plan.price * 12) - plan.yearlyPrice : 0;
               return (
-                <div key={plan.id} className={`relative glass-card-v2 rounded-xl p-5 ${plan.isPopular ? 'ring-2 ring-emerald-500/50' : ''}`}>
+                <div key={plan.id} className={`relative glass-card-v2 rounded-xl p-5 ${plan.isPopular ? 'ring-2 ring-orange-500/50' : ''}`}>
                   {plan.isPopular && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full shadow-lg">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-l from-orange-600 to-orange-700 text-white text-xs font-bold rounded-full shadow-lg">
                       الأكثر شعبية
                     </div>
                   )}
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-lg font-bold text-foreground">{plan.name}</h3>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${plan.isActive ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-red-500/15 text-red-400 border-red-500/30'}`}>
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${plan.isActive ? 'bg-orange-500/15 text-orange-400 border-orange-500/30' : 'bg-red-500/15 text-red-400 border-red-500/30'}`}>
                       {plan.isActive ? 'نشط' : 'معطل'}
                     </span>
                   </div>
@@ -3629,7 +3629,7 @@ function SubscriptionsView() {
                         <p className="text-xs text-muted-foreground/70 mt-1">
                           ≈ {monthlyEquivalent.toLocaleString('ar-EG')} ر.س/شهر
                           {yearlySaving > 0 && (
-                            <span className="text-emerald-400 mr-2">— وفّر {yearlySaving.toLocaleString('ar-EG')} ر.س سنوياً</span>
+                            <span className="text-orange-400 mr-2">— وفّر {yearlySaving.toLocaleString('ar-EG')} ر.س سنوياً</span>
                           )}
                         </p>
                       ) : null
@@ -3645,7 +3645,7 @@ function SubscriptionsView() {
                     <div className="space-y-1.5 mb-4">
                       {features.slice(0, 5).map((f: string, i: number) => (
                         <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle size={14} className="text-emerald-500 shrink-0" />
+                          <CheckCircle size={14} className="text-orange-500 shrink-0" />
                           <span>{f}</span>
                         </div>
                       ))}
@@ -3658,7 +3658,7 @@ function SubscriptionsView() {
                     {plan.maxClinics && <span>عيادات: {plan.maxClinics}</span>}
                   </div>
                   <div className="flex gap-2">
-                    <button onClick={() => { setEditingPlan(plan); setPlanForm({ name: plan.name, nameEn: plan.nameEn || '', description: plan.description || '', price: plan.price, yearlyPrice: plan.yearlyPrice || 0, features: plan.features, maxPatients: plan.maxPatients || 100, maxDoctors: plan.maxDoctors || 5, maxClinics: plan.maxClinics || 1, isPopular: plan.isPopular, sortOrder: plan.sortOrder }); setShowPlanForm(true); }} className="flex-1 px-3 py-2 bg-violet-600/10 hover:bg-violet-600/20 text-violet-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
+                    <button onClick={() => { setEditingPlan(plan); setPlanForm({ name: plan.name, nameEn: plan.nameEn || '', description: plan.description || '', price: plan.price, yearlyPrice: plan.yearlyPrice || 0, features: plan.features, maxPatients: plan.maxPatients || 100, maxDoctors: plan.maxDoctors || 5, maxClinics: plan.maxClinics || 1, isPopular: plan.isPopular, sortOrder: plan.sortOrder }); setShowPlanForm(true); }} className="flex-1 px-3 py-2 bg-teal-600/10 hover:bg-teal-600/20 text-teal-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
                       <Edit3 size={14} /> تعديل
                     </button>
                     <button onClick={() => handleDeletePlan(plan.id)} className="px-3 py-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
@@ -3674,7 +3674,7 @@ function SubscriptionsView() {
 
       {/* Clinic Subscriptions Section */}
       <div className="glass-card rounded-2xl p-6">
-        <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2"><Building2 size={20} className="text-emerald-500" /> اشتراكات العيادات</h2>
+        <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2"><Building2 size={20} className="text-orange-500" /> اشتراكات العيادات</h2>
         {subs.length === 0 ? (
           <div className="text-center py-8 text-muted-foreground">
             <Building2 size={36} className="mx-auto mb-2 opacity-30" />
@@ -3702,7 +3702,7 @@ function SubscriptionsView() {
                     <td className="py-3 px-4">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium border ${
                         (sub as any).billingCycle === 'yearly'
-                          ? 'bg-violet-500/15 text-violet-300 border-violet-500/30'
+                          ? 'bg-teal-500/15 text-teal-300 border-teal-500/30'
                           : 'bg-sky-500/15 text-sky-300 border-sky-500/30'
                       }`}>
                         {(sub as any).billingCycle === 'yearly' ? 'سنوي' : 'شهري'}
@@ -3753,7 +3753,7 @@ function SubscriptionsView() {
               </label>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSavePlan} className="flex-1 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-violet-600/25">
+              <button onClick={handleSavePlan} className="flex-1 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25">
                 {editingPlan ? 'تحديث' : 'إنشاء'}
               </button>
               <button onClick={() => { setShowPlanForm(false); setEditingPlan(null); }} className="px-6 py-2.5 border border-border/50 rounded-xl text-muted-foreground hover:text-foreground transition-all">
@@ -3803,7 +3803,7 @@ function SubscriptionsView() {
                     onClick={() => setGrantForm({ ...grantForm, billingCycle: 'yearly' })}
                     className={`px-3 py-2.5 rounded-xl text-sm font-medium transition-all border ${
                       grantForm.billingCycle === 'yearly'
-                        ? 'bg-violet-600/20 border-violet-500 text-violet-300'
+                        ? 'bg-teal-600/20 border-teal-500 text-teal-300'
                         : 'bg-transparent border-border/50 text-muted-foreground hover:text-foreground'
                     }`}
                   >
@@ -3823,7 +3823,7 @@ function SubscriptionsView() {
                   const savingPct = monthlyCost > 0 ? Math.round((saving / (monthlyCost * 12)) * 100) : 0;
                   if (grantForm.billingCycle === 'yearly' && saving > 0) {
                     return (
-                      <p className="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+                      <p className="text-xs text-orange-400 mt-2 flex items-center gap-1">
                         <CheckCircle size={12} /> وفّر {saving} ر.س سنوياً ({savingPct}٪ خصم)
                       </p>
                     );
@@ -3835,7 +3835,7 @@ function SubscriptionsView() {
               <div><label className="text-sm font-medium text-foreground/80 mb-1 block">ملاحظات</label><textarea className="w-full px-3 py-2.5 input-glass text-sm text-foreground" rows={2} value={grantForm.notes} onChange={e => setGrantForm({ ...grantForm, notes: e.target.value })} /></div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleGrant} className="flex-1 py-2.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-emerald-600/25">
+              <button onClick={handleGrant} className="flex-1 py-2.5 bg-gradient-to-l from-orange-600 to-orange-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-orange-600/25">
                 منح الاشتراك
               </button>
               <button onClick={() => setShowGrantForm(false)} className="px-6 py-2.5 border border-border/50 rounded-xl text-muted-foreground hover:text-foreground transition-all">
@@ -3910,7 +3910,7 @@ function OffersView() {
     if (res.ok) fetchData();
   };
 
-  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-violet-300" size={32} /></div>;
+  if (loading) return <div className="flex-1 flex items-center justify-center"><RefreshCw className="animate-spin text-teal-300" size={32} /></div>;
 
   return (
     <div className="flex-1 p-4 lg:p-6 overflow-y-auto space-y-6 page-transition-enter">
@@ -3918,11 +3918,11 @@ function OffersView() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl lg:text-3xl font-black text-foreground flex items-center gap-3">
-            <Star size={28} className="text-emerald-500" /> إدارة العروض
+            <Star size={28} className="text-orange-500" /> إدارة العروض
           </h1>
           <p className="text-muted-foreground/70 text-sm mt-1">إنشاء وإدارة العروض والتخفيضات</p>
         </div>
-        <button onClick={() => { setEditingOffer(null); setForm({ title: '', description: '', discountType: 'percentage', discountValue: 0, planId: '', startDate: '', endDate: '', isActive: true, showOnLanding: true, badge: '', sortOrder: 0 }); setShowForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-xl font-medium transition-all shadow-lg shadow-emerald-600/25 flex items-center gap-2 text-sm">
+        <button onClick={() => { setEditingOffer(null); setForm({ title: '', description: '', discountType: 'percentage', discountValue: 0, planId: '', startDate: '', endDate: '', isActive: true, showOnLanding: true, badge: '', sortOrder: 0 }); setShowForm(true); }} className="px-4 py-2.5 bg-gradient-to-l from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl font-medium transition-all shadow-lg shadow-orange-600/25 flex items-center gap-2 text-sm">
           <Plus size={16} /> عرض جديد
         </button>
       </div>
@@ -3939,17 +3939,17 @@ function OffersView() {
           {offers.map(offer => (
             <div key={offer.id} className={`glass-card-v2 rounded-xl p-5 relative ${!offer.isActive ? 'opacity-60' : ''}`}>
               {offer.badge && (
-                <div className="absolute -top-2 -right-2 px-3 py-1 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full shadow-lg">
+                <div className="absolute -top-2 -right-2 px-3 py-1 bg-gradient-to-l from-orange-600 to-orange-700 text-white text-xs font-bold rounded-full shadow-lg">
                   {offer.badge}
                 </div>
               )}
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="text-lg font-bold text-foreground">{offer.title}</h3>
-                  {offer.plan && <span className="text-xs text-violet-400">الخطة: {offer.plan.name}</span>}
+                  {offer.plan && <span className="text-xs text-teal-400">الخطة: {offer.plan.name}</span>}
                 </div>
                 <div className="flex flex-col items-end gap-1">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${offer.isActive ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-red-500/15 text-red-400 border-red-500/30'}`}>
+                  <span className={`px-2 py-0.5 rounded-full text-xs font-medium border ${offer.isActive ? 'bg-orange-500/15 text-orange-400 border-orange-500/30' : 'bg-red-500/15 text-red-400 border-red-500/30'}`}>
                     {offer.isActive ? 'نشط' : 'معطل'}
                   </span>
                 </div>
@@ -3957,9 +3957,9 @@ function OffersView() {
               {offer.description && <p className="text-muted-foreground text-sm mb-3">{offer.description}</p>}
               <div className="flex items-center gap-2 mb-3">
                 {offer.discountType === 'percentage' ? (
-                  <span className="text-2xl font-black text-emerald-500">%{offer.discountValue}</span>
+                  <span className="text-2xl font-black text-orange-500">%{offer.discountValue}</span>
                 ) : (
-                  <span className="text-2xl font-black text-emerald-500">{offer.discountValue} ر.س</span>
+                  <span className="text-2xl font-black text-orange-500">{offer.discountValue} ر.س</span>
                 )}
                 <span className="text-muted-foreground text-sm">{offer.discountType === 'percentage' ? 'خصم نسبة' : 'خصم ثابت'}</span>
               </div>
@@ -3970,15 +3970,15 @@ function OffersView() {
                 </div>
               )}
               <div className="flex items-center gap-2 mb-4 text-xs">
-                <button onClick={() => handleToggleLanding(offer)} className={`px-2 py-1 rounded-lg border transition-all ${offer.showOnLanding ? 'bg-violet-500/15 text-violet-400 border-violet-500/30' : 'bg-muted/30 text-muted-foreground border-border/50'}`}>
+                <button onClick={() => handleToggleLanding(offer)} className={`px-2 py-1 rounded-lg border transition-all ${offer.showOnLanding ? 'bg-teal-500/15 text-teal-400 border-teal-500/30' : 'bg-muted/30 text-muted-foreground border-border/50'}`}>
                   {offer.showOnLanding ? 'ظاهر في الرئيسية' : 'مخفي من الرئيسية'}
                 </button>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleToggleActive(offer)} className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1 ${offer.isActive ? 'bg-red-600/10 hover:bg-red-600/20 text-red-400' : 'bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-400'}`}>
+                <button onClick={() => handleToggleActive(offer)} className={`flex-1 px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1 ${offer.isActive ? 'bg-red-600/10 hover:bg-red-600/20 text-red-400' : 'bg-orange-600/10 hover:bg-orange-600/20 text-orange-400'}`}>
                   {offer.isActive ? <><Ban size={14} /> تعطيل</> : <><CheckCircle size={14} /> تفعيل</>}
                 </button>
-                <button onClick={() => { setEditingOffer(offer); setForm({ title: offer.title, description: offer.description || '', discountType: offer.discountType, discountValue: offer.discountValue, planId: offer.planId || '', startDate: offer.startDate ? offer.startDate.split('T')[0] : '', endDate: offer.endDate ? offer.endDate.split('T')[0] : '', isActive: offer.isActive, showOnLanding: offer.showOnLanding, badge: offer.badge || '', sortOrder: offer.sortOrder }); setShowForm(true); }} className="px-3 py-2 bg-violet-600/10 hover:bg-violet-600/20 text-violet-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
+                <button onClick={() => { setEditingOffer(offer); setForm({ title: offer.title, description: offer.description || '', discountType: offer.discountType, discountValue: offer.discountValue, planId: offer.planId || '', startDate: offer.startDate ? offer.startDate.split('T')[0] : '', endDate: offer.endDate ? offer.endDate.split('T')[0] : '', isActive: offer.isActive, showOnLanding: offer.showOnLanding, badge: offer.badge || '', sortOrder: offer.sortOrder }); setShowForm(true); }} className="px-3 py-2 bg-teal-600/10 hover:bg-teal-600/20 text-teal-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
                   <Edit3 size={14} />
                 </button>
                 <button onClick={() => handleDelete(offer.id)} className="px-3 py-2 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-1">
@@ -4032,7 +4032,7 @@ function OffersView() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-emerald-600/25">
+              <button onClick={handleSave} className="flex-1 py-2.5 bg-gradient-to-l from-orange-600 to-orange-700 text-white rounded-xl font-medium transition-all shadow-lg shadow-orange-600/25">
                 {editingOffer ? 'تحديث' : 'إنشاء'}
               </button>
               <button onClick={() => { setShowForm(false); setEditingOffer(null); }} className="px-6 py-2.5 border border-border/50 rounded-xl text-muted-foreground hover:text-foreground transition-all">
@@ -4062,24 +4062,24 @@ function LandingOffers() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {offers.map(offer => (
-        <div key={offer.id} className="group relative bg-white hover:bg-slate-50 backdrop-blur-sm border border-slate-200 hover:border-emerald-500/40 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-emerald-100/60">
+        <div key={offer.id} className="group relative bg-white hover:bg-slate-50 backdrop-blur-sm border border-slate-200 hover:border-orange-500/40 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-orange-100/60">
           {offer.badge && (
-            <div className="absolute -top-3 -right-3 px-4 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-sm font-bold rounded-full shadow-lg shadow-emerald-600/40">
+            <div className="absolute -top-3 -right-3 px-4 py-1.5 bg-gradient-to-l from-orange-600 to-orange-700 text-white text-sm font-bold rounded-full shadow-lg shadow-orange-600/40">
               {offer.badge}
             </div>
           )}
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-emerald-700/15 rounded-xl flex items-center justify-center">
-              {offer.discountType === 'percentage' ? <Percent size={22} className="text-emerald-600" /> : <Tag size={22} className="text-emerald-600" />}
+            <div className="w-12 h-12 bg-gradient-to-br from-orange-500/20 to-orange-700/15 rounded-xl flex items-center justify-center">
+              {offer.discountType === 'percentage' ? <Percent size={22} className="text-orange-600" /> : <Tag size={22} className="text-orange-600" />}
             </div>
             <div>
-              <h3 className="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">{offer.title}</h3>
-              {offer.plan && <span className="text-xs text-violet-600 font-medium">خطة {offer.plan.name}</span>}
+              <h3 className="text-lg font-bold text-slate-900 group-hover:text-orange-700 transition-colors">{offer.title}</h3>
+              {offer.plan && <span className="text-xs text-teal-600 font-medium">خطة {offer.plan.name}</span>}
             </div>
           </div>
           {offer.description && <p className="text-slate-600 text-sm mb-4 leading-relaxed group-hover:text-slate-700 transition-colors">{offer.description}</p>}
           <div className="flex items-baseline gap-2">
-            <span className="text-4xl font-black text-emerald-600">
+            <span className="text-4xl font-black text-orange-600">
               {offer.discountType === 'percentage' ? `%${offer.discountValue}` : `${offer.discountValue}`}
             </span>
             <span className="text-slate-600 text-sm font-medium">{offer.discountType === 'percentage' ? 'خصم' : 'ر.س خصم'}</span>
@@ -4112,8 +4112,8 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
 
   // Hero gradient per plan based on sortOrder
   const planStyles = [
-    { gradient: 'from-violet-500 to-violet-700', shadow: 'shadow-violet-600/30', ring: 'ring-violet-500/30', icon: <Star size={22} className="text-violet-600" /> },
-    { gradient: 'from-emerald-500 to-emerald-700', shadow: 'shadow-emerald-600/30', ring: 'ring-emerald-500/30', icon: <Crown size={22} className="text-emerald-600" /> },
+    { gradient: 'from-teal-500 to-teal-700', shadow: 'shadow-teal-600/30', ring: 'ring-teal-500/30', icon: <Star size={22} className="text-teal-600" /> },
+    { gradient: 'from-orange-500 to-orange-700', shadow: 'shadow-orange-600/30', ring: 'ring-orange-500/30', icon: <Crown size={22} className="text-orange-600" /> },
     { gradient: 'from-purple-500 to-purple-700', shadow: 'shadow-purple-600/30', ring: 'ring-purple-500/30', icon: <Sparkles size={22} className="text-purple-600" /> },
   ];
 
@@ -4126,16 +4126,16 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
         <div className="inline-flex items-center bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
           <button
             onClick={() => setBillingCycle('monthly')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${billingCycle === 'monthly' ? 'bg-white text-violet-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${billingCycle === 'monthly' ? 'bg-white text-teal-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
           >
             شهري
           </button>
           <button
             onClick={() => setBillingCycle('yearly')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${billingCycle === 'yearly' ? 'bg-white text-emerald-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
+            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 ${billingCycle === 'yearly' ? 'bg-white text-orange-700 shadow-md' : 'text-slate-500 hover:text-slate-700'}`}
           >
             سنوي
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold">وفّر ٢ شهر</span>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 text-orange-700 font-bold">وفّر ٢ شهر</span>
           </button>
         </div>
       </div>
@@ -4152,13 +4152,13 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
               key={plan.id}
               className={`relative bg-white rounded-3xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-2 ${
                 isPopular
-                  ? 'border-2 border-emerald-500 shadow-2xl shadow-emerald-500/20 lg:scale-105'
+                  ? 'border-2 border-orange-500 shadow-2xl shadow-orange-500/20 lg:scale-105'
                   : 'border border-slate-200 shadow-lg shadow-slate-100/50 hover:shadow-xl hover:shadow-slate-200/60'
               }`}
             >
               {/* Popular badge */}
               {isPopular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-l from-emerald-600 to-emerald-700 text-white text-xs font-bold rounded-full shadow-lg shadow-emerald-600/40 flex items-center gap-1.5">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-5 py-1.5 bg-gradient-to-l from-orange-600 to-orange-700 text-white text-xs font-bold rounded-full shadow-lg shadow-orange-600/40 flex items-center gap-1.5">
                   <Crown size={14} />
                   الأكثر شيوعاً
                 </div>
@@ -4240,7 +4240,7 @@ function LandingPricing({ onRegister }: { onRegister: () => void }) {
       {/* Helper note under plans */}
       <div className="text-center mt-10">
         <p className="text-sm text-slate-500 flex items-center justify-center gap-2">
-          <HeadphonesIcon size={16} className="text-violet-500" />
+          <HeadphonesIcon size={16} className="text-teal-500" />
           جميع الخطط تشمل تجربة مجانية لمدة ساعة — بدون أي التزام
         </p>
       </div>
@@ -4287,11 +4287,11 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
   ];
 
   const features = [
-    { icon: CalendarCheck, title: 'إدارة المواعيد', desc: 'نظام حجز ذكي للمواعيد مع تذكيرات تلقائية وإمكانية الحجز عبر رابط مخصص لكل عيادة. تنظيم كامل لأجندة العمل اليومية.', color: 'from-violet-400 to-violet-800', shadow: 'shadow-violet-600/30' },
-    { icon: Users, title: 'ملفات المرضى', desc: 'سجلات طبية شاملة لكل مريض مع تاريخ الزيارات والتشخيصات والعلاجات. وصول سريع ومنظم لجميع البيانات.', color: 'from-violet-300 to-violet-600', shadow: 'shadow-violet-500/25' },
-    { icon: Receipt, title: 'نظام الفواتير', desc: 'إنشاء فواتير تلقائية عند إكمال الموعد مع تتبع المدفوعات والمبالغ المستحقة. تقارير مالية شاملة.', color: 'from-emerald-500 to-emerald-800', shadow: 'shadow-emerald-600/25' },
+    { icon: CalendarCheck, title: 'إدارة المواعيد', desc: 'نظام حجز ذكي للمواعيد مع تذكيرات تلقائية وإمكانية الحجز عبر رابط مخصص لكل عيادة. تنظيم كامل لأجندة العمل اليومية.', color: 'from-teal-400 to-teal-800', shadow: 'shadow-teal-600/30' },
+    { icon: Users, title: 'ملفات المرضى', desc: 'سجلات طبية شاملة لكل مريض مع تاريخ الزيارات والتشخيصات والعلاجات. وصول سريع ومنظم لجميع البيانات.', color: 'from-teal-300 to-teal-600', shadow: 'shadow-teal-500/25' },
+    { icon: Receipt, title: 'نظام الفواتير', desc: 'إنشاء فواتير تلقائية عند إكمال الموعد مع تتبع المدفوعات والمبالغ المستحقة. تقارير مالية شاملة.', color: 'from-orange-500 to-orange-800', shadow: 'shadow-orange-600/25' },
     { icon: BarChart3, title: 'التقارير والتحليلات', desc: 'لوحة تحكم تفاعلية مع رسوم بيانية وتقارير مفصلة عن الأداء والإيرادات وحركة المرضى.', color: 'from-purple-400 to-purple-600', shadow: 'shadow-purple-500/25' },
-    { icon: Building2, title: 'إدارة متعددة العيادات', desc: 'تحكم مركزي بعدة عيادات من حساب واحد مع صلاحيات مختلفة لكل فرع وفريق عمل مستقل.', color: 'from-emerald-400 to-emerald-700', shadow: 'shadow-emerald-600/35' },
+    { icon: Building2, title: 'إدارة متعددة العيادات', desc: 'تحكم مركزي بعدة عيادات من حساب واحد مع صلاحيات مختلفة لكل فرع وفريق عمل مستقل.', color: 'from-orange-400 to-orange-700', shadow: 'shadow-orange-600/35' },
     { icon: Shield, title: 'صلاحيات متقدمة', desc: 'نظام أدوار مرن (مالك، مدير، طبيب، استقبال) مع تحكم دقيق في الصلاحيات لكل مستخدم.', color: 'from-rose-400 to-rose-700', shadow: 'shadow-rose-600/35' },
   ];
 
@@ -4322,7 +4322,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-800 rounded-xl flex items-center justify-center shadow-lg shadow-violet-600/40 avatar-ring">
+              <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-teal-800 rounded-xl flex items-center justify-center shadow-lg shadow-teal-600/40 avatar-ring">
                 <Syringe className="text-white" size={22} />
               </div>
               <span className="text-xl font-black tracking-tight">عيادة</span>
@@ -4332,7 +4332,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map(link => (
                 <button key={link.id} onClick={() => scrollTo(link.id)}
-                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${activeSection === link.id ? 'text-violet-600 bg-violet-500/10' : 'text-current/75 hover:text-current hover:bg-current/8'}`}>
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${activeSection === link.id ? 'text-teal-600 bg-teal-500/10' : 'text-current/75 hover:text-current hover:bg-current/8'}`}>
                   {link.label}
                 </button>
               ))}
@@ -4341,11 +4341,11 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button onClick={onLogin}
-                className="px-5 py-2.5 text-sm font-semibold text-violet-600 hover:text-violet-800 border border-violet-400/40 hover:border-violet-500/70 rounded-xl hover:bg-violet-500/10 transition-all duration-300">
+                className="px-5 py-2.5 text-sm font-semibold text-teal-600 hover:text-teal-800 border border-teal-400/40 hover:border-teal-500/70 rounded-xl hover:bg-teal-500/10 transition-all duration-300">
                 تسجيل الدخول
               </button>
               <button onClick={onRegister}
-                className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-l from-violet-600 to-violet-800 hover:from-violet-700 hover:to-violet-900 text-white rounded-xl shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
+                className="px-5 py-2.5 text-sm font-semibold bg-gradient-to-l from-teal-600 to-teal-800 hover:from-teal-700 hover:to-teal-900 text-white rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/50 transition-all duration-300 hover:-translate-y-0.5 active:scale-[0.98]">
                 ابدأ مجاناً
               </button>
             </div>
@@ -4363,17 +4363,17 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             <div className="px-4 py-4 space-y-1">
               {navLinks.map(link => (
                 <button key={link.id} onClick={() => scrollTo(link.id)}
-                  className="w-full text-right px-4 py-3 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-violet-50 transition-all text-sm">
+                  className="w-full text-right px-4 py-3 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-teal-50 transition-all text-sm">
                   {link.label}
                 </button>
               ))}
               <div className="pt-3 border-t border-slate-200/50 space-y-2">
                 <button onClick={onLogin}
-                  className="w-full py-3 text-sm font-semibold text-violet-600 border border-violet-200 rounded-xl hover:bg-violet-50 transition-all">
+                  className="w-full py-3 text-sm font-semibold text-teal-600 border border-teal-200 rounded-xl hover:bg-teal-50 transition-all">
                   تسجيل الدخول
                 </button>
                 <button onClick={onRegister}
-                  className="w-full py-3 text-sm font-semibold bg-gradient-to-l from-violet-600 to-violet-800 text-white rounded-xl shadow-lg shadow-violet-600/30 transition-all">
+                  className="w-full py-3 text-sm font-semibold bg-gradient-to-l from-teal-600 to-teal-800 text-white rounded-xl shadow-lg shadow-teal-600/30 transition-all">
                   ابدأ مجاناً
                 </button>
               </div>
@@ -4383,19 +4383,19 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </nav>
 
       {/* ============ HERO SECTION ============ */}
-      <section id="hero" className="relative pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-gradient-to-b from-violet-950 via-violet-950/50 to-violet-950 text-white hero-gradient">
+      <section id="hero" className="relative pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-gradient-to-b from-teal-950 via-teal-950/50 to-teal-950 text-white hero-gradient">
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-violet-800/12 rounded-full blur-[150px]" />
-          <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-emerald-900/25 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-emerald-500/12 rounded-full blur-[130px]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-teal-800/12 rounded-full blur-[150px]" />
+          <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-orange-900/25 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-500/12 rounded-full blur-[130px]" />
           <div className="absolute inset-0 pattern-dots opacity-30" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/10 border border-violet-950/40 text-violet-400 text-sm font-medium mb-8 animate-slide-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-950/40 text-teal-400 text-sm font-medium mb-8 animate-slide-up">
               <Sparkles size={16} />
               <span>نظام إدارة العيادات رقم ١ في المنطقة</span>
               <ArrowUpRight size={14} />
@@ -4416,7 +4416,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '300ms' }}>
               <button onClick={onRegister}
-                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-l from-violet-600 to-violet-800 hover:from-violet-800 hover:to-emerald-600 text-white font-bold rounded-2xl shadow-2xl shadow-violet-600/40 hover:shadow-violet-600/50 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] text-lg flex items-center justify-center gap-2 cta-button-glow">
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-l from-teal-600 to-teal-800 hover:from-teal-800 hover:to-orange-600 text-white font-bold rounded-2xl shadow-2xl shadow-teal-600/40 hover:shadow-teal-600/50 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] text-lg flex items-center justify-center gap-2 cta-button-glow">
                 ابدأ مجاناً الآن
                 <ArrowLeft size={20} />
               </button>
@@ -4430,11 +4430,11 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             {/* Trust indicators */}
             <div className="flex items-center justify-center gap-6 mt-12 animate-slide-up" style={{ animationDelay: '400ms' }}>
               <div className="flex items-center gap-2 text-white/60 text-sm">
-                <CheckCircle2 size={16} className="text-violet-400" />
+                <CheckCircle2 size={16} className="text-teal-400" />
                 <span>إعداد في ٥ دقائق</span>
               </div>
               <div className="hidden sm:flex items-center gap-2 text-white/60 text-sm">
-                <CheckCircle2 size={16} className="text-violet-400" />
+                <CheckCircle2 size={16} className="text-teal-400" />
                 <span>دعم متواصل</span>
               </div>
             </div>
@@ -4444,17 +4444,17 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
           <div className="mt-16 lg:mt-24 max-w-5xl mx-auto animate-slide-up" style={{ animationDelay: '500ms' }}>
             <div className="relative">
               {/* Glow behind the preview */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-violet-950/40 via-emerald-700/30 to-emerald-500/25 rounded-3xl blur-2xl" />
-              <div className="relative bg-violet-950/80 backdrop-blur-xl border border-white/10 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl shadow-black/40">
+              <div className="absolute -inset-4 bg-gradient-to-r from-teal-950/40 via-orange-700/30 to-orange-500/25 rounded-3xl blur-2xl" />
+              <div className="relative bg-teal-950/80 backdrop-blur-xl border border-white/10 rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl shadow-black/40">
                 {/* Browser chrome */}
-                <div className="flex items-center gap-2 px-4 py-3 bg-violet-900/80 border-b border-white/5">
+                <div className="flex items-center gap-2 px-4 py-3 bg-teal-900/80 border-b border-white/5">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/70" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500/70" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-700/70" />
+                    <div className="w-3 h-3 rounded-full bg-orange-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-orange-700/70" />
                   </div>
                   <div className="flex-1 mx-4">
-                    <div className="max-w-md mx-auto bg-violet-800/50 rounded-lg px-4 py-1.5 text-xs text-white/70 text-center">
+                    <div className="max-w-md mx-auto bg-teal-800/50 rounded-lg px-4 py-1.5 text-xs text-white/70 text-center">
                       app.eyada.com/dashboard
                     </div>
                   </div>
@@ -4464,9 +4464,9 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                   {/* Mock stats row */}
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
                     {[
-                      { label: 'المرضى', value: '١,٢٤٧', color: 'from-violet-950/40 to-violet-900/25', icon: Users },
-                      { label: 'مواعيد اليوم', value: '٣٨', color: 'from-emerald-700/30 to-emerald-800/15', icon: CalendarDays },
-                      { label: 'الإيرادات', value: '٤٥,٨٠٠ ر.س', color: 'from-emerald-600/30 to-emerald-700/15', icon: TrendingUp },
+                      { label: 'المرضى', value: '١,٢٤٧', color: 'from-teal-950/40 to-teal-900/25', icon: Users },
+                      { label: 'مواعيد اليوم', value: '٣٨', color: 'from-orange-700/30 to-orange-800/15', icon: CalendarDays },
+                      { label: 'الإيرادات', value: '٤٥,٨٠٠ ر.س', color: 'from-orange-600/30 to-orange-700/15', icon: TrendingUp },
                       { label: 'المهام', value: '١٢', color: 'from-purple-500/30 to-purple-600/15', icon: ClipboardList },
                     ].map((item, i) => {
                       const Icon = item.icon;
@@ -4487,7 +4487,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                       <div className="text-xs text-white/55 mb-3">المواعيد خلال الأسبوع</div>
                       <div className="flex items-end gap-2 h-24">
                         {[60, 80, 45, 90, 70, 55, 85].map((h, i) => (
-                          <div key={i} className="flex-1 bg-gradient-to-t from-violet-900/40 to-violet-500/70 rounded-t-md transition-all hover:from-violet-800/60 hover:to-violet-500/90" style={{ height: `${h}%` }} />
+                          <div key={i} className="flex-1 bg-gradient-to-t from-teal-900/40 to-teal-500/70 rounded-t-md transition-all hover:from-teal-800/60 hover:to-teal-500/90" style={{ height: `${h}%` }} />
                         ))}
                       </div>
                     </div>
@@ -4501,7 +4501,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                         ].map((item, i) => (
                           <div key={i} className="flex items-center justify-between text-xs">
                             <span className="text-white/90">{item.name}</span>
-                            <span className="text-violet-400/80">{item.time}</span>
+                            <span className="text-teal-400/80">{item.time}</span>
                           </div>
                         ))}
                       </div>
@@ -4517,13 +4517,13 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       {/* ============ FEATURES SECTION ============ */}
       <section id="features" className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-violet-100/60 rounded-full blur-[150px]" />
-          <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-teal-100/60 rounded-full blur-[150px]" />
+          <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-orange-100/50 rounded-full blur-[120px]" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 border border-violet-200 text-violet-700 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-100 border border-teal-200 text-teal-700 text-xs font-medium mb-4">
               <Zap size={14} />
               مميزات النظام
             </div>
@@ -4538,12 +4538,12 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
               const Icon = feature.icon;
               return (
                 <div key={i}
-                  className="group relative bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-lg shadow-violet-100/50 hover:shadow-xl hover:shadow-violet-200/60 transition-all duration-500 hover:-translate-y-1">
+                  className="group relative bg-white rounded-2xl p-6 lg:p-8 border border-slate-100 shadow-lg shadow-teal-100/50 hover:shadow-xl hover:shadow-teal-200/60 transition-all duration-500 hover:-translate-y-1">
                   {/* Icon */}
                   <div className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center mb-5 shadow-lg ${feature.shadow} feature-icon-float`}>
                     <Icon className="text-white" size={26} />
                   </div>
-                  <h3 className="text-xl font-bold mb-3 text-slate-900 group-hover:text-violet-700 transition-colors">{feature.title}</h3>
+                  <h3 className="text-xl font-bold mb-3 text-slate-900 group-hover:text-teal-700 transition-colors">{feature.title}</h3>
                   <p className="text-slate-600 leading-relaxed group-hover:text-slate-700 transition-colors">{feature.desc}</p>
                   {/* Hover accent */}
                   <div className={`absolute -inset-px bg-gradient-to-br ${feature.color} rounded-2xl opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none`} />
@@ -4557,12 +4557,12 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       {/* ============ PRICING SECTION (moved up — swapped with Offers) ============ */}
       <section id="pricing" className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-violet-100/60 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-emerald-100/50 rounded-full blur-[120px]" />
+          <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-100/60 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-orange-100/50 rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-100 border border-violet-200 text-violet-700 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-100 border border-teal-200 text-teal-700 text-xs font-medium mb-4">
               <Crown size={14} />
               باقات الاشتراك
             </div>
@@ -4578,8 +4578,8 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ STATS SECTION ============ */}
-      <section id="stats" className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-violet-950/60 to-slate-900 text-white">
-        <div className="absolute inset-0 bg-gradient-to-b from-violet-950/30 via-violet-900/15 to-transparent" />
+      <section id="stats" className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-teal-950/60 to-slate-900 text-white">
+        <div className="absolute inset-0 bg-gradient-to-b from-teal-950/30 via-teal-900/15 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl lg:text-5xl font-black mb-4">
@@ -4594,8 +4594,8 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
               return (
                 <div key={i}
                   className="relative text-center p-6 lg:p-8 bg-white/[0.05] backdrop-blur-sm border border-white/[0.08] rounded-2xl hover:bg-white/[0.08] transition-all duration-500 group stat-counter">
-                  <div className="w-12 h-12 mx-auto mb-4 bg-violet-500/15 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                    <Icon className="text-violet-400" size={24} />
+                  <div className="w-12 h-12 mx-auto mb-4 bg-teal-500/15 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <Icon className="text-teal-400" size={24} />
                   </div>
                   <div className="text-3xl lg:text-5xl font-black gradient-text mb-2">{stat.value}</div>
                   <div className="text-white/70 text-sm font-medium">{stat.label}</div>
@@ -4609,12 +4609,12 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       {/* ============ HOW IT WORKS ============ */}
       <section id="how-it-works" className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-violet-100/50 rounded-full blur-[150px]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-100/50 rounded-full blur-[150px]" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-xs font-medium mb-4">
               <MousePointerClick size={14} />
               كيف يعمل النظام
             </div>
@@ -4626,7 +4626,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 relative">
             {/* Connection line */}
-            <div className="hidden lg:block absolute top-24 left-1/6 right-1/6 h-0.5 bg-gradient-to-l from-violet-200/60 via-emerald-300/40 to-violet-200/60" />
+            <div className="hidden lg:block absolute top-24 left-1/6 right-1/6 h-0.5 bg-gradient-to-l from-teal-200/60 via-orange-300/40 to-teal-200/60" />
 
             {steps.map((step, i) => {
               const Icon = step.icon;
@@ -4634,11 +4634,11 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                 <div key={i} className="relative text-center group">
                   {/* Step number with ring */}
                   <div className="relative inline-flex items-center justify-center mb-6">
-                    <div className="absolute w-24 h-24 bg-violet-200/40 rounded-full animate-ripple" style={{ animationDelay: `${i * 500}ms` }} />
-                    <div className="relative w-20 h-20 bg-gradient-to-br from-violet-600 to-violet-800 rounded-2xl flex items-center justify-center shadow-xl shadow-violet-600/30 group-hover:scale-110 transition-transform duration-500 rotate-3 group-hover:rotate-0">
+                    <div className="absolute w-24 h-24 bg-teal-200/40 rounded-full animate-ripple" style={{ animationDelay: `${i * 500}ms` }} />
+                    <div className="relative w-20 h-20 bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl flex items-center justify-center shadow-xl shadow-teal-600/30 group-hover:scale-110 transition-transform duration-500 rotate-3 group-hover:rotate-0">
                       <Icon className="text-white" size={32} />
                     </div>
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-white border-2 border-violet-600 rounded-full flex items-center justify-center text-sm font-black text-violet-700 shadow-sm">
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-white border-2 border-teal-600 rounded-full flex items-center justify-center text-sm font-black text-teal-700 shadow-sm">
                       {step.num}
                     </div>
                   </div>
@@ -4654,8 +4654,8 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       {/* ============ TESTIMONIALS SECTION ============ */}
       <section id="testimonials" className="relative py-20 lg:py-28 overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-violet-100/40 rounded-full blur-[120px]" />
-          <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] bg-emerald-100/30 rounded-full blur-[100px]" />
+          <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-teal-100/40 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] bg-orange-100/30 rounded-full blur-[100px]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -4668,16 +4668,16 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <div key={i}
-                className="bg-slate-50 border border-slate-100 hover:border-violet-200/60 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-violet-100/50 group testimonial-card">
+                className="bg-slate-50 border border-slate-100 hover:border-teal-200/60 rounded-2xl p-6 lg:p-8 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:shadow-teal-100/50 group testimonial-card">
                 {/* Stars */}
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: t.rating }).map((_, si) => (
-                    <Star key={si} size={16} className="text-emerald-400 fill-emerald-400" />
+                    <Star key={si} size={16} className="text-orange-400 fill-orange-400" />
                   ))}
                 </div>
                 <p className="text-slate-700 leading-relaxed mb-6 text-sm lg:text-base group-hover:text-slate-800 transition-colors">&ldquo;{t.text}&rdquo;</p>
                 <div className="flex items-center gap-3 pt-4 border-t border-slate-200/60">
-                  <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-800 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md shadow-violet-600/25">
+                  <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-teal-800 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-md shadow-teal-600/25">
                     {t.name.charAt(0)}
                   </div>
                   <div>
@@ -4694,12 +4694,12 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       {/* ============ OFFERS SECTION (moved down — swapped with Pricing) ============ */}
       <section id="offers" className="relative py-20 lg:py-28 overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-emerald-100/50 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-violet-100/50 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-orange-100/50 rounded-full blur-[150px]" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-teal-100/50 rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-medium mb-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-xs font-medium mb-4">
               <Gift size={14} />
               عروض خاصة
             </div>
@@ -4713,18 +4713,18 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ CTA SECTION ============ */}
-      <section id="cta" className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-900 to-violet-950 text-white">
+      <section id="cta" className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-900 to-teal-950 text-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-violet-500/10 rounded-full blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-teal-500/10 rounded-full blur-[150px]" />
         </div>
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-gradient-to-br from-violet-950/25 to-emerald-700/8 backdrop-blur-xl border border-violet-800/30 rounded-3xl p-8 lg:p-16 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-teal-950/25 to-orange-700/8 backdrop-blur-xl border border-teal-800/30 rounded-3xl p-8 lg:p-16 relative overflow-hidden">
             {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-[60px]" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-emerald-900/25 rounded-full blur-[60px]" />
+            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 rounded-full blur-[60px]" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-orange-900/25 rounded-full blur-[60px]" />
 
             <div className="relative z-10">
-              <div className="w-16 h-16 bg-gradient-to-br from-violet-600 to-violet-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-violet-600/40">
+              <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-teal-600/40">
                 <Syringe className="text-white" size={28} />
               </div>
               <h2 className="text-3xl lg:text-5xl font-black mb-4">
@@ -4735,11 +4735,11 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <button onClick={onRegister}
-                  className="w-full sm:w-auto px-10 py-4 bg-gradient-to-l from-violet-600 to-violet-800 hover:from-violet-800 hover:to-emerald-600 text-white font-bold rounded-2xl shadow-2xl shadow-violet-600/40 hover:shadow-violet-600/50 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] text-lg">
+                  className="w-full sm:w-auto px-10 py-4 bg-gradient-to-l from-teal-600 to-teal-800 hover:from-teal-800 hover:to-orange-600 text-white font-bold rounded-2xl shadow-2xl shadow-teal-600/40 hover:shadow-teal-600/50 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98] text-lg">
                   ابدأ مجاناً الآن
                 </button>
                 <button onClick={onLogin}
-                  className="w-full sm:w-auto px-10 py-4 text-violet-400 hover:text-white border border-violet-400/40 hover:border-violet-500/70 rounded-2xl hover:bg-violet-500/10 transition-all duration-300 text-lg">
+                  className="w-full sm:w-auto px-10 py-4 text-teal-400 hover:text-white border border-teal-400/40 hover:border-teal-500/70 rounded-2xl hover:bg-teal-500/10 transition-all duration-300 text-lg">
                   تسجيل الدخول
                 </button>
               </div>
@@ -4749,13 +4749,13 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="relative border-t border-white/10 py-12 lg:py-16 bg-violet-950 text-white">
+      <footer className="relative border-t border-white/10 py-12 lg:py-16 bg-teal-950 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12 mb-12">
             {/* Brand */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-800 rounded-xl flex items-center justify-center shadow-lg shadow-violet-600/25">
+                <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-teal-800 rounded-xl flex items-center justify-center shadow-lg shadow-teal-600/25">
                   <Syringe className="text-white" size={20} />
                 </div>
                 <span className="text-xl font-black">عيادة</span>
@@ -4764,7 +4764,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
                 نظام متكامل لإدارة العيادات والمواعيد والمرضى والفواتير. حل ذكي للرعاية الصحية.
               </p>
               <div className="flex gap-3">
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="تويتر" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-violet-600/30 border border-white/5 hover:border-violet-500/30 flex items-center justify-center text-white/60 hover:text-white transition-all">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="تويتر" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-teal-600/30 border border-white/5 hover:border-teal-500/30 flex items-center justify-center text-white/60 hover:text-white transition-all">
                   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                 </a>
                 <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="انستقرام" className="w-9 h-9 rounded-xl bg-white/5 hover:bg-pink-600/30 border border-white/5 hover:border-pink-500/30 flex items-center justify-center text-white/60 hover:text-white transition-all">
@@ -4810,7 +4810,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             <p className="text-white/90 text-sm">© ٢٠٢٦ عيادة. جميع الحقوق محفوظة.</p>
             <div className="flex items-center gap-2 text-white/90 text-xs">
               <span>صنع بـ</span>
-              <HeartPulse size={12} className="text-violet-400" />
+              <HeartPulse size={12} className="text-teal-400" />
               <span>للرعاية الصحية</span>
             </div>
           </div>
@@ -4934,9 +4934,9 @@ function ChatWidget() {
 
   const getRoleColor = (role: string) => {
     const colors: Record<string, string> = {
-      super_admin: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+      super_admin: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
       admin: 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
-      doctor: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+      doctor: 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
       reception: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
       accountant: 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
       nurse: 'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-300',
@@ -4949,7 +4949,7 @@ function ChatWidget() {
     <>
       {/* Floating Chat Button */}
       <button onClick={() => setOpen(!open)}
-        className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-gradient-to-br from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-800 text-white rounded-full shadow-xl shadow-violet-600/40 hover:shadow-violet-600/60 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center">
+        className="fixed bottom-6 left-6 z-50 w-14 h-14 bg-gradient-to-br from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-full shadow-xl shadow-teal-600/40 hover:shadow-teal-600/60 transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center">
         {open ? <X size={24} /> : <MessageCircle size={24} />}
         {totalUnread > 0 && !open && (
           <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">{totalUnread > 9 ? '+9' : totalUnread}</span>
@@ -4960,7 +4960,7 @@ function ChatWidget() {
       {open && (
         <div className="fixed bottom-24 left-6 z-50 w-[380px] max-w-[calc(100vw-3rem)] h-[520px] max-h-[calc(100vh-8rem)] bg-card border border-border rounded-2xl shadow-2xl shadow-black/20 flex flex-col overflow-hidden animate-scale-in">
           {/* Header */}
-          <div className="bg-gradient-to-l from-violet-600 to-violet-700 text-white px-4 py-3 flex items-center justify-between shrink-0">
+          <div className="bg-gradient-to-l from-teal-600 to-teal-700 text-white px-4 py-3 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5">
               {activeChat ? (
                 <>
@@ -5006,13 +5006,13 @@ function ChatWidget() {
                   <div className="border-b border-border p-2">
                     <div className="relative mb-2">
                       <Search size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                      <input placeholder="ابحث عن مستخدم..." className="w-full pr-9 pl-3 py-2 bg-muted/30 border border-border/50 rounded-lg text-xs outline-none focus:border-violet-500/50 transition-colors" />
+                      <input placeholder="ابحث عن مستخدم..." className="w-full pr-9 pl-3 py-2 bg-muted/30 border border-border/50 rounded-lg text-xs outline-none focus:border-teal-500/50 transition-colors" />
                     </div>
                     <div className="max-h-40 overflow-y-auto space-y-0.5">
                       {allUsers.map((u: any) => (
                         <button key={u.id} onClick={() => { setActiveChat(u); setShowUserList(false); }}
                           className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-xl hover:bg-muted/60 transition-colors text-right">
-                          <div className="w-8 h-8 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
+                          <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0">
                             {u.fullName?.charAt(0)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -5030,8 +5030,8 @@ function ChatWidget() {
                 {/* Conversations list */}
                 {conversations.length === 0 && !showUserList ? (
                   <div className="flex flex-col items-center justify-center h-full text-center p-6">
-                    <div className="w-16 h-16 bg-violet-500/10 rounded-2xl flex items-center justify-center mb-3">
-                      <MessageCircle size={28} className="text-violet-400" />
+                    <div className="w-16 h-16 bg-teal-500/10 rounded-2xl flex items-center justify-center mb-3">
+                      <MessageCircle size={28} className="text-teal-400" />
                     </div>
                     <p className="text-sm font-semibold text-foreground mb-1">لا توجد محادثات</p>
                     <p className="text-xs text-muted-foreground">
@@ -5053,7 +5053,7 @@ function ChatWidget() {
                           });
                         }
                       }}
-                        className="mt-4 px-5 py-2.5 bg-gradient-to-l from-violet-600 to-violet-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-violet-600/30 hover:shadow-violet-600/50 transition-all hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
+                        className="mt-4 px-5 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/50 transition-all hover:-translate-y-0.5 active:scale-[0.98] flex items-center gap-2">
                         <MessageCircle size={16} />
                         تواصل مع المالك
                       </button>
@@ -5066,7 +5066,7 @@ function ChatWidget() {
                         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-muted/40 transition-colors text-right relative">
                         {/* Avatar */}
                         <div className="relative shrink-0">
-                          <div className="w-11 h-11 bg-gradient-to-br from-violet-500 to-violet-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                          <div className="w-11 h-11 bg-gradient-to-br from-teal-500 to-teal-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                             {conv.partner?.fullName?.charAt(0)}
                           </div>
                           {conv.unreadCount > 0 && (
@@ -5088,7 +5088,7 @@ function ChatWidget() {
                               {conv.lastMessage?.senderId === user?.id ? 'أنت: ' : ''}{conv.lastMessage?.message}
                             </p>
                             {conv.unreadCount > 0 && (
-                              <div className="w-2 h-2 bg-violet-500 rounded-full shrink-0" />
+                              <div className="w-2 h-2 bg-teal-500 rounded-full shrink-0" />
                             )}
                           </div>
                         </div>
@@ -5104,12 +5104,12 @@ function ChatWidget() {
                 <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-muted/10">
                   {loading && messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full">
-                      <RefreshCw size={20} className="animate-spin text-violet-500" />
+                      <RefreshCw size={20} className="animate-spin text-teal-500" />
                     </div>
                   ) : messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full text-center">
-                      <div className="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center mb-2">
-                        <MessageCircle size={20} className="text-violet-400" />
+                      <div className="w-12 h-12 bg-teal-500/10 rounded-xl flex items-center justify-center mb-2">
+                        <MessageCircle size={20} className="text-teal-400" />
                       </div>
                       <p className="text-xs text-muted-foreground">ابدأ المحادثة الآن</p>
                     </div>
@@ -5131,7 +5131,7 @@ function ChatWidget() {
                             )}
                             <div className={`flex ${isMine ? 'justify-start' : 'justify-end'}`}>
                               <div className={`max-w-[80%] ${isMine
-                                ? 'bg-gradient-to-l from-violet-600 to-violet-700 text-white rounded-2xl rounded-bl-md'
+                                ? 'bg-gradient-to-l from-teal-600 to-teal-700 text-white rounded-2xl rounded-bl-md'
                                 : 'bg-card border border-border rounded-2xl rounded-br-md'
                               } px-4 py-2.5 shadow-sm`}>
                                 <p className="text-[13px] leading-relaxed whitespace-pre-wrap break-words">{msg.message}</p>
@@ -5140,7 +5140,7 @@ function ChatWidget() {
                                     {formatTime(msg.createdAt)}
                                   </span>
                                   {isMine && msg.isRead && (
-                                    <CheckCircle2 size={10} className="text-emerald-300" />
+                                    <CheckCircle2 size={10} className="text-orange-300" />
                                   )}
                                 </div>
                               </div>
@@ -5161,11 +5161,11 @@ function ChatWidget() {
                       value={newMsg}
                       onChange={e => setNewMsg(e.target.value)}
                       placeholder={isOwner ? "اكتب ردك..." : "اكتب رسالتك..."}
-                      className="flex-1 px-4 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-violet-500/50 focus:ring-2 focus:ring-violet-500/10 transition-all placeholder-muted-foreground/50"
+                      className="flex-1 px-4 py-2.5 bg-muted/30 border border-border/50 rounded-xl text-sm outline-none focus:border-teal-500/50 focus:ring-2 focus:ring-teal-500/10 transition-all placeholder-muted-foreground/50"
                       autoFocus
                     />
                     <button type="submit" disabled={!newMsg.trim()}
-                      className="w-10 h-10 bg-gradient-to-br from-violet-600 to-violet-700 hover:from-violet-700 hover:to-violet-800 text-white rounded-xl flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 shadow-md shadow-violet-600/30 shrink-0">
+                      className="w-10 h-10 bg-gradient-to-br from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed active:scale-95 shadow-md shadow-teal-600/30 shrink-0">
                       <Send size={16} className="rotate-180" />
                     </button>
                   </form>

@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Tajawal } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 
-const tajawal = Tajawal({
+const cairo = Cairo({
   subsets: ["arabic", "latin"],
   weight: ["300", "400", "500", "700", "800", "900"],
-  variable: "--font-tajawal",
+  variable: "--font-tajawal", // keep var name for backward compat
   display: "swap",
 });
 
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#7c3aed",
+  themeColor: "#0d9488",
   width: "device-width",
   initialScale: 1,
 };
@@ -52,7 +52,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
       </head>
-      <body className={`${tajawal.variable} antialiased bg-background text-foreground font-sans`}>
+      <body className={`${cairo.variable} antialiased bg-background text-foreground font-sans`}>
         {children}
       </body>
     </html>
