@@ -5263,6 +5263,51 @@ function AppContent() {
   const { user } = useAuth();
   const [currentView, setCurrentView] = useState('dashboard');
   const [authView, setAuthView] = useState<'landing' | 'login' | 'register'>('landing');
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Load dark mode preference from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark') {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else if (saved === 'light') {
+      setDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    } else {
+      // Default to system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setDarkMode(prefersDark);
+      if (prefersDark) document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  // Keyboard shortcuts: Ctrl+K = quick actions, Ctrl+D = dark mode, Esc = back to landing
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd' && !e.shiftKey) {
+        e.preventDefault();
+        toggleDarkMode();
+      }
+      if (e.key === 'Escape' && !user) {
+        setAuthView('landing');
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [darkMode, user]);
 
   if (!user) {
     if (authView === 'landing') return <LandingPage onLogin={() => setAuthView('login')} onRegister={() => setAuthView('register')} />;
@@ -5275,6 +5320,17 @@ function AppContent() {
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
       <main className="flex-1 flex flex-col overflow-hidden bg-background/80 backdrop-blur-sm">
         <ImpersonationBanner />
+        {/* Top bar with dark mode toggle */}
+        <div className="flex items-center justify-end px-4 py-2 border-b border-border/30 bg-card/50 backdrop-blur-sm">
+          <button
+            onClick={toggleDarkMode}
+            className="theme-toggle"
+            title={darkMode ? 'التبديل للوضع النهاري (Ctrl+D)' : 'التبديل للوضع الليلي (Ctrl+D)'}
+          >
+            {darkMode ? <Sun size={14} /> : <Moon size={14} />}
+            <span>{darkMode ? 'نهاري' : 'ليلي'}</span>
+          </button>
+        </div>
         <div className="flex-1 flex flex-col overflow-hidden">
           {currentView === 'dashboard' && <DashboardView />}
           {currentView === 'patients' && <PatientsView />}
@@ -5292,6 +5348,97 @@ function AppContent() {
         </div>
       </main>
       <ChatWidget />
+    </div>
+  );
+}
+
+// ============== TOAST NOTIFICATIONS ==============
+type ToastType = 'success' | 'error' | 'info' | 'warning';
+interface Toast {
+  id: number;
+  type: ToastType;
+  message: string;
+}
+const ToastContext = createContext<{ showToast: (msg: string, type?: ToastType) => void }>({ showToast: () => {} });
+const useToast = () => useContext(ToastContext);
+
+function ToastProvider({ children }: { children: React.ReactNode }) {
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const showToast = (message: string, type: ToastType = 'info') => {
+    const id = Date.now() + Math.random();
+    setToasts(prev => [...prev, { id, type, message }]);
+    setTimeout(() => {
+      setToasts(prev => prev.map(t => t.id === id ? { ...t, /* mark for exit */ } : t));
+      setTimeout(() => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      }, 300);
+    }, 3000);
+  };
+  const toastIcons = {
+    success: <CheckCircle size={16} />,
+    error: <XCircle size={16} />,
+    info: <Info size={16} />,
+    warning: <AlertTriangle size={16} />,
+  };
+  return (
+    <ToastContext.Provider value={{ showToast }}>
+      {children}
+      <div className="toast-container">
+        {toasts.map(t => (
+          <div key={t.id} className={`toast toast-${t.type}`}>
+            <div className="toast-icon">{toastIcons[t.type]}</div>
+            <span>{t.message}</span>
+          </div>
+        ))}
+      </div>
+    </ToastContext.Provider>
+  );
+}
+
+// ============== SKELETON LOADER COMPONENTS ==============
+function SkeletonCard() {
+  return (
+    <div className="skeleton-card">
+      <div className="flex items-center justify-between">
+        <div className="flex-1">
+          <div className="skeleton skeleton-text skeleton-text-short" />
+          <div className="skeleton skeleton-text skeleton-text-medium" style={{ height: '24px', marginTop: '8px' }} />
+        </div>
+        <div className="skeleton skeleton-circle" />
+      </div>
+    </div>
+  );
+}
+
+function SkeletonRow() {
+  return (
+    <div className="flex items-center gap-3 py-3">
+      <div className="skeleton skeleton-circle" style={{ width: '32px', height: '32px' }} />
+      <div className="flex-1">
+        <div className="skeleton skeleton-text skeleton-text-medium" />
+        <div className="skeleton skeleton-text skeleton-text-short" style={{ marginTop: '4px' }} />
+      </div>
+    </div>
+  );
+}
+
+// ============== EMPTY STATE COMPONENT ==============
+function EmptyState({ icon: Icon, title, description, actionLabel, onAction }: {
+  icon: any; title: string; description?: string; actionLabel?: string; onAction?: () => void;
+}) {
+  return (
+    <div className="empty-state">
+      <div className="empty-state-icon">
+        <Icon size={36} />
+      </div>
+      <h3 className="empty-state-title">{title}</h3>
+      {description && <p className="empty-state-description">{description}</p>}
+      {actionLabel && onAction && (
+        <button onClick={onAction} className="empty-state-action">
+          <Plus size={16} />
+          {actionLabel}
+        </button>
+      )}
     </div>
   );
 }
@@ -5378,9 +5525,11 @@ function PageLoader() {
 export default function Page() {
   return (
     <AuthProvider>
-      <PageLoader />
-      <CursorTrail />
-      <AppContent />
+      <ToastProvider>
+        <PageLoader />
+        <CursorTrail />
+        <AppContent />
+      </ToastProvider>
     </AuthProvider>
   );
 }
