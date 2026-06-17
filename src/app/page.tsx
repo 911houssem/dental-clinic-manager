@@ -13,7 +13,7 @@ import {
   Link, ExternalLink, Star, Award, UserCog, Crown, BadgeCheck,
   ArrowUpRight, HeartPulse, ClipboardCheck, CalendarCheck, Zap,
   ChevronDown, MousePointerClick, ShieldCheck2, HeadphonesIcon, Sparkles,
-  Database, Download, Info,
+  Database, Download, Info, Sun, Moon,
   ArrowRight, Play, Gift, Tag, Percent, Ban, MessageCircle, Send,
   LogIn, ArrowLeftRight, KeyRound
 } from 'lucide-react';
@@ -4253,6 +4253,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -4272,6 +4273,36 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Scroll-triggered animations using IntersectionObserver
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-fade-in');
+            entry.target.classList.remove('opacity-0');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    document.querySelectorAll('[data-animate]').forEach((el) => {
+      el.classList.add('opacity-0');
+      observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
+  // Dark mode toggle
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -4340,6 +4371,15 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
             {/* CTA Buttons */}
             <div className="hidden md:flex items-center gap-3">
+              {/* Dark mode toggle */}
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                aria-label="تبديل الوضع الليلي"
+                className="p-2.5 text-foreground/70 hover:text-foreground rounded-xl border border-border/40 hover:border-border/80 hover:bg-muted/40 transition-all duration-300"
+                title={darkMode ? 'الوضع النهاري' : 'الوضع الليلي'}
+              >
+                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+              </button>
               <button onClick={onLogin}
                 className="px-5 py-2.5 text-sm font-semibold text-teal-600 hover:text-teal-800 border border-teal-400/40 hover:border-teal-500/70 rounded-xl hover:bg-teal-500/10 transition-all duration-300">
                 تسجيل الدخول
@@ -4384,18 +4424,19 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
 
       {/* ============ HERO SECTION ============ */}
       <section id="hero" className="relative pt-32 lg:pt-44 pb-20 lg:pb-32 overflow-hidden bg-gradient-to-b from-teal-950 via-teal-950/50 to-teal-950 text-white hero-gradient">
-        {/* Background decorations */}
+        {/* Background decorations — animated gradient blobs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-teal-800/12 rounded-full blur-[150px]" />
-          <div className="absolute top-1/4 right-0 w-[400px] h-[400px] bg-orange-900/25 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-orange-500/12 rounded-full blur-[130px]" />
+          <div className="hero-blob hero-blob-1 absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full blur-[150px]" />
+          <div className="hero-blob hero-blob-2 absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full blur-[120px]" />
+          <div className="hero-blob hero-blob-3 absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[130px]" />
           <div className="absolute inset-0 pattern-dots opacity-30" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-950/40 text-teal-400 text-sm font-medium mb-8 animate-slide-up">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-sm font-medium mb-8 animate-slide-up backdrop-blur-sm">
+              <span className="dot-pulse"></span>
               <Sparkles size={16} />
               <span>نظام إدارة العيادات رقم ١ في المنطقة</span>
               <ArrowUpRight size={14} />
@@ -4405,7 +4446,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black leading-tight mb-6 animate-slide-up" style={{ animationDelay: '100ms' }}>
               أدِر عيادتك
               <br />
-              <span className="gradient-text">بذكاء وسهولة</span>
+              <span className="gradient-text-enhanced">بذكاء وسهولة</span>
             </h1>
 
             {/* Subtitle */}
@@ -4515,7 +4556,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ FEATURES SECTION ============ */}
-      <section id="features" className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
+      <section id="features" data-animate className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-teal-100/60 rounded-full blur-[150px]" />
           <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-orange-100/50 rounded-full blur-[120px]" />
@@ -4555,7 +4596,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ PRICING SECTION (moved up — swapped with Offers) ============ */}
-      <section id="pricing" className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
+      <section id="pricing" data-animate className="relative py-20 lg:py-28 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-teal-100/60 rounded-full blur-[150px]" />
           <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-orange-100/50 rounded-full blur-[120px]" />
@@ -4578,7 +4619,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ STATS SECTION ============ */}
-      <section id="stats" className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-teal-950/60 to-slate-900 text-white">
+      <section id="stats" data-animate className="relative py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-teal-950/60 to-slate-900 text-white">
         <div className="absolute inset-0 bg-gradient-to-b from-teal-950/30 via-teal-900/15 to-transparent" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -4607,7 +4648,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ HOW IT WORKS ============ */}
-      <section id="how-it-works" className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
+      <section id="how-it-works" data-animate className="relative py-20 lg:py-32 overflow-hidden bg-slate-50">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-teal-100/50 rounded-full blur-[150px]" />
         </div>
@@ -4652,7 +4693,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ TESTIMONIALS SECTION ============ */}
-      <section id="testimonials" className="relative py-20 lg:py-28 overflow-hidden bg-white">
+      <section id="testimonials" data-animate className="relative py-20 lg:py-28 overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/3 left-0 w-[400px] h-[400px] bg-teal-100/40 rounded-full blur-[120px]" />
           <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] bg-orange-100/30 rounded-full blur-[100px]" />
@@ -4692,7 +4733,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ OFFERS SECTION (moved down — swapped with Pricing) ============ */}
-      <section id="offers" className="relative py-20 lg:py-28 overflow-hidden bg-white">
+      <section id="offers" data-animate className="relative py-20 lg:py-28 overflow-hidden bg-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-orange-100/50 rounded-full blur-[150px]" />
           <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-teal-100/50 rounded-full blur-[120px]" />
@@ -4713,7 +4754,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
       </section>
 
       {/* ============ CTA SECTION ============ */}
-      <section id="cta" className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-900 to-teal-950 text-white">
+      <section id="cta" data-animate className="relative py-20 lg:py-32 bg-gradient-to-b from-slate-900 to-teal-950 text-white">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-teal-500/10 rounded-full blur-[150px]" />
         </div>
