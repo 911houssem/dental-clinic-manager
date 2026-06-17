@@ -22,6 +22,260 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
 } from 'recharts';
 
+// ============== I18N / TRANSLATIONS ==============
+type Lang = 'ar' | 'en';
+
+const TRANSLATIONS = {
+  // === COMMON ===
+  'app.name': { ar: 'عيادة', en: 'Clinic' },
+  'app.tagline': { ar: 'نظام إدارة العيادات', en: 'Clinic Management System' },
+  'common.save': { ar: 'حفظ', en: 'Save' },
+  'common.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'common.delete': { ar: 'حذف', en: 'Delete' },
+  'common.edit': { ar: 'تعديل', en: 'Edit' },
+  'common.add': { ar: 'إضافة', en: 'Add' },
+  'common.search': { ar: 'بحث', en: 'Search' },
+  'common.close': { ar: 'إغلاق', en: 'Close' },
+  'common.confirm': { ar: 'تأكيد', en: 'Confirm' },
+  'common.back': { ar: 'العودة', en: 'Back' },
+  'common.next': { ar: 'التالي', en: 'Next' },
+  'common.loading': { ar: 'جاري التحميل...', en: 'Loading...' },
+  'common.saved': { ar: 'تم الحفظ', en: 'Saved' },
+  'common.required': { ar: 'مطلوب', en: 'Required' },
+  'common.optional': { ar: 'اختياري', en: 'Optional' },
+  'common.yes': { ar: 'نعم', en: 'Yes' },
+  'common.no': { ar: 'لا', en: 'No' },
+  'common.active': { ar: 'نشط', en: 'Active' },
+  'common.inactive': { ar: 'غير نشط', en: 'Inactive' },
+  'common.status': { ar: 'الحالة', en: 'Status' },
+  'common.actions': { ar: 'إجراءات', en: 'Actions' },
+  'common.name': { ar: 'الاسم', en: 'Name' },
+  'common.phone': { ar: 'الهاتف', en: 'Phone' },
+  'common.email': { ar: 'البريد الإلكتروني', en: 'Email' },
+  'common.address': { ar: 'العنوان', en: 'Address' },
+  'common.date': { ar: 'التاريخ', en: 'Date' },
+  'common.time': { ar: 'الوقت', en: 'Time' },
+  'common.notes': { ar: 'ملاحظات', en: 'Notes' },
+  'common.currency': { ar: 'العملة', en: 'Currency' },
+  'common.today': { ar: 'اليوم', en: 'Today' },
+  'common.tomorrow': { ar: 'غداً', en: 'Tomorrow' },
+  'common.yesterday': { ar: 'أمس', en: 'Yesterday' },
+
+  // === NAVIGATION / SIDEBAR ===
+  'nav.clinic': { ar: 'العيادة', en: 'Clinic' },
+  'nav.dashboard': { ar: 'لوحة التحكم', en: 'Dashboard' },
+  'nav.patients': { ar: 'المرضى', en: 'Patients' },
+  'nav.appointments': { ar: 'المواعيد', en: 'Appointments' },
+  'nav.medicalRecords': { ar: 'السجلات الطبية', en: 'Medical Records' },
+  'nav.finance': { ar: 'المالية', en: 'Finance' },
+  'nav.invoices': { ar: 'الفواتير', en: 'Invoices' },
+  'nav.inventory': { ar: 'المخزون', en: 'Inventory' },
+  'nav.reports': { ar: 'التقارير', en: 'Reports' },
+  'nav.management': { ar: 'الإدارة', en: 'Management' },
+  'nav.tasks': { ar: 'المهام', en: 'Tasks' },
+  'nav.settings': { ar: 'الإعدادات', en: 'Settings' },
+  'nav.clinicManagement': { ar: 'إدارة العيادة', en: 'Clinic Management' },
+  'nav.subscriptions': { ar: 'الاشتراكات', en: 'Subscriptions' },
+  'nav.subscriptionsMgmt': { ar: 'إدارة الاشتراكات', en: 'Subscriptions Mgmt' },
+  'nav.offers': { ar: 'العروض', en: 'Offers' },
+  'nav.offersMgmt': { ar: 'إدارة العروض', en: 'Offers Mgmt' },
+  'nav.logout': { ar: 'تسجيل الخروج', en: 'Logout' },
+  'nav.role.owner': { ar: 'المالك', en: 'Owner' },
+  'nav.role.admin': { ar: 'مدير', en: 'Manager' },
+  'nav.role.doctor': { ar: 'طبيب', en: 'Doctor' },
+  'nav.role.reception': { ar: 'استقبال', en: 'Receptionist' },
+
+  // === AUTH ===
+  'auth.login': { ar: 'تسجيل الدخول', en: 'Login' },
+  'auth.register': { ar: 'إنشاء حساب', en: 'Sign Up' },
+  'auth.username': { ar: 'اسم المستخدم', en: 'Username' },
+  'auth.password': { ar: 'كلمة المرور', en: 'Password' },
+  'auth.fullName': { ar: 'الاسم الكامل', en: 'Full Name' },
+  'auth.phone': { ar: 'الهاتف', en: 'Phone' },
+  'auth.loginBtn': { ar: 'تسجيل الدخول', en: 'Sign In' },
+  'auth.registerBtn': { ar: 'إنشاء حساب', en: 'Create Account' },
+  'auth.loginSubtitle': { ar: 'أدخل بياناتك للوصول إلى حسابك', en: 'Enter your credentials to access your account' },
+  'auth.noAccount': { ar: 'ليس لديك حساب؟', en: "Don't have an account?" },
+  'auth.haveAccount': { ar: 'لديك حساب؟', en: 'Have an account?' },
+  'auth.startFree': { ar: 'ابدأ مجاناً', en: 'Start Free' },
+  'auth.welcome': { ar: 'مرحباً بعودتك', en: 'Welcome Back' },
+  'auth.demoData': { ar: 'تهيئة البيانات التجريبية', en: 'Setup Demo Data' },
+  'auth.invalidCreds': { ar: 'خطأ في اسم المستخدم أو كلمة المرور', en: 'Invalid username or password' },
+
+  // === DASHBOARD ===
+  'dash.greeting.morning': { ar: 'صباح الخير', en: 'Good Morning' },
+  'dash.greeting.afternoon': { ar: 'مساء الخير', en: 'Good Afternoon' },
+  'dash.greeting.evening': { ar: 'مساء النور', en: 'Good Evening' },
+  'dash.todayAppointments': { ar: 'مواعيد اليوم', en: "Today's Appointments" },
+  'dash.totalPatients': { ar: 'إجمالي المرضى', en: 'Total Patients' },
+  'dash.revenue': { ar: 'الإيرادات', en: 'Revenue' },
+  'dash.collected': { ar: 'المتحصل', en: 'Collected' },
+  'dash.weeklyRevenue': { ar: 'إيرادات الأسبوع', en: 'Weekly Revenue' },
+  'dash.noAppointmentsToday': { ar: 'لا توجد مواعيد اليوم', en: 'No appointments today' },
+
+  // === PATIENTS ===
+  'patients.title': { ar: 'إدارة المرضى', en: 'Patients Management' },
+  'patients.new': { ar: 'مريض جديد', en: 'New Patient' },
+  'patients.fileNumber': { ar: 'رقم الملف', en: 'File Number' },
+  'patients.fullName': { ar: 'الاسم الكامل', en: 'Full Name' },
+  'patients.gender': { ar: 'الجنس', en: 'Gender' },
+  'patients.male': { ar: 'ذكر', en: 'Male' },
+  'patients.female': { ar: 'أنثى', en: 'Female' },
+  'patients.bloodType': { ar: 'فصيلة الدم', en: 'Blood Type' },
+  'patients.age': { ar: 'العمر', en: 'Age' },
+  'patients.searchPlaceholder': { ar: 'بحث بالاسم أو الهاتف أو رقم الملف...', en: 'Search by name, phone, or file number...' },
+  'patients.medicalRecords': { ar: 'السجل الطبي للمريض', en: 'Patient Medical Records' },
+  'patients.noDiagnoses': { ar: 'لا توجد تشخيصات سابقة', en: 'No previous diagnoses' },
+  'patients.diagnosesWillAppear': { ar: 'سيتم عرض التشخيصات هنا عند إتمام مواعيد المريض', en: 'Diagnoses will appear here after completing patient appointments' },
+  'patients.previousDiagnoses': { ar: 'التشخيصات السابقة', en: 'Previous Diagnoses' },
+
+  // === APPOINTMENTS ===
+  'apt.title': { ar: 'المواعيد', en: 'Appointments' },
+  'apt.new': { ar: 'موعد جديد', en: 'New Appointment' },
+  'apt.patient': { ar: 'المريض', en: 'Patient' },
+  'apt.doctor': { ar: 'الطبيب', en: 'Doctor' },
+  'apt.type': { ar: 'النوع', en: 'Type' },
+  'apt.status.scheduled': { ar: 'مجدول', en: 'Scheduled' },
+  'apt.status.completed': { ar: 'تم', en: 'Completed' },
+  'apt.status.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'apt.type.regular': { ar: 'عادي', en: 'Regular' },
+  'apt.type.follow_up': { ar: 'متابعة', en: 'Follow-up' },
+  'apt.type.emergency': { ar: 'طوارئ', en: 'Emergency' },
+  'apt.type.consultation': { ar: 'استشارة', en: 'Consultation' },
+  'apt.complete': { ar: 'تم', en: 'Done' },
+  'apt.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'apt.completeTitle': { ar: 'إتمام الموعد', en: 'Complete Appointment' },
+  'apt.price': { ar: 'سعر الكشف', en: 'Consultation Price' },
+  'apt.diagnosis': { ar: 'التشخيص الطبي للمريض', en: 'Medical Diagnosis' },
+  'apt.diagnosisPlaceholder': { ar: 'اكتب التشخيص الطبي للمريض بعد الكشف...', en: 'Enter the medical diagnosis after examination...' },
+  'apt.diagnosisHint': { ar: 'سيتم حفظ التشخيص في السجل الطبي للمريض، ويمكن مراجعته لاحقاً من صفحة المرضى', en: 'Diagnosis will be saved to the patient medical record, accessible later from the Patients page' },
+  'apt.confirmCreate': { ar: 'تأكيد وإنشاء فاتورة', en: 'Confirm & Create Invoice' },
+  'apt.invoiceNote': { ar: 'سيتم تسجيل فاتورة تلقائياً في الفواتير كـ', en: 'An invoice will be auto-created as' },
+  'apt.fullyPaid': { ar: 'مدفوعة كلياً', en: 'Fully Paid' },
+  'apt.value': { ar: 'بقيمة', en: 'with value' },
+  'apt.diagnosisSaved': { ar: '+ سيتم حفظ التشخيص في السجل الطبي للمريض', en: '+ Diagnosis will be saved to patient record' },
+
+  // === SETTINGS ===
+  'settings.title': { ar: 'إعدادات العيادة', en: 'Clinic Settings' },
+  'settings.clinicName': { ar: 'اسم العيادة', en: 'Clinic Name' },
+  'settings.taxNumber': { ar: 'الرقم الضريبي', en: 'Tax Number' },
+  'settings.paymentMode': { ar: 'نوع الدفع', en: 'Payment Mode' },
+  'settings.paymentMode.postpaid': { ar: 'آجل', en: 'Postpaid' },
+  'settings.paymentMode.prepaid': { ar: 'مقدم', en: 'Prepaid' },
+  'settings.slotDuration': { ar: 'مدة الموعد (دقيقة)', en: 'Slot Duration (minutes)' },
+  'settings.saveChanges': { ar: 'حفظ التغييرات', en: 'Save Changes' },
+
+  // === LANGUAGE SECTION ===
+  'lang.title': { ar: 'اللغة والاتجاه', en: 'Language & Direction' },
+  'lang.subtitle': { ar: 'اختر لغة العرض المفضلة (Language & Direction)', en: 'Choose your preferred display language' },
+  'lang.arabic': { ar: 'العربية', en: 'Arabic' },
+  'lang.english': { ar: 'الإنجليزية', en: 'English' },
+  'lang.saved': { ar: 'تم حفظ تفضيل اللغة', en: 'Language preference saved' },
+  'lang.note.ar': { ar: 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.', en: 'Note: language change applies page direction (RTL/LTR). Full content translation is in progress.' },
+  'lang.note.en': { ar: 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.', en: 'Note: language change applies page direction (RTL/LTR). Full content translation is in progress.' },
+
+  // === BACKUP ===
+  'backup.title': { ar: 'النسخ الاحتياطي والبيانات', en: 'Backup & Data' },
+  'backup.subtitle': { ar: 'صدّر نسخة كاملة من بيانات النظام كملف JSON', en: 'Export a full backup of system data as JSON' },
+  'backup.export': { ar: 'تصدير نسخة احتياطية', en: 'Export Backup' },
+  'backup.exporting': { ar: 'جاري التصدير...', en: 'Exporting...' },
+  'backup.lastBackup': { ar: 'آخر نسخة', en: 'Last backup' },
+  'backup.includes': { ar: 'تشمل النسخة: العيادات، المستخدمين (بدون كلمات المرور)، المرضى، المواعيد، الفواتير، المخزون، المهام، السجلات الطبية، خطط الاشتراك، العروض، سجلات التدقيق.', en: 'Includes: clinics, users (no passwords), patients, appointments, invoices, inventory, tasks, medical records, plans, offers, audit logs.' },
+  'backup.tip': { ar: 'يُنصح بإجراء نسخة احتياطية أسبوعياً، أو قبل أي تعديل كبير على البيانات.', en: 'Recommended: weekly backup, or before major data changes.' },
+
+  // === SUBSCRIPTIONS ===
+  'sub.title': { ar: 'إدارة الاشتراكات', en: 'Subscriptions Management' },
+  'sub.plans': { ar: 'خطط الاشتراك', en: 'Subscription Plans' },
+  'sub.clinicSubs': { ar: 'اشتراكات العيادات', en: 'Clinic Subscriptions' },
+  'sub.newPlan': { ar: 'خطة جديدة', en: 'New Plan' },
+  'sub.grant': { ar: 'منح اشتراك', en: 'Grant Subscription' },
+  'sub.billingCycle': { ar: 'دورة الفوترة', en: 'Billing Cycle' },
+  'sub.monthly': { ar: 'شهري', en: 'Monthly' },
+  'sub.yearly': { ar: 'سنوي', en: 'Yearly' },
+  'sub.saveUpTo': { ar: 'وفّر حتى ١٧٪', en: 'Save up to 17%' },
+  'sub.startDate': { ar: 'تاريخ البدء', en: 'Start Date' },
+  'sub.endDate': { ar: 'تاريخ الانتهاء', en: 'End Date' },
+  'sub.notSpecified': { ar: 'غير محدد', en: 'Not specified' },
+  'sub.endDateHint': { ar: 'تاريخ الانتهاء (اختياري — يُحسب تلقائياً إذا تُرك فارغاً)', en: 'End date (optional — auto-calculated if empty)' },
+  'sub.chooseClinic': { ar: 'اختر عيادة', en: 'Choose a clinic' },
+  'sub.choosePlan': { ar: 'اختر خطة', en: 'Choose a plan' },
+  'sub.clinic': { ar: 'العيادة', en: 'Clinic' },
+  'sub.plan': { ar: 'الخطة', en: 'Plan' },
+  'sub.grantBtn': { ar: 'منح الاشتراك', en: 'Grant Subscription' },
+  'sub.saveYearly': { ar: 'وفّر', en: 'Save' },
+  'sub.perYear': { ar: 'ر.س/سنة', en: 'SAR/year' },
+  'sub.perMonth': { ar: 'ر.س/شهر', en: 'SAR/month' },
+
+  // === LANDING ===
+  'landing.hero.badge': { ar: 'نظام إدارة العيادات رقم ١ في المنطقة', en: '#1 Clinic Management System in the Region' },
+  'landing.hero.title1': { ar: 'أدِر عيادتك', en: 'Manage Your Clinic' },
+  'landing.hero.title2': { ar: 'بذكاء وسهولة', en: 'Smartly & Easily' },
+  'landing.hero.subtitle': { ar: 'نظام متكامل لإدارة المواعيد والمرضى والفواتير. وفّر وقتك وركّز على ما يهم — رعاية مرضاك.', en: 'An integrated system for appointments, patients, and invoices. Save time and focus on what matters — patient care.' },
+  'landing.hero.cta1': { ar: 'ابدأ مجاناً الآن', en: 'Start Free Now' },
+  'landing.hero.cta2': { ar: 'شاهد كيف يعمل', en: 'See How It Works' },
+
+  // === EMPTY STATES ===
+  'empty.noData': { ar: 'لا توجد بيانات', en: 'No Data' },
+  'empty.noPatients': { ar: 'لا يوجد مرضى بعد', en: 'No patients yet' },
+  'empty.addFirst': { ar: 'أضف أول مريض للبدء', en: 'Add your first patient to get started' },
+} as Record<string, { ar: string; en: string }>;
+
+const LanguageContext = createContext<{
+  lang: Lang;
+  setLang: (l: Lang) => void;
+  t: (key: string) => string;
+}>({
+  lang: 'ar',
+  setLang: () => {},
+  t: (key: string) => key,
+});
+
+const useLang = () => useContext(LanguageContext);
+
+function LanguageProvider({ children }: { children: React.ReactNode }) {
+  const [lang, setLangState] = useState<Lang>('ar');
+
+  useEffect(() => {
+    const saved = localStorage.getItem('app-language') as Lang | null;
+    if (saved === 'ar' || saved === 'en') {
+      setLangState(saved);
+      const html = document.documentElement;
+      if (saved === 'en') {
+        html.setAttribute('dir', 'ltr');
+        html.setAttribute('lang', 'en');
+      } else {
+        html.setAttribute('dir', 'rtl');
+        html.setAttribute('lang', 'ar');
+      }
+    }
+  }, []);
+
+  const setLang = (l: Lang) => {
+    setLangState(l);
+    localStorage.setItem('app-language', l);
+    const html = document.documentElement;
+    if (l === 'en') {
+      html.setAttribute('dir', 'ltr');
+      html.setAttribute('lang', 'en');
+    } else {
+      html.setAttribute('dir', 'rtl');
+      html.setAttribute('lang', 'ar');
+    }
+  };
+
+  const t = (key: string): string => {
+    const entry = TRANSLATIONS[key];
+    if (!entry) return key;
+    return entry[lang] || entry.ar || key;
+  };
+
+  return (
+    <LanguageContext.Provider value={{ lang, setLang, t }}>
+      {children}
+    </LanguageContext.Provider>
+  );
+}
+
 // ============== TYPES ==============
 interface AuthUser {
   id: string;
@@ -947,22 +1201,23 @@ function RegisterPage({ onBack, onSwitchLogin }: { onBack?: () => void; onSwitch
 
 // ============== SIDEBAR ==============
 const NAV_ITEMS = [
-  { id: 'dashboard', label: 'لوحة التحكم', icon: LayoutDashboard, permission: 'dashboard', group: 'الرئيسية' },
-  { id: 'patients', label: 'المرضى', icon: Users, permission: 'patients', group: 'العيادة' },
-  { id: 'appointments', label: 'المواعيد', icon: CalendarDays, permission: 'appointments', group: 'العيادة' },
-  { id: 'records', label: 'السجلات الطبية', icon: FileText, permission: 'records', group: 'العيادة' },
-  { id: 'invoices', label: 'الفواتير', icon: Receipt, permission: 'invoices', group: 'المالية' },
-  { id: 'inventory', label: 'المخزون', icon: Package, permission: 'inventory', group: 'المالية' },
-  { id: 'reports', label: 'التقارير', icon: BarChart3, permission: 'reports', group: 'المالية' },
-  { id: 'tasks', label: 'المهام', icon: ListTodo, permission: 'dashboard', group: 'الإدارة' },
-  { id: 'settings', label: 'الإعدادات', icon: Settings, permission: 'settings', group: 'الإدارة' },
-  { id: 'management', label: 'إدارة العيادات', icon: Building2, permission: 'settings', group: 'الإدارة' },
-  { id: 'subscriptions', label: 'إدارة الاشتراكات', icon: Crown, permission: 'super_admin', group: 'الاشتراكات' },
-  { id: 'offers', label: 'إدارة العروض', icon: Star, permission: 'super_admin', group: 'الاشتراكات' },
+  { id: 'dashboard', label: { ar: 'لوحة التحكم', en: 'Dashboard' }, icon: LayoutDashboard, permission: 'dashboard', group: { ar: 'الرئيسية', en: 'Main' } },
+  { id: 'patients', label: { ar: 'المرضى', en: 'Patients' }, icon: Users, permission: 'patients', group: { ar: 'العيادة', en: 'Clinic' } },
+  { id: 'appointments', label: { ar: 'المواعيد', en: 'Appointments' }, icon: CalendarDays, permission: 'appointments', group: { ar: 'العيادة', en: 'Clinic' } },
+  { id: 'records', label: { ar: 'السجلات الطبية', en: 'Medical Records' }, icon: FileText, permission: 'records', group: { ar: 'العيادة', en: 'Clinic' } },
+  { id: 'invoices', label: { ar: 'الفواتير', en: 'Invoices' }, icon: Receipt, permission: 'invoices', group: { ar: 'المالية', en: 'Finance' } },
+  { id: 'inventory', label: { ar: 'المخزون', en: 'Inventory' }, icon: Package, permission: 'inventory', group: { ar: 'المالية', en: 'Finance' } },
+  { id: 'reports', label: { ar: 'التقارير', en: 'Reports' }, icon: BarChart3, permission: 'reports', group: { ar: 'المالية', en: 'Finance' } },
+  { id: 'tasks', label: { ar: 'المهام', en: 'Tasks' }, icon: ListTodo, permission: 'dashboard', group: { ar: 'الإدارة', en: 'Management' } },
+  { id: 'settings', label: { ar: 'الإعدادات', en: 'Settings' }, icon: Settings, permission: 'settings', group: { ar: 'الإدارة', en: 'Management' } },
+  { id: 'management', label: { ar: 'إدارة العيادات', en: 'Clinic Mgmt' }, icon: Building2, permission: 'settings', group: { ar: 'الإدارة', en: 'Management' } },
+  { id: 'subscriptions', label: { ar: 'إدارة الاشتراكات', en: 'Subscriptions' }, icon: Crown, permission: 'super_admin', group: { ar: 'الاشتراكات', en: 'Subscriptions' } },
+  { id: 'offers', label: { ar: 'إدارة العروض', en: 'Offers' }, icon: Star, permission: 'super_admin', group: { ar: 'الاشتراكات', en: 'Subscriptions' } },
 ];
 
 function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurrentView: (v: string) => void }) {
   const { user, logout, clinics, currentClinicId, setCurrentClinicId } = useAuth();
+  const { lang, t } = useLang();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -985,12 +1240,12 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
   };
 
   const roleLabels: Record<string, string> = {
-    super_admin: 'المالك',
-    admin: 'مدير',
-    doctor: 'طبيب',
-    reception: 'استقبال',
-    accountant: 'محاسب',
-    nurse: 'تمريض',
+    super_admin: t('nav.role.owner'),
+    admin: t('nav.role.admin'),
+    doctor: t('nav.role.doctor'),
+    reception: t('nav.role.reception'),
+    accountant: lang === 'ar' ? 'محاسب' : 'Accountant',
+    nurse: lang === 'ar' ? 'تمريض' : 'Nurse',
   };
 
   const sidebarContent = (
@@ -999,12 +1254,12 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
       <div className="p-5 pb-4">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 bg-gradient-to-br from-teal-600 via-teal-700 to-orange-500 rounded-[0.85rem] flex items-center justify-center shadow-lg shadow-teal-600/30 shrink-0">
-            <span className="text-white font-black text-lg">ع</span>
+            <span className="text-white font-black text-lg">{lang === 'ar' ? 'ع' : 'C'}</span>
           </div>
           {!collapsed && (
             <div className="overflow-hidden">
-              <h2 className="font-extrabold text-[15px] truncate tracking-tight text-foreground">عيادة</h2>
-              <p className="text-[11px] text-muted-foreground/70 truncate">نظام إدارة العيادات</p>
+              <h2 className="font-extrabold text-[15px] truncate tracking-tight text-foreground">{t('app.name')}</h2>
+              <p className="text-[11px] text-muted-foreground/70 truncate">{t('app.tagline')}</p>
             </div>
           )}
         </div>
@@ -1018,7 +1273,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
             onChange={e => setCurrentClinicId(e.target.value)}
             className="w-full px-3 py-2 rounded-lg bg-muted/50 dark:bg-white/5 border border-border/60 text-sm outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500/40 transition-all"
           >
-            <option value="">اختر عيادة</option>
+            <option value="">{lang === 'ar' ? 'اختر عيادة' : 'Select clinic'}</option>
             {clinics.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
         </div>
@@ -1032,15 +1287,17 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
           return visibleItems.map((item, idx) => {
             const Icon = item.icon;
             const active = currentView === item.id;
-            const showGroup = item.group !== lastGroup && !collapsed;
-            lastGroup = item.group;
+            const groupLabel = item.group[lang];
+            const itemLabel = item.label[lang];
+            const showGroup = groupLabel !== lastGroup && !collapsed;
+            lastGroup = groupLabel;
             return (
               <div key={item.id}>
                 {showGroup && idx > 0 && (
                   <div className="px-2 pt-5 pb-2">
                     <div className="flex items-center gap-2">
                       <div className="h-px flex-1 bg-gradient-to-l from-border/60 to-transparent" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50 whitespace-nowrap">{item.group}</span>
+                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-muted-foreground/50 whitespace-nowrap">{groupLabel}</span>
                       <div className="h-px flex-1 bg-gradient-to-r from-border/60 to-transparent" />
                     </div>
                   </div>
@@ -1057,7 +1314,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
                   <div className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-300 ${active ? 'bg-teal-600/20' : 'group-hover/nav:bg-muted/80'}`}>
                     <Icon size={17} className={`transition-all duration-300 ${active ? 'text-teal-600 dark:text-teal-400' : ''}`} />
                   </div>
-                  {!collapsed && <span className="truncate">{item.label}</span>}
+                  {!collapsed && <span className="truncate">{itemLabel}</span>}
                 </button>
               </div>
             );
@@ -1079,7 +1336,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
                   {roleLabels[user.role] || user.role}
                 </span>
               </div>
-              <button onClick={logout} className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50/80 dark:hover:bg-rose-900/20 transition-all duration-200" title="تسجيل الخروج">
+              <button onClick={logout} className="p-1.5 rounded-lg text-muted-foreground hover:text-rose-500 hover:bg-rose-50/80 dark:hover:bg-rose-900/20 transition-all duration-200" title={t('nav.logout')}>
                 <LogOut size={16} />
               </button>
             </div>
@@ -1131,6 +1388,7 @@ function Sidebar({ currentView, setCurrentView }: { currentView: string; setCurr
 // ============== DASHBOARD ==============
 function DashboardView() {
   const { currentClinicId, user } = useAuth();
+  const { t } = useLang();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [subscriptionStatus, setSubscriptionStatus] = useState<'checking' | 'active' | 'inactive'>('checking');
@@ -1214,10 +1472,10 @@ function DashboardView() {
 
   const stats = data?.stats || { todayAppointments: 0, totalPatients: 0, totalRevenue: 0, totalCollected: 0 };
   const statCards = [
-    { label: 'مواعيد اليوم', value: stats.todayAppointments, gradient: 'from-teal-500 to-teal-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
-    { label: 'إجمالي المرضى', value: stats.totalPatients, gradient: 'from-orange-500 to-orange-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
-    { label: 'الإيرادات', value: `${stats.totalRevenue?.toFixed(0)} ر.س`, gradient: 'from-orange-600 to-orange-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
-    { label: 'المتحصل', value: `${stats.totalCollected?.toFixed(0)} ر.س`, gradient: 'from-rose-500 to-rose-600', icon: DollarSign, glow: 'stat-glow-rose', bg: 'bg-gradient-to-br' },
+    { label: t('dash.todayAppointments'), value: stats.todayAppointments, gradient: 'from-teal-500 to-teal-600', icon: CalendarDays, glow: 'stat-glow-sapphire', bg: 'bg-gradient-to-br' },
+    { label: t('dash.totalPatients'), value: stats.totalPatients, gradient: 'from-orange-500 to-orange-600', icon: Users, glow: 'stat-glow-cyan', bg: 'bg-gradient-to-br' },
+    { label: t('dash.revenue'), value: `${stats.totalRevenue?.toFixed(0)} ${currentClinic?.currency || 'SAR'}`, gradient: 'from-orange-600 to-orange-700', icon: TrendingUp, glow: 'stat-glow-coral', bg: 'bg-gradient-to-br' },
+    { label: t('dash.collected'), value: `${stats.totalCollected?.toFixed(0)} ${currentClinic?.currency || 'SAR'}`, gradient: 'from-rose-500 to-rose-600', icon: DollarSign, glow: 'stat-glow-rose', bg: 'bg-gradient-to-br' },
   ];
 
   const statusColors: Record<string, string> = {
@@ -1237,9 +1495,9 @@ function DashboardView() {
 
   const getGreeting = () => {
     const hour = new Date().getHours();
-    if (hour < 12) return 'صباح الخير';
-    if (hour < 17) return 'مساء الخير';
-    return 'مساء النور';
+    if (hour < 12) return t('dash.greeting.morning');
+    if (hour < 17) return t('dash.greeting.afternoon');
+    return t('dash.greeting.evening');
   };
 
   return (
@@ -1282,10 +1540,10 @@ function DashboardView() {
         {data?.revenueChart && (
           <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="font-bold text-foreground text-base">إيرادات الأسبوع</h3>
+              <h3 className="font-bold text-foreground text-base">{t('dash.weeklyRevenue')}</h3>
               <div className="flex items-center gap-1.5 text-xs text-orange-600 dark:text-orange-400 font-medium">
                 <TrendingUp size={14} />
-                <span>إيجابي</span>
+                <span>{t('common.active')}</span>
               </div>
             </div>
             <ResponsiveContainer width="100%" height={260}>
@@ -1301,7 +1559,7 @@ function DashboardView() {
                 <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <YAxis tick={{ fontSize: 11 }} stroke="var(--muted-foreground)" />
                 <Tooltip contentStyle={{ background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '12px', boxShadow: '0 8px 30px rgba(0,0,0,0.12)', fontSize: '13px' }} />
-                <Area type="monotone" dataKey="revenue" stroke="#0d9488" fill="url(#colorRevenue)" strokeWidth={2.5} name="الإيرادات" dot={{ r: 4, fill: '#0d9488', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#0d9488', strokeWidth: 2, fill: '#fff' }} />
+                <Area type="monotone" dataKey="revenue" stroke="#0d9488" fill="url(#colorRevenue)" strokeWidth={2.5} name={t('dash.revenue')} dot={{ r: 4, fill: '#0d9488', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, stroke: '#0d9488', strokeWidth: 2, fill: '#fff' }} />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -1310,7 +1568,7 @@ function DashboardView() {
         {/* Today's Appointments — Timeline style */}
         <div data-animate className="glass-card-enhanced bg-card rounded-xl p-5 border border-border/50 shadow-sm">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="font-bold text-foreground text-base">مواعيد اليوم</h3>
+            <h3 className="font-bold text-foreground text-base">{t('dash.todayAppointments')}</h3>
             <span className="badge-glow">
               {data?.todayAppointments?.length || 0} موعد
             </span>
@@ -1320,7 +1578,7 @@ function DashboardView() {
               <div className="w-14 h-14 mx-auto bg-muted/40 rounded-xl flex items-center justify-center mb-3">
                 <CalendarDays size={28} className="text-muted-foreground/30" />
               </div>
-              <p className="text-muted-foreground text-sm font-medium">لا توجد مواعيد اليوم</p>
+              <p className="text-muted-foreground text-sm font-medium">{t('dash.noAppointmentsToday')}</p>
             </div>
           ) : (
             <div className="space-y-0 max-h-[300px] overflow-y-auto sidebar-nav-scroll">
@@ -5688,11 +5946,13 @@ function PageLoader() {
 
 export default function Page() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <PageLoader />
-        <AppContent />
-      </ToastProvider>
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <PageLoader />
+          <AppContent />
+        </ToastProvider>
+      </AuthProvider>
+    </LanguageProvider>
   );
 }
