@@ -2001,6 +2001,7 @@ function PatientsView() {
 // ============== APPOINTMENTS VIEW ==============
 function AppointmentsView() {
   const { currentClinicId, clinics } = useAuth();
+  const { t, lang } = useLang();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [doctors, setDoctors] = useState<any[]>([]);
@@ -2122,7 +2123,7 @@ function AppointmentsView() {
     await updateStatus(id, 'cancelled');
   };
 
-  const typeLabels: Record<string, string> = { regular: 'عادي', follow_up: 'متابعة', emergency: 'طوارئ', consultation: 'استشارة' };
+  const typeLabels: Record<string, string> = { regular: t('apt.type.regular'), follow_up: t('apt.type.follow_up'), emergency: t('apt.type.emergency'), consultation: t('apt.type.consultation') };
   const typeColors: Record<string, string> = {
     regular: 'border-r-teal-500 bg-teal-500/8 dark:bg-teal-500/18',
     follow_up: 'border-r-orange-800 bg-orange-800/8 dark:bg-orange-800/18',
@@ -2130,7 +2131,7 @@ function AppointmentsView() {
     consultation: 'border-r-orange-600 bg-orange-600/8 dark:bg-orange-600/18',
   };
   const statusLabels: Record<string, string> = {
-    scheduled: 'مجدول', completed: 'تم', cancelled: 'ملغي',
+    scheduled: t('apt.status.scheduled'), completed: t('apt.status.completed'), cancelled: t('apt.status.cancelled'),
   };
   const statusColors: Record<string, string> = {
     scheduled: 'bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300',
@@ -3563,6 +3564,7 @@ function ManagementView() {
 // ============== SETTINGS VIEW ==============
 function SettingsView() {
   const { currentClinicId } = useAuth();
+  const { t } = useLang();
   const [clinic, setClinic] = useState<any>(null);
   const [form, setForm] = useState<any>({});
   const [saved, setSaved] = useState(false);
@@ -3584,34 +3586,34 @@ function SettingsView() {
 
   return (
     <div className="flex-1 p-4 lg:p-6 overflow-y-auto space-y-6 page-transition-enter">
-      <h1 className="text-3xl font-black gradient-text">إعدادات العيادة</h1>
+      <h1 className="text-3xl font-black gradient-text">{t('settings.title')}</h1>
 
       <div className="glass-card-v2 rounded-2xl p-6 space-y-5 gradient-border">
         <div>
-          <label className="text-sm font-medium mb-1 block">اسم العيادة</label>
+          <label className="text-sm font-medium mb-1 block">{t('settings.clinicName')}</label>
           <input className="w-full px-3 py-2.5 input-glow text-sm" value={form.name || ''} onChange={e => setForm({ ...form, name: e.target.value })} />
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">الهاتف</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
-          <div><label className="text-sm font-medium mb-1 block">البريد الإلكتروني</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('common.phone')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.phone || ''} onChange={e => setForm({ ...form, phone: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('common.email')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.email || ''} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
         </div>
-        <div><label className="text-sm font-medium mb-1 block">العنوان</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
+        <div><label className="text-sm font-medium mb-1 block">{t('common.address')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.address || ''} onChange={e => setForm({ ...form, address: e.target.value })} /></div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">الرقم الضريبي</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.taxNumber || ''} onChange={e => setForm({ ...form, taxNumber: e.target.value })} /></div>
-          <div><label className="text-sm font-medium mb-1 block">العملة</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('settings.taxNumber')}</label><input className="w-full px-3 py-2.5 input-glow text-sm" value={form.taxNumber || ''} onChange={e => setForm({ ...form, taxNumber: e.target.value })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('common.currency')}</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.currency || 'SAR'} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="SAR">ريال سعودي (ر.س)</option><option value="QAR">ريال قطري (ر.ق)</option><option value="AED">درهم إماراتي (د.إ)</option><option value="EGP">جنيه مصري (ج.م)</option><option value="KWD">دينار كويتي (د.ك)</option><option value="BHD">دينار بحريني (د.ب)</option><option value="OMR">ريال عماني (ر.ع)</option><option value="JOD">دينار أردني (د.أ)</option><option value="LBP">ليرة لبنانية (ل.ل)</option><option value="IQD">دينار عراقي (د.ع)</option><option value="SYP">ليرة سورية (ل.س)</option><option value="YER">ريال يمني (ر.ي)</option><option value="DZD">دينار جزائري (د.ج)</option><option value="TND">دينار تونسي (د.ت)</option><option value="MAD">درهم مغربي (د.م)</option><option value="LYD">دينار ليبي (د.ل)</option><option value="SDG">جنيه سوداني (ج.س)</option><option value="MRU">أوقية موريتانية (أ.م)</option><option value="SOS">شلن صومالي (ش.ص)</option><option value="DJF">فرنك جيبوتي (ف.ج)</option><option value="USD">دولار أمريكي ($)</option><option value="EUR">يورو (€)</option><option value="GBP">جنيه إسترليني (£)</option></select></div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <div><label className="text-sm font-medium mb-1 block">نوع الدفع</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.paymentMode || 'postpaid'} onChange={e => setForm({ ...form, paymentMode: e.target.value })}><option value="postpaid">آجل</option><option value="prepaid">مقدم</option></select></div>
-          <div><label className="text-sm font-medium mb-1 block">مدة الموعد (دقيقة)</label><input type="number" className="w-full px-3 py-2.5 input-glow text-sm" value={form.slotDuration || 30} onChange={e => setForm({ ...form, slotDuration: parseInt(e.target.value) })} /></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('settings.paymentMode')}</label><select className="w-full px-3 py-2.5 input-glow text-sm" value={form.paymentMode || 'postpaid'} onChange={e => setForm({ ...form, paymentMode: e.target.value })}><option value="postpaid">{t('settings.paymentMode.postpaid')}</option><option value="prepaid">{t('settings.paymentMode.prepaid')}</option></select></div>
+          <div><label className="text-sm font-medium mb-1 block">{t('settings.slotDuration')}</label><input type="number" className="w-full px-3 py-2.5 input-glow text-sm" value={form.slotDuration || 30} onChange={e => setForm({ ...form, slotDuration: parseInt(e.target.value) })} /></div>
         </div>
-        <div><label className="text-sm font-medium mb-1 block">ملاحظات</label><textarea className="w-full px-3 py-2.5 input-glow text-sm resize-none" rows={3} value={form.notes || ''} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
+        <div><label className="text-sm font-medium mb-1 block">{t('common.notes')}</label><textarea className="w-full px-3 py-2.5 input-glow text-sm resize-none" rows={3} value={form.notes || ''} onChange={e => setForm({ ...form, notes: e.target.value })} /></div>
 
         <div className="flex items-center gap-3 pt-2">
           <button onClick={handleSave}
             className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-l from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-600 text-white rounded-xl font-medium transition-all shadow-lg shadow-teal-600/25 hover:-translate-y-0.5 active:scale-[0.98]">
-            <Save size={16} /> حفظ التغييرات
+            <Save size={16} /> {t('settings.saveChanges')}
           </button>
-          {saved && <span className="text-sm text-orange-600 dark:text-orange-400 flex items-center gap-1"><CheckCircle size={14} /> تم الحفظ</span>}
+          {saved && <span className="text-sm text-orange-600 dark:text-orange-400 flex items-center gap-1"><CheckCircle size={14} /> {t('common.saved')}</span>}
         </div>
       </div>
 
@@ -3626,26 +3628,11 @@ function SettingsView() {
 
 // ============== LANGUAGE SECTION (inside Settings) ==============
 function LanguageSection() {
-  const [language, setLanguage] = useState<'ar' | 'en'>('ar');
+  const { lang, setLang, t } = useLang();
   const [saved, setSaved] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('app-language') as 'ar' | 'en' | null;
-    if (saved === 'en' || saved === 'ar') setLanguage(saved);
-  }, []);
-
-  const handleLanguageChange = (lang: 'ar' | 'en') => {
-    setLanguage(lang);
-    localStorage.setItem('app-language', lang);
-    // Apply direction and lang to <html>
-    const html = document.documentElement;
-    if (lang === 'en') {
-      html.setAttribute('dir', 'ltr');
-      html.setAttribute('lang', 'en');
-    } else {
-      html.setAttribute('dir', 'rtl');
-      html.setAttribute('lang', 'ar');
-    }
+  const handleLanguageChange = (l: 'ar' | 'en') => {
+    setLang(l);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -3657,8 +3644,8 @@ function LanguageSection() {
           <Globe size={20} className="text-teal-500" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">اللغة والاتجاه</h2>
-          <p className="text-xs text-muted-foreground">اختر لغة العرض المفضلة (Language & Direction)</p>
+          <h2 className="text-lg font-bold text-foreground">{t('lang.title')}</h2>
+          <p className="text-xs text-muted-foreground">{t('lang.subtitle')}</p>
         </div>
       </div>
 
@@ -3666,25 +3653,25 @@ function LanguageSection() {
         <button
           onClick={() => handleLanguageChange('ar')}
           className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
-            language === 'ar'
+            lang === 'ar'
               ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
               : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
           }`}
         >
           <span className="text-xl">🇸🇦</span>
-          العربية
+          {t('lang.arabic')}
           <span className="text-xs opacity-70">(RTL)</span>
         </button>
         <button
           onClick={() => handleLanguageChange('en')}
           className={`px-4 py-3 rounded-xl border-2 text-sm font-bold transition-all flex items-center justify-center gap-2 ${
-            language === 'en'
+            lang === 'en'
               ? 'border-teal-500 bg-teal-500/10 text-teal-600 dark:text-teal-400'
               : 'border-border/50 bg-transparent text-muted-foreground hover:border-border'
           }`}
         >
           <span className="text-xl">🇬🇧</span>
-          English
+          {t('lang.english')}
           <span className="text-xs opacity-70">(LTR)</span>
         </button>
       </div>
@@ -3692,16 +3679,16 @@ function LanguageSection() {
       {saved && (
         <div className="bg-teal-500/10 border border-teal-500/30 rounded-xl p-3 text-teal-600 dark:text-teal-400 text-sm flex items-center gap-2">
           <CheckCircle size={14} />
-          {language === 'ar' ? 'تم حفظ تفضيل اللغة' : 'Language preference saved'}
+          {t('lang.saved')}
         </div>
       )}
 
       <p className="text-xs text-muted-foreground/70 flex items-start gap-2">
         <Info size={12} className="mt-0.5 shrink-0" />
         <span>
-          {language === 'ar'
-            ? 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR). ترجمة كامل المحتوى للإنجليزية قيد التطوير — بعض العناصر قد تبقى بالعربية مؤقتاً.'
-            : 'Note: changing language applies the page direction (RTL/LTR). Full content translation to English is in progress — some elements may remain in Arabic temporarily.'}
+          {lang === 'ar'
+            ? 'ملاحظة: تغيير اللغة يطبق على اتجاه الصفحة (RTL/LTR).'
+            : 'Note: language change applies page direction (RTL/LTR).'}
         </span>
       </p>
     </div>
