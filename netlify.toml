@@ -1,5 +1,5 @@
 [build]
-  command = "npm install --legacy-peer-deps && npx prisma generate && npx prisma db push --accept-data-loss && npm run build"
+  command = "npm install --legacy-peer-deps && npx prisma generate && npx prisma db push --accept-data-loss && node scripts/seed.js && npm run build"
   publish = ".next"
 
 [build.environment]
@@ -38,3 +38,9 @@
   [headers.values]
     Cache-Control = "public, max-cache=86400"
     Content-Type = "application/manifest+json"
+
+# Protect API init endpoint (optional - remove if you want it public)
+[[headers]]
+  for = "/api/init"
+  [headers.values]
+    Cache-Control = "no-store, no-cache, must-revalidate"

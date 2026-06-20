@@ -573,18 +573,10 @@ function LoginPage({ onBack, onSwitchRegister }: { onBack?: () => void; onSwitch
             <div className="relative flex justify-center text-xs"><span className="bg-background px-3 text-muted-foreground/60">أو</span></div>
           </div>
 
-          {!seeded && (
-            <button onClick={handleSeed}
-              className="w-full py-2.5 text-sm text-muted-foreground hover:text-foreground border border-border/50 rounded-xl hover:bg-muted/30 transition-all">
-              تهيئة البيانات التجريبية
-            </button>
-          )}
-
-          {seeded && (
-            <div className="bg-orange-900/30 dark:bg-orange-900/20 border border-orange-700/40 dark:border-orange-800/50 rounded-xl p-3 text-orange-400 text-xs text-center">
-              تم تهيئة البيانات — admin / admin123
-            </div>
-          )}
+          <div className="bg-teal-500/5 border border-teal-500/20 rounded-xl p-3 text-center">
+            <p className="text-xs text-muted-foreground mb-1">حساب تجريبي للدخول:</p>
+            <p className="text-sm font-mono text-teal-600 dark:text-teal-400" dir="ltr">admin / admin123</p>
+          </div>
 
           <div className="mt-6 text-center">
             <button type="button" onClick={onSwitchRegister}
