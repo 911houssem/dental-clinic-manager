@@ -4435,7 +4435,7 @@ function LandingPage({ onLogin, onRegister }: { onLogin: () => void; onRegister:
           <div className="hero-blob hero-blob-2 absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full blur-[120px]" />
           <div className="hero-blob hero-blob-3 absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full blur-[130px]" />
           <div className="absolute inset-0 pattern-dots opacity-30" />
-          <Particles count={25} />
+          {/* Particles removed for Vercel compatibility */}
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5331,51 +5331,6 @@ function AppContent() {
   const { user } = useAuth();
   const [currentView, setCurrentView] = useState('dashboard');
   const [authView, setAuthView] = useState<'landing' | 'login' | 'register'>('landing');
-  const [darkMode, setDarkMode] = useState(false);
-
-  // Load dark mode preference from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved === 'dark') {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else if (saved === 'light') {
-      setDarkMode(false);
-      document.documentElement.classList.remove('dark');
-    } else {
-      // Default to system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setDarkMode(prefersDark);
-      if (prefersDark) document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    if (newMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
-  // Keyboard shortcuts: Ctrl+K = quick actions, Ctrl+D = dark mode, Esc = back to landing
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'd' && !e.shiftKey) {
-        e.preventDefault();
-        toggleDarkMode();
-      }
-      if (e.key === 'Escape' && !user) {
-        setAuthView('landing');
-      }
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [darkMode, user]);
 
   if (!user) {
     if (authView === 'landing') return <LandingPage onLogin={() => setAuthView('login')} onRegister={() => setAuthView('register')} />;
@@ -5384,21 +5339,10 @@ function AppContent() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden pattern-dots gradient-bg-animated">
+    <div className="flex h-screen overflow-hidden bg-background">
       <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
-      <main className="flex-1 flex flex-col overflow-hidden bg-background/80 backdrop-blur-sm">
+      <main className="flex-1 flex flex-col overflow-hidden bg-background">
         <ImpersonationBanner />
-        {/* Top bar with dark mode toggle */}
-        <div className="flex items-center justify-end px-4 py-2 border-b border-border/30 bg-card/50 backdrop-blur-sm">
-          <button
-            onClick={toggleDarkMode}
-            className="theme-toggle"
-            title={darkMode ? 'التبديل للوضع النهاري (Ctrl+D)' : 'التبديل للوضع الليلي (Ctrl+D)'}
-          >
-            {darkMode ? <Sun size={14} /> : <Moon size={14} />}
-            <span>{darkMode ? 'نهاري' : 'ليلي'}</span>
-          </button>
-        </div>
         <div className="flex-1 flex flex-col overflow-hidden">
           {currentView === 'dashboard' && <DashboardView />}
           {currentView === 'patients' && <PatientsView />}
