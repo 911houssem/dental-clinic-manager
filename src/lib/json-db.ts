@@ -206,6 +206,12 @@ interface Database {
   offers: Offer[];
   sessions: Session[];
   auditLogs: AuditLog[];
+  loginAttempts: any[];
+  securityLogs: any[];
+  trustedDevices: any[];
+  deviceAuthorizations: any[];
+  tasks: any[];
+  securityConfigs: any[];
 }
 
 let db: Database | null = null;
@@ -248,6 +254,12 @@ export async function initializeDatabase(): Promise<Database> {
     offers: [],
     sessions: [],
     auditLogs: [],
+    loginAttempts: [],
+    securityLogs: [],
+    trustedDevices: [],
+    deviceAuthorizations: [],
+    tasks: [],
+    securityConfigs: [],
   };
 
   // === إنشاء admin ===
@@ -1045,6 +1057,106 @@ export const dbClient = {
       };
       d.auditLogs.push(log);
       return log;
+    },
+  },
+
+  loginAttempt: {
+    async create(args: { data: any }) {
+      const d = await getDb();
+      const attempt = { id: generateId(), createdAt: new Date(), ...args.data };
+      d.loginAttempts.push(attempt);
+      return attempt;
+    },
+  },
+
+  securityLog: {
+    async create(args: { data: any }) {
+      const d = await getDb();
+      const log = { id: generateId(), createdAt: new Date(), ...args.data };
+      d.securityLogs.push(log);
+      return log;
+    },
+    async findMany(args?: { where?: any }) {
+      const d = await getDb();
+      return d.securityLogs;
+    },
+  },
+
+  trustedDevice: {
+    async findFirst(args?: { where?: any }) {
+      const d = await getDb();
+      if (!args?.where) return d.trustedDevices[0] || null;
+      return d.trustedDevices.find(t =>
+        (!args.where.userId || t.userId === args.where.userId) &&
+        (!args.where.deviceFingerprint || t.deviceFingerprint === args.where.deviceFingerprint)
+      ) || null;
+    },
+    async upsert(args: { where: any; create: any; update: any }) {
+      const d = await getDb();
+      const existing = d.trustedDevices.find(t => t.deviceFingerprint === args.where.deviceFingerprint);
+      if (existing) {
+        Object.assign(existing, args.update, { lastUsedAt: new Date() });
+        return existing;
+      } else {
+        const device = { id: generateId(), createdAt: new Date(), ...args.create };
+        d.trustedDevices.push(device);
+        return device;
+      }
+    },
+  },
+
+  deviceAuthorization: {
+    async create(args: { data: any }) {
+      const d = await getDb();
+      const auth = { id: generateId(), createdAt: new Date(), ...args.data };
+      d.deviceAuthorizations.push(auth);
+      return auth;
+    },
+  },
+
+  task: {
+    async findMany(args?: { where?: any; include?: any }) {
+      const d = await getDb();
+      let result = d.tasks;
+      if (args?.where?.clinicId) result = result.filter((t: any) => t.clinicId === args.where.clinicId);
+      if (args?.where?.status) result = result.filter((t: any) => t.status === args.where.status);
+      if (args?.include?.assignee || args?.include?.creator) {
+        result = result.map((t: any) => ({
+          ...t,
+          assignee: d.users.find(u => u.id === t.assigneeId),
+          creator: d.users.find(u => u.id === t.creatorId),
+        }));
+      }
+      return result;
+    },
+    async create(args: { data: any }) {
+      const d = await getDb();
+      const task = { id: generateId(), createdAt: new Date(), updatedAt: new Date(), status: 'todo', ...args.data };
+      d.tasks.push(task);
+      return task;
+    },
+    async update(args: { where: any; data: any }) {
+      const d = await getDb();
+      const idx = d.tasks.findIndex((t: any) => t.id === args.where.id);
+      if (idx !== -1) {
+        d.tasks[idx] = { ...d.tasks[idx], ...args.data, updatedAt: new Date() };
+        return d.tasks[idx];
+      }
+      return null;
+    },
+  },
+
+  securityConfig: {
+    async findFirst(args?: { where?: any }) {
+      const d = await getDb();
+      if (!args?.where?.clinicId) return d.securityConfigs[0] || null;
+      return d.securityConfigs.find((s: any) => s.clinicId === args.where.clinicId) || null;
+    },
+    async create(args: { data: any }) {
+      const d = await getDb();
+      const config = { id: generateId(), createdAt: new Date(), updatedAt: new Date(), ...args.data };
+      d.securityConfigs.push(config);
+      return config;
     },
   },
 };
