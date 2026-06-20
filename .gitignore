@@ -6,3 +6,4 @@ bun.lock
 *.png
 *.bak
 skills/
+.vercel
