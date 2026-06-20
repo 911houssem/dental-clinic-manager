@@ -235,6 +235,16 @@ export function hashToken(token: string): string {
   return crypto.createHash('sha256').update(token).digest('hex');
 }
 
+// === Helper: pick fields from object (for select) ===
+function pickFields(obj: any, select: any): any {
+  if (!obj || !select) return obj;
+  const result: any = {};
+  for (const key of Object.keys(select)) {
+    if (select[key] && obj[key] !== undefined) result[key] = obj[key];
+  }
+  return result;
+}
+
 // === تهيئة قاعدة البيانات بالبيانات الافتراضية ===
 export async function initializeDatabase(): Promise<Database> {
   if (db) return db;
@@ -651,14 +661,41 @@ export const dbClient = {
       const d = await getDb();
       return d.clinics[0] || null;
     },
-    async findMany() {
+    async findMany(args?: { where?: any; include?: any; orderBy?: any }) {
       const d = await getDb();
-      return d.clinics;
+      let result = [...d.clinics];
+      if (args?.where?.id) result = result.filter(c => c.id === args.where.id);
+      if (args?.orderBy?.createdAt === 'desc') result = result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      if (args?.include) {
+        result = result.map(c => {
+          const clinic: any = { ...c };
+          if (args.include.users) clinic.users = d.users.filter(u => u.clinicId === c.id);
+          if (args.include._count) {
+            clinic._count = {
+              patients: d.patients.filter(p => p.clinicId === c.id).length,
+              appointments: d.appointments.filter(a => a.clinicId === c.id).length,
+              tasks: d.tasks.filter((t: any) => t.clinicId === c.id).length,
+            };
+          }
+          if (args.include.subscription) {
+            clinic.subscription = d.clinicSubscriptions.find(s => s.clinicId === c.id) || null;
+          }
+          return clinic;
+        });
+      }
+      return result;
     },
-    async findUnique(args?: { where?: any }) {
+    async findUnique(args?: { where?: any; include?: any }) {
       const d = await getDb();
       if (!args?.where) return d.clinics[0] || null;
-      return d.clinics.find(c => c.id === args.where.id || c.bookingSlug === args.where.bookingSlug) || null;
+      const clinic = d.clinics.find(c => c.id === args.where.id || c.bookingSlug === args.where.bookingSlug) || null;
+      if (clinic && args?.include?.users) {
+        return { ...clinic, users: d.users.filter(u => u.clinicId === clinic.id) };
+      }
+      if (clinic && args?.include?.subscription) {
+        return { ...clinic, subscription: d.clinicSubscriptions.find(s => s.clinicId === clinic.id) || null };
+      }
+      return clinic;
     },
     async create(args: { data: any }) {
       const d = await getDb();
@@ -692,8 +729,21 @@ export const dbClient = {
   patient: {
     async findMany(args?: { where?: any; include?: any }) {
       const d = await getDb();
-      let result = d.patients;
+      let result = [...d.patients];
       if (args?.where?.clinicId) result = result.filter(p => p.clinicId === args.where.clinicId);
+      if (args?.where?.id) result = result.filter(p => p.id === args.where.id);
+      if (args?.where?.OR) {
+        // Support search with OR (fullName contains, phone contains, fileNumber contains)
+        const ors = args.where.OR;
+        result = result.filter(p => {
+          return ors.some((or: any) => {
+            if (or.fullName?.contains) return p.fullName.includes(or.fullName.contains);
+            if (or.phone?.contains) return p.phone?.includes(or.phone.contains);
+            if (or.fileNumber?.contains) return p.fileNumber.includes(or.fileNumber.contains);
+            return false;
+          });
+        });
+      }
       return result;
     },
     async findUnique(args?: { where?: any }) {
@@ -727,27 +777,49 @@ export const dbClient = {
       if (idx !== -1) d.patients.splice(idx, 1);
       return null;
     },
-    async count() {
+    async count(args?: { where?: any }) {
       const d = await getDb();
-      return d.patients.length;
+      let result = d.patients;
+      if (args?.where?.clinicId) result = result.filter(p => p.clinicId === args.where.clinicId);
+      return result.length;
     },
   },
 
   appointment: {
     async findMany(args?: { where?: any; include?: any; orderBy?: any }) {
       const d = await getDb();
-      let result = d.appointments;
+      let result = [...d.appointments];
       if (args?.where?.clinicId) result = result.filter(a => a.clinicId === args.where.clinicId);
       if (args?.where?.patientId) result = result.filter(a => a.patientId === args.where.patientId);
       if (args?.where?.doctorId) result = result.filter(a => a.doctorId === args.where.doctorId);
       if (args?.where?.status) result = result.filter(a => a.status === args.where.status);
-      // Add include for patient and doctor
+      // Support startTime: { contains: today }
+      if (args?.where?.startTime?.contains) {
+        result = result.filter(a => a.startTime.includes(args.where.startTime.contains));
+      }
+      // Support status: { in: [...] }
+      if (args?.where?.status?.in) {
+        result = result.filter(a => args.where.status.in.includes(a.status));
+      }
+      // orderBy
+      if (args?.orderBy?.startTime === 'asc') result.sort((a, b) => a.startTime.localeCompare(b.startTime));
+      if (args?.orderBy?.startTime === 'desc') result.sort((a, b) => b.startTime.localeCompare(a.startTime));
+      // include patient and doctor
       if (args?.include?.patient || args?.include?.doctor) {
-        result = result.map(a => ({
-          ...a,
-          patient: d.patients.find(p => p.id === a.patientId),
-          doctor: d.users.find(u => u.id === a.doctorId),
-        }));
+        const patientSelect = args?.include?.patient?.select;
+        const doctorSelect = args?.include?.doctor?.select;
+        result = result.map(a => {
+          const apt: any = { ...a };
+          if (args.include.patient) {
+            const p = d.patients.find(p => p.id === a.patientId);
+            apt.patient = patientSelect ? pickFields(p, patientSelect) : p;
+          }
+          if (args.include.doctor) {
+            const u = d.users.find(u => u.id === a.doctorId);
+            apt.doctor = doctorSelect ? pickFields(u, doctorSelect) : u;
+          }
+          return apt;
+        });
       }
       return result;
     },
@@ -776,16 +848,29 @@ export const dbClient = {
   },
 
   invoice: {
-    async findMany(args?: { where?: any; include?: any }) {
+    async findMany(args?: { where?: any; include?: any; orderBy?: any; select?: any }) {
       const d = await getDb();
-      let result = d.invoices;
+      let result = [...d.invoices];
       if (args?.where?.clinicId) result = result.filter(i => i.clinicId === args.where.clinicId);
       if (args?.where?.patientId) result = result.filter(i => i.patientId === args.where.patientId);
+      if (args?.where?.status) result = result.filter(i => i.status === args.where.status);
+      // Support createdAt: { gte: date }
+      if (args?.where?.createdAt?.gte) {
+        result = result.filter(i => new Date(i.createdAt) >= new Date(args.where.createdAt.gte));
+      }
+      // orderBy
+      if (args?.orderBy?.createdAt === 'asc') result.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+      if (args?.orderBy?.createdAt === 'desc') result.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      // include patient
       if (args?.include?.patient) {
         result = result.map(i => ({
           ...i,
           patient: d.patients.find(p => p.id === i.patientId),
         }));
+      }
+      // select
+      if (args?.select) {
+        result = result.map(i => pickFields(i, args.select));
       }
       return result;
     },
@@ -816,6 +901,29 @@ export const dbClient = {
         return d.invoices[idx];
       }
       return null;
+    },
+    async count(args?: { where?: any }) {
+      const d = await getDb();
+      let result = d.invoices;
+      if (args?.where?.clinicId) result = result.filter(i => i.clinicId === args.where.clinicId);
+      if (args?.where?.status) result = result.filter(i => i.status === args.where.status);
+      return result.length;
+    },
+    async aggregate(args?: { where?: any; _sum?: any; _count?: any }) {
+      const d = await getDb();
+      let result = d.invoices;
+      if (args?.where?.clinicId) result = result.filter(i => i.clinicId === args.where.clinicId);
+      const sumResult: any = {};
+      if (args?._sum) {
+        if (args._sum.total) sumResult.total = result.reduce((s, i) => s + (i.total || 0), 0);
+        if (args._sum.paidAmount) sumResult.paidAmount = result.reduce((s, i) => s + (i.paidAmount || 0), 0);
+        if (args._sum.dueAmount) sumResult.dueAmount = result.reduce((s, i) => s + (i.dueAmount || 0), 0);
+        if (args._sum.subtotal) sumResult.subtotal = result.reduce((s, i) => s + (i.subtotal || 0), 0);
+      }
+      return {
+        _sum: sumResult,
+        _count: args?._count ? result.length : undefined,
+      };
     },
   },
 
