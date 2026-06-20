@@ -28,6 +28,11 @@ export interface User {
   twoFactorEnabled: boolean;
   securityLevel: string;
   lastLogin?: Date;
+  accountLocked?: boolean;
+  lockoutUntil?: Date;
+  failedLoginAttempts?: number;
+  lastPasswordChange?: Date;
+  emailVerified?: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -594,7 +599,11 @@ export const dbClient = {
         if (args.where.username) result = result.filter(u => u.username === args.where.username);
         if (args.where.email) result = result.filter(u => u.email === args.where.email);
       }
-      return result[0] || null;
+      const user = result[0] || null;
+      if (user && args?.include?.clinic) {
+        return { ...user, clinic: d.clinics.find(c => c.id === user.clinicId) || null };
+      }
+      return user;
     },
     async findMany(args?: { where?: any; include?: any }) {
       const d = await getDb();
@@ -1125,6 +1134,14 @@ export const dbClient = {
   },
 
   session: {
+    async findFirst(args?: { where?: any }) {
+      const d = await getDb();
+      let result = d.sessions;
+      if (args?.where?.tokenHash) result = result.filter(s => s.tokenHash === args.where.tokenHash);
+      if (args?.where?.isRevoked !== undefined) result = result.filter(s => s.isRevoked === args.where.isRevoked);
+      if (args?.where?.expiresAt?.gt) result = result.filter(s => new Date(s.expiresAt) > new Date(args.where.expiresAt.gt));
+      return result[0] || null;
+    },
     async create(args: { data: any }) {
       const d = await getDb();
       const session: Session = {
