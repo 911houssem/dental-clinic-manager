@@ -226,6 +226,21 @@ function generateId(): string {
   return crypto.randomBytes(16).toString('hex');
 }
 
+// === Fixed IDs (عشان تتطابق بين Vercel instances) ===
+const FIXED_IDS = {
+  admin: 'a0000000000000000000000000000001',
+  doctor: 'a0000000000000000000000000000002',
+  reception: 'a0000000000000000000000000000003',
+  clinic: 'c0000000000000000000000000000001',
+  basicPlan: 'p0000000000000000000000000000001',
+  proPlan: 'p0000000000000000000000000000002',
+  premiumPlan: 'p0000000000000000000000000000003',
+  clinicSub: 's0000000000000000000000000000001',
+  offer1: 'o0000000000000000000000000000001',
+  offer2: 'o0000000000000000000000000000002',
+  offer3: 'o0000000000000000000000000000003',
+};
+
 // === Helper: hash كلمة المرور ===
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
@@ -280,7 +295,7 @@ export async function initializeDatabase(): Promise<Database> {
   // === إنشاء admin ===
   const adminHash = await hashPassword('admin123');
   const admin: User = {
-    id: generateId(),
+    id: FIXED_IDS.admin,
     username: 'admin',
     passwordHash: adminHash,
     passwordPlain: 'admin123',
@@ -304,7 +319,7 @@ export async function initializeDatabase(): Promise<Database> {
 
   // === إنشاء عيادة افتراضية ===
   const clinic: Clinic = {
-    id: generateId(),
+    id: FIXED_IDS.clinic,
     name: 'عيادة الشفاء',
     phone: '0501234567',
     address: 'الرياض، حي النزهة',
@@ -323,7 +338,7 @@ export async function initializeDatabase(): Promise<Database> {
   // === إنشاء طبيب ===
   const doctorHash = await hashPassword('doctor123');
   const doctor: User = {
-    id: generateId(),
+    id: FIXED_IDS.doctor,
     username: 'doctor1',
     passwordHash: doctorHash,
     passwordPlain: 'doctor123',
@@ -348,7 +363,7 @@ export async function initializeDatabase(): Promise<Database> {
   // === إنشاء استقبال ===
   const receptionHash = await hashPassword('reception123');
   const reception: User = {
-    id: generateId(),
+    id: FIXED_IDS.reception,
     username: 'reception1',
     passwordHash: receptionHash,
     passwordPlain: 'reception123',
@@ -373,6 +388,7 @@ export async function initializeDatabase(): Promise<Database> {
   // === إنشاء خطط الاشتراك ===
   const basicPlan: SubscriptionPlan = {
     id: generateId(),
+    id: FIXED_IDS.basicPlan,
     name: 'أساسي', nameEn: 'Basic',
     description: 'للعيادات الصغيرة التي تبدأ رحلتها الرقمية',
     price: 99, yearlyPrice: 990,
@@ -384,6 +400,7 @@ export async function initializeDatabase(): Promise<Database> {
   };
   const proPlan: SubscriptionPlan = {
     id: generateId(),
+    id: FIXED_IDS.proPlan,
     name: 'احترافي', nameEn: 'Professional',
     description: 'للعيادات المتوسطة التي تحتاج ميزات متقدمة',
     price: 249, yearlyPrice: 2490,
@@ -395,6 +412,7 @@ export async function initializeDatabase(): Promise<Database> {
   };
   const premiumPlan: SubscriptionPlan = {
     id: generateId(),
+    id: FIXED_IDS.premiumPlan,
     name: 'ممتاز', nameEn: 'Premium',
     description: 'للعيادات الكبيرة والسلاسل الطبية',
     price: 499, yearlyPrice: 4990,
@@ -408,7 +426,7 @@ export async function initializeDatabase(): Promise<Database> {
 
   // === منح العيادة الافتراضية اشتراك ===
   const clinicSub: ClinicSubscription = {
-    id: generateId(),
+    id: FIXED_IDS.clinicSub,
     clinicId: clinic.id,
     planId: proPlan.id,
     status: 'active',
@@ -423,7 +441,7 @@ export async function initializeDatabase(): Promise<Database> {
 
   // === إنشاء العروض ===
   db.offers.push({
-    id: generateId(),
+    id: FIXED_IDS.offer1,
     title: 'خصم الإطلاق',
     description: 'احصل على خصم ٣٠٪ عند الاشتراك لأول مرة',
     discountType: 'percentage', discountValue: 30, planId: proPlan.id,
@@ -431,7 +449,7 @@ export async function initializeDatabase(): Promise<Database> {
     createdAt: new Date(), updatedAt: new Date(),
   });
   db.offers.push({
-    id: generateId(),
+    id: FIXED_IDS.offer2,
     title: 'اشترك سنة ووفّر',
     description: 'وفّر ما يعادل شهرين عند الاشتراك السنوي',
     discountType: 'percentage', discountValue: 17, planId: premiumPlan.id,
@@ -439,7 +457,7 @@ export async function initializeDatabase(): Promise<Database> {
     createdAt: new Date(), updatedAt: new Date(),
   });
   db.offers.push({
-    id: generateId(),
+    id: FIXED_IDS.offer3,
     title: 'تجربة مجانية',
     description: 'جرب الخطة الاحترافية مجاناً لمدة ١٤ يوماً',
     discountType: 'percentage', discountValue: 100, planId: basicPlan.id,
