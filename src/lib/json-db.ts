@@ -1050,7 +1050,7 @@ export const dbClient = {
 };
 
 // === تصدير للتوافق مع الكود الحالي ===
-export { dbClient as prismaDb };
+export { dbClient, hashPassword, verifyPassword, hashToken, generateId, initializeDatabase, getDb };
 
 // === Helper functions للتوافق ===
 export async function $queryRaw() {
