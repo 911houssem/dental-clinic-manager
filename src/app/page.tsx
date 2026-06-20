@@ -5594,7 +5594,6 @@ export default function Page() {
   return (
     <AuthProvider>
       <ToastProvider>
-        <PageLoader />
         <AppContent />
       </ToastProvider>
     </AuthProvider>

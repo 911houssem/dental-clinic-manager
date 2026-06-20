@@ -293,7 +293,7 @@ export async function initializeDatabase(): Promise<Database> {
   };
 
   // === إنشاء admin ===
-  const adminHash = await hashPassword('admin123');
+  const adminHash = '$2b$12$grz4BKMjoXilG1Zvm6mp7uhAq0ZVTdk.hUU50dCspTRVhFeiOqN4C';
   const admin: User = {
     id: FIXED_IDS.admin,
     username: 'admin',
@@ -336,7 +336,7 @@ export async function initializeDatabase(): Promise<Database> {
   db.clinics.push(clinic);
 
   // === إنشاء طبيب ===
-  const doctorHash = await hashPassword('doctor123');
+  const doctorHash = '$2b$12$fi4iSnu31lOv4eBgAKCzvu5n/0szx6chJglNSvHG.80rfjYJrgJf.';
   const doctor: User = {
     id: FIXED_IDS.doctor,
     username: 'doctor1',
@@ -361,7 +361,7 @@ export async function initializeDatabase(): Promise<Database> {
   db.users.push(doctor);
 
   // === إنشاء استقبال ===
-  const receptionHash = await hashPassword('reception123');
+  const receptionHash = '$2b$12$WK4ejfZrlxlhmzg0Kl6zj.IQCU1Tkpyih6aLXWO7ZxMPeTqcEYqVq';
   const reception: User = {
     id: FIXED_IDS.reception,
     username: 'reception1',
