@@ -28,7 +28,6 @@ export function authUserClinicId(auth: AuthResult): string | null | undefined { 
 export async function getAuthUser(): Promise<AuthResult | null> {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('access_token')?.value;
-  const refreshToken = cookieStore.get('refresh_token')?.value;
 
   if (!accessToken) return null;
 
@@ -36,15 +35,8 @@ export async function getAuthUser(): Promise<AuthResult | null> {
   const payload = verifyAccessToken(accessToken);
   if (!payload) return null;
 
-  // Check session exists and is not revoked
-  const tokenHash = hashToken(accessToken);
-  const session = await db.session.findFirst({
-    where: { tokenHash, isRevoked: false, expiresAt: { gt: new Date() } },
-  });
-
-  if (!session) return null;
-
-  // Get user
+  // Get user from database (each Vercel function has its own in-memory db,
+  // but it auto-initializes with the same seed data, so users are always available)
   const user = await db.user.findUnique({
     where: { id: payload.userId },
     include: { clinic: true },
@@ -56,12 +48,6 @@ export async function getAuthUser(): Promise<AuthResult | null> {
   if (user.accountLocked && user.lockoutUntil && new Date(user.lockoutUntil) > new Date()) {
     return null;
   }
-
-  // Update session last accessed
-  await db.session.update({
-    where: { id: session.id },
-    data: { lastAccessedAt: new Date() },
-  }).catch(() => {});
 
   const clinicId = user.role === 'super_admin'
     ? (cookieStore.get('clinic_current_id')?.value || null)
@@ -82,7 +68,7 @@ export async function getAuthUser(): Promise<AuthResult | null> {
       clinic: user.clinic,
     },
     currentClinicId: clinicId,
-    sessionId: session.id,
+    sessionId: payload.sessionId || '',
   };
 }
 
